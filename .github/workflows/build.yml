@@ -24,4 +24,5 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
-          path: GenshinLauncher/bin/Release/net5.0-windows/win-x64/publish/GenshinLauncher.exe
+          name: GenshinLauncher
+          path: GenshinLauncher/bin/Release/net5.0-windows/win-x64/publish/*

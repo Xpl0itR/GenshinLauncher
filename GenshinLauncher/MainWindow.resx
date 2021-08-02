@@ -1,0 +1,470 @@
+﻿<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="_trayIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="_trayMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>118, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="_trayMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 55</value>
+  </data>
+  <data name="&gt;&gt;_trayMenu.Name" xml:space="preserve">
+    <value>_trayMenu</value>
+  </data>
+  <data name="&gt;&gt;_trayMenu.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkContextMenu, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="_trayIcon.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAQGgAAAADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAgAIAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
+        AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAHd3d3d3d3d3d3d3d3d3dwB///////////////////cAf//////////////////3AH//
+        ////////////////9wB/+IiIiIiIj/iIiI////cAf/h3d3d3d4/////////3AH/4d3d3d3eP+IiIj///
+        9wB/+Hd3d3d3j/////////cAf/h3d3d3d4/////////3AH/4d3d3d3eP+IiIj///9wB/+Hd3d3d3j///
+        //////cAf/h3d3d3d4/4iIiP93/3AH/4d3d3d3eP//////d/9wB/+Hd3d3d3j/iIiI/3f/cAf/iHd3d3
+        d4//////93/3AH/4d3d3d3eP+IiIj/d/9wB/+Hd3d3d3j//////2f/cAf/h3d3d3d4/4iIiP9m/3AH/4
+        d3d3d3eP//////Zv9wB/+IiIiIiIj/iIiI/2b/cAf//////////////////3AH//////////////////
+        9wB4iIiIiIiIiIiIiIiIiIcAeIiIiIiIiIiIiIiHh4eHAHd3d3d3d3d3d3d3d3d3dwAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///////////////w==
+</value>
+  </data>
+  <data name="_trayIcon.Text" xml:space="preserve">
+    <value>Genshin Impact Launcher</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="_trayIcon.Visible" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_trayMenuItemOpen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="_trayMenuItemOpen.Text" xml:space="preserve">
+    <value>Open main window</value>
+  </data>
+  <data name="_trayMenuSeparator.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 6</value>
+  </data>
+  <data name="_trayMenuItemExit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="_trayMenuItemExit.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="_buttonLaunch.Location" type="System.Drawing.Point, System.Drawing">
+    <value>254, 8</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="_buttonLaunch.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="_buttonLaunch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 62</value>
+  </data>
+  <data name="_buttonLaunch.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="_buttonLaunch.Text" xml:space="preserve">
+    <value>Launch</value>
+  </data>
+  <data name="&gt;&gt;_buttonLaunch.Name" xml:space="preserve">
+    <value>_buttonLaunch</value>
+  </data>
+  <data name="&gt;&gt;_buttonLaunch.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_buttonLaunch.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_buttonLaunch.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="_checkBoxCloseToTray.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_checkBoxCloseToTray.Location" type="System.Drawing.Point, System.Drawing">
+    <value>342, 150</value>
+  </data>
+  <data name="_checkBoxCloseToTray.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 19</value>
+  </data>
+  <data name="_checkBoxCloseToTray.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="_checkBoxCloseToTray.Text" xml:space="preserve">
+    <value>Close to Tray</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxCloseToTray.Name" xml:space="preserve">
+    <value>_checkBoxCloseToTray</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxCloseToTray.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkCheckBox, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxCloseToTray.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxCloseToTray.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.Location" type="System.Drawing.Point, System.Drawing">
+    <value>342, 175</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 19</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.Text" xml:space="preserve">
+    <value>Exit on Launch</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxExitOnLaunch.Name" xml:space="preserve">
+    <value>_checkBoxExitOnLaunch</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxExitOnLaunch.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkCheckBox, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxExitOnLaunch.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxExitOnLaunch.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="_labelWindowMode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_labelWindowMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 107</value>
+  </data>
+  <data name="_labelWindowMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 15</value>
+  </data>
+  <data name="_labelWindowMode.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="_labelWindowMode.Text" xml:space="preserve">
+    <value>Window Mode:</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowMode.Name" xml:space="preserve">
+    <value>_labelWindowMode</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowMode.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowMode.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowMode.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="_labelWindowWidth.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_labelWindowWidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 11</value>
+  </data>
+  <data name="_labelWindowWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 15</value>
+  </data>
+  <data name="_labelWindowWidth.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="_labelWindowWidth.Text" xml:space="preserve">
+    <value>Window Width:</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowWidth.Name" xml:space="preserve">
+    <value>_labelWindowWidth</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowWidth.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowWidth.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowWidth.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="_labelWindowHeight.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_labelWindowHeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 40</value>
+  </data>
+  <data name="_labelWindowHeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 15</value>
+  </data>
+  <data name="_labelWindowHeight.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="_labelWindowHeight.Text" xml:space="preserve">
+    <value>Window Height:</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowHeight.Name" xml:space="preserve">
+    <value>_labelWindowHeight</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowHeight.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowHeight.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowHeight.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="_numericWindowWidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>105, 8</value>
+  </data>
+  <data name="_numericWindowWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 23</value>
+  </data>
+  <data name="_numericWindowWidth.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowWidth.Name" xml:space="preserve">
+    <value>_numericWindowWidth</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowWidth.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkNumericUpDown, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowWidth.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowWidth.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="_numericWindowHeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>105, 38</value>
+  </data>
+  <data name="_numericWindowHeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 23</value>
+  </data>
+  <data name="_numericWindowHeight.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowHeight.Name" xml:space="preserve">
+    <value>_numericWindowHeight</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowHeight.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkNumericUpDown, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowHeight.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowHeight.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="_buttonUseScreenResolution.Location" type="System.Drawing.Point, System.Drawing">
+    <value>105, 67</value>
+  </data>
+  <data name="_buttonUseScreenResolution.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="_buttonUseScreenResolution.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 23</value>
+  </data>
+  <data name="_buttonUseScreenResolution.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="_buttonUseScreenResolution.Text" xml:space="preserve">
+    <value>Use screen resolution</value>
+  </data>
+  <data name="&gt;&gt;_buttonUseScreenResolution.Name" xml:space="preserve">
+    <value>_buttonUseScreenResolution</value>
+  </data>
+  <data name="&gt;&gt;_buttonUseScreenResolution.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_buttonUseScreenResolution.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_buttonUseScreenResolution.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="_radioButtonFullscreen.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_radioButtonFullscreen.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 129</value>
+  </data>
+  <data name="_radioButtonFullscreen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 19</value>
+  </data>
+  <data name="_radioButtonFullscreen.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="_radioButtonFullscreen.Text" xml:space="preserve">
+    <value>Exclusive Fullscreen</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonFullscreen.Name" xml:space="preserve">
+    <value>_radioButtonFullscreen</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonFullscreen.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkRadioButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonFullscreen.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonFullscreen.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="_radioButtonWindowed.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_radioButtonWindowed.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 152</value>
+  </data>
+  <data name="_radioButtonWindowed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 19</value>
+  </data>
+  <data name="_radioButtonWindowed.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="_radioButtonWindowed.Text" xml:space="preserve">
+    <value>Windowed</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonWindowed.Name" xml:space="preserve">
+    <value>_radioButtonWindowed</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonWindowed.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkRadioButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonWindowed.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonWindowed.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="_radioButtonBorderless.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_radioButtonBorderless.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 175</value>
+  </data>
+  <data name="_radioButtonBorderless.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 19</value>
+  </data>
+  <data name="_radioButtonBorderless.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="_radioButtonBorderless.Text" xml:space="preserve">
+    <value>Borderless Windowed</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonBorderless.Name" xml:space="preserve">
+    <value>_radioButtonBorderless</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonBorderless.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkRadioButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonBorderless.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonBorderless.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>96, 96</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>452, 203</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Genshin Impact Launcher</value>
+  </data>
+  <data name="&gt;&gt;_trayIcon.Name" xml:space="preserve">
+    <value>_trayIcon</value>
+  </data>
+  <data name="&gt;&gt;_trayIcon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NotifyIcon, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;_trayMenuItemOpen.Name" xml:space="preserve">
+    <value>_trayMenuItemOpen</value>
+  </data>
+  <data name="&gt;&gt;_trayMenuItemOpen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;_trayMenuSeparator.Name" xml:space="preserve">
+    <value>_trayMenuSeparator</value>
+  </data>
+  <data name="&gt;&gt;_trayMenuSeparator.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;_trayMenuItemExit.Name" xml:space="preserve">
+    <value>_trayMenuItemExit</value>
+  </data>
+  <data name="&gt;&gt;_trayMenuItemExit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>MainWindow</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>DarkUI.Forms.DarkForm, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+</root>

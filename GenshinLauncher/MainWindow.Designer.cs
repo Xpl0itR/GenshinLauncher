@@ -8,7 +8,7 @@ using DarkUI.Controls;
 
 namespace GenshinLauncher
 {
-    partial class MainForm
+    partial class MainWindow
     {
         /// <summary>
         ///  Required designer variable.
@@ -21,9 +21,9 @@ namespace GenshinLauncher
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                components?.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -37,7 +37,7 @@ namespace GenshinLauncher
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this._trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this._trayMenu = new DarkUI.Controls.DarkContextMenu();
             this._trayMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,13 +46,15 @@ namespace GenshinLauncher
             this._buttonLaunch = new DarkUI.Controls.DarkButton();
             this._checkBoxCloseToTray = new DarkUI.Controls.DarkCheckBox();
             this._checkBoxExitOnLaunch = new DarkUI.Controls.DarkCheckBox();
-            this._comboBoxWindowMode = new DarkUI.Controls.DarkComboBox();
             this._labelWindowMode = new DarkUI.Controls.DarkLabel();
             this._labelWindowWidth = new DarkUI.Controls.DarkLabel();
             this._labelWindowHeight = new DarkUI.Controls.DarkLabel();
             this._numericWindowWidth = new DarkUI.Controls.DarkNumericUpDown();
             this._numericWindowHeight = new DarkUI.Controls.DarkNumericUpDown();
             this._buttonUseScreenResolution = new DarkUI.Controls.DarkButton();
+            this._radioButtonFullscreen = new DarkUI.Controls.DarkRadioButton();
+            this._radioButtonWindowed = new DarkUI.Controls.DarkRadioButton();
+            this._radioButtonBorderless = new DarkUI.Controls.DarkRadioButton();
             this._trayMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._numericWindowWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._numericWindowHeight)).BeginInit();
@@ -61,9 +63,7 @@ namespace GenshinLauncher
             // _trayIcon
             // 
             this._trayIcon.ContextMenuStrip = this._trayMenu;
-            this._trayIcon.Icon = System.Drawing.SystemIcons.Application;
-            this._trayIcon.Text = "Genshin Impact Launcher";
-            this._trayIcon.Visible = true;
+            resources.ApplyResources(this._trayIcon, "_trayIcon");
             this._trayIcon.DoubleClick += new System.EventHandler(this.TrayIcon_DoubleClick);
             // 
             // _trayMenu
@@ -75,15 +75,14 @@ namespace GenshinLauncher
             this._trayMenuSeparator,
             this._trayMenuItemExit});
             this._trayMenu.Name = "_trayMenu";
-            this._trayMenu.Size = new System.Drawing.Size(179, 55);
+            resources.ApplyResources(this._trayMenu, "_trayMenu");
             // 
             // _trayMenuItemOpen
             // 
             this._trayMenuItemOpen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this._trayMenuItemOpen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this._trayMenuItemOpen.Name = "_trayMenuItemOpen";
-            this._trayMenuItemOpen.Size = new System.Drawing.Size(178, 22);
-            this._trayMenuItemOpen.Text = "Open main window";
+            resources.ApplyResources(this._trayMenuItemOpen, "_trayMenuItemOpen");
             this._trayMenuItemOpen.Click += new System.EventHandler(this.OpenTrayMenuItem_Click);
             // 
             // _trayMenuSeparator
@@ -92,147 +91,121 @@ namespace GenshinLauncher
             this._trayMenuSeparator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this._trayMenuSeparator.Margin = new System.Windows.Forms.Padding(0, 0, 0, 1);
             this._trayMenuSeparator.Name = "_trayMenuSeparator";
-            this._trayMenuSeparator.Size = new System.Drawing.Size(175, 6);
+            resources.ApplyResources(this._trayMenuSeparator, "_trayMenuSeparator");
             // 
             // _trayMenuItemExit
             // 
             this._trayMenuItemExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this._trayMenuItemExit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this._trayMenuItemExit.Name = "_trayMenuItemExit";
-            this._trayMenuItemExit.Size = new System.Drawing.Size(178, 22);
-            this._trayMenuItemExit.Text = "Exit";
+            resources.ApplyResources(this._trayMenuItemExit, "_trayMenuItemExit");
             this._trayMenuItemExit.Click += new System.EventHandler(this.ExitTrayMenuItem_Click);
             // 
             // _buttonLaunch
             // 
-            this._buttonLaunch.Location = new System.Drawing.Point(1025, 612);
+            resources.ApplyResources(this._buttonLaunch, "_buttonLaunch");
             this._buttonLaunch.Name = "_buttonLaunch";
-            this._buttonLaunch.Padding = new System.Windows.Forms.Padding(5);
-            this._buttonLaunch.Size = new System.Drawing.Size(192, 62);
-            this._buttonLaunch.TabIndex = 0;
-            this._buttonLaunch.Text = "Launch";
-            this._buttonLaunch.Click += new System.EventHandler(this.LaunchButton_Click);
+            this._buttonLaunch.Click += new System.EventHandler(this.ButtonLaunch_Click);
             // 
             // _checkBoxCloseToTray
             // 
-            this._checkBoxCloseToTray.AutoSize = true;
-            this._checkBoxCloseToTray.Location = new System.Drawing.Point(1174, 12);
+            resources.ApplyResources(this._checkBoxCloseToTray, "_checkBoxCloseToTray");
             this._checkBoxCloseToTray.Name = "_checkBoxCloseToTray";
-            this._checkBoxCloseToTray.Size = new System.Drawing.Size(93, 19);
-            this._checkBoxCloseToTray.TabIndex = 3;
-            this._checkBoxCloseToTray.Text = "Close to Tray";
             this._checkBoxCloseToTray.CheckedChanged += new System.EventHandler(this.CheckBoxCloseToTray_CheckedChanged);
             // 
             // _checkBoxExitOnLaunch
             // 
-            this._checkBoxExitOnLaunch.AutoSize = true;
-            this._checkBoxExitOnLaunch.Location = new System.Drawing.Point(1174, 37);
+            resources.ApplyResources(this._checkBoxExitOnLaunch, "_checkBoxExitOnLaunch");
             this._checkBoxExitOnLaunch.Name = "_checkBoxExitOnLaunch";
-            this._checkBoxExitOnLaunch.Size = new System.Drawing.Size(104, 19);
-            this._checkBoxExitOnLaunch.TabIndex = 4;
-            this._checkBoxExitOnLaunch.Text = "Exit on Launch";
             this._checkBoxExitOnLaunch.CheckedChanged += new System.EventHandler(this.CheckBoxExitOnLaunch_CheckedChanged);
-            // 
-            // _comboBoxWindowMode
-            // 
-            this._comboBoxWindowMode.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this._comboBoxWindowMode.FormattingEnabled = true;
-            this._comboBoxWindowMode.Items.AddRange(new object[] {
-            "Exclusive Fullscreen",
-            "Windowed",
-            "Borderless Windowed"});
-            this._comboBoxWindowMode.Location = new System.Drawing.Point(104, 10);
-            this._comboBoxWindowMode.Name = "_comboBoxWindowMode";
-            this._comboBoxWindowMode.Size = new System.Drawing.Size(143, 24);
-            this._comboBoxWindowMode.TabIndex = 5;
-            this._comboBoxWindowMode.SelectionChangeCommitted += new System.EventHandler(this.ComboBoxWindowMode_SelectionChangeCommitted);
             // 
             // _labelWindowMode
             // 
-            this._labelWindowMode.AutoSize = true;
+            resources.ApplyResources(this._labelWindowMode, "_labelWindowMode");
             this._labelWindowMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._labelWindowMode.Location = new System.Drawing.Point(12, 13);
             this._labelWindowMode.Name = "_labelWindowMode";
-            this._labelWindowMode.Size = new System.Drawing.Size(88, 15);
-            this._labelWindowMode.TabIndex = 6;
-            this._labelWindowMode.Text = "Window Mode:";
             // 
             // _labelWindowWidth
             // 
-            this._labelWindowWidth.AutoSize = true;
+            resources.ApplyResources(this._labelWindowWidth, "_labelWindowWidth");
             this._labelWindowWidth.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._labelWindowWidth.Location = new System.Drawing.Point(11, 44);
             this._labelWindowWidth.Name = "_labelWindowWidth";
-            this._labelWindowWidth.Size = new System.Drawing.Size(89, 15);
-            this._labelWindowWidth.TabIndex = 7;
-            this._labelWindowWidth.Text = "Window Width:";
             // 
             // _labelWindowHeight
             // 
-            this._labelWindowHeight.AutoSize = true;
+            resources.ApplyResources(this._labelWindowHeight, "_labelWindowHeight");
             this._labelWindowHeight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._labelWindowHeight.Location = new System.Drawing.Point(8, 73);
             this._labelWindowHeight.Name = "_labelWindowHeight";
-            this._labelWindowHeight.Size = new System.Drawing.Size(93, 15);
-            this._labelWindowHeight.TabIndex = 8;
-            this._labelWindowHeight.Text = "Window Height:";
             // 
             // _numericWindowWidth
             // 
-            this._numericWindowWidth.Location = new System.Drawing.Point(104, 41);
+            resources.ApplyResources(this._numericWindowWidth, "_numericWindowWidth");
             this._numericWindowWidth.Maximum = new decimal(new int[] {
             99999,
             0,
             0,
             0});
             this._numericWindowWidth.Name = "_numericWindowWidth";
-            this._numericWindowWidth.Size = new System.Drawing.Size(143, 23);
-            this._numericWindowWidth.TabIndex = 9;
             this._numericWindowWidth.ValueChanged += new System.EventHandler(this.NumericWindowWidth_ValueChanged);
             // 
             // _numericWindowHeight
             // 
-            this._numericWindowHeight.Location = new System.Drawing.Point(104, 71);
+            resources.ApplyResources(this._numericWindowHeight, "_numericWindowHeight");
             this._numericWindowHeight.Maximum = new decimal(new int[] {
             99999,
             0,
             0,
             0});
             this._numericWindowHeight.Name = "_numericWindowHeight";
-            this._numericWindowHeight.Size = new System.Drawing.Size(143, 23);
-            this._numericWindowHeight.TabIndex = 10;
             this._numericWindowHeight.ValueChanged += new System.EventHandler(this.NumericWindowHeight_ValueChanged);
             // 
             // _buttonUseScreenResolution
             // 
-            this._buttonUseScreenResolution.Location = new System.Drawing.Point(104, 100);
+            resources.ApplyResources(this._buttonUseScreenResolution, "_buttonUseScreenResolution");
             this._buttonUseScreenResolution.Name = "_buttonUseScreenResolution";
-            this._buttonUseScreenResolution.Padding = new System.Windows.Forms.Padding(5);
-            this._buttonUseScreenResolution.Size = new System.Drawing.Size(143, 23);
-            this._buttonUseScreenResolution.TabIndex = 12;
-            this._buttonUseScreenResolution.Text = "Use screen resolution";
             this._buttonUseScreenResolution.Click += new System.EventHandler(this.ButtonUseScreenResolution_Click);
             // 
-            // MainForm
+            // _radioButtonFullscreen
+            // 
+            resources.ApplyResources(this._radioButtonFullscreen, "_radioButtonFullscreen");
+            this._radioButtonFullscreen.Name = "_radioButtonFullscreen";
+            this._radioButtonFullscreen.TabStop = true;
+            this._radioButtonFullscreen.CheckedChanged += new System.EventHandler(this.WindowMode_CheckedChanged);
+            // 
+            // _radioButtonWindowed
+            // 
+            resources.ApplyResources(this._radioButtonWindowed, "_radioButtonWindowed");
+            this._radioButtonWindowed.Name = "_radioButtonWindowed";
+            this._radioButtonWindowed.TabStop = true;
+            this._radioButtonWindowed.CheckedChanged += new System.EventHandler(this.WindowMode_CheckedChanged);
+            // 
+            // _radioButtonBorderless
+            // 
+            resources.ApplyResources(this._radioButtonBorderless, "_radioButtonBorderless");
+            this._radioButtonBorderless.Name = "_radioButtonBorderless";
+            this._radioButtonBorderless.TabStop = true;
+            this._radioButtonBorderless.CheckedChanged += new System.EventHandler(this.WindowMode_CheckedChanged);
+            // 
+            // MainWindow
             // 
             this.AcceptButton = this._buttonLaunch;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1280, 730);
+            this.Controls.Add(this._radioButtonBorderless);
+            this.Controls.Add(this._radioButtonWindowed);
+            this.Controls.Add(this._radioButtonFullscreen);
             this.Controls.Add(this._buttonUseScreenResolution);
             this.Controls.Add(this._numericWindowHeight);
             this.Controls.Add(this._numericWindowWidth);
             this.Controls.Add(this._labelWindowHeight);
             this.Controls.Add(this._labelWindowWidth);
             this.Controls.Add(this._labelWindowMode);
-            this.Controls.Add(this._comboBoxWindowMode);
             this.Controls.Add(this._checkBoxExitOnLaunch);
             this.Controls.Add(this._checkBoxCloseToTray);
             this.Controls.Add(this._buttonLaunch);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "MainForm";
-            this.Text = "Genshin Impact Launcher";
+            this.Name = "MainWindow";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this._trayMenu.ResumeLayout(false);
@@ -246,18 +219,20 @@ namespace GenshinLauncher
         #endregion
         private DarkButton         _buttonLaunch;
         private DarkButton         _buttonUseScreenResolution;
-        private NotifyIcon         _trayIcon;
-        private DarkContextMenu    _trayMenu;
-        private ToolStripMenuItem  _trayMenuItemOpen;
-        private ToolStripMenuItem  _trayMenuItemExit;
-        private ToolStripSeparator _trayMenuSeparator;
         private DarkCheckBox       _checkBoxCloseToTray;
         private DarkCheckBox       _checkBoxExitOnLaunch;
-        private DarkComboBox       _comboBoxWindowMode;
         private DarkLabel          _labelWindowMode;
         private DarkLabel          _labelWindowWidth;
         private DarkLabel          _labelWindowHeight;
         private DarkNumericUpDown  _numericWindowWidth;
         private DarkNumericUpDown  _numericWindowHeight;
+        private DarkRadioButton    _radioButtonFullscreen;
+        private DarkRadioButton    _radioButtonWindowed;
+        private DarkRadioButton    _radioButtonBorderless;
+        private NotifyIcon         _trayIcon;
+        private DarkContextMenu    _trayMenu;
+        private ToolStripMenuItem  _trayMenuItemOpen;
+        private ToolStripMenuItem  _trayMenuItemExit;
+        private ToolStripSeparator _trayMenuSeparator;
     }
 }

@@ -22,7 +22,7 @@ namespace GenshinLauncher
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.AddMessageFilter(new ControlScrollFilter());
-            Application.Run(new MainForm(settings));
+            Application.Run(new MainWindow(settings));
         }
     }
 }

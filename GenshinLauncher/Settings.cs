@@ -8,10 +8,12 @@ namespace GenshinLauncher
 {
     public class Settings
     {
+        //Registry settings
         public Setting<int>  ResolutionWidth  { get; }
         public Setting<int>  ResolutionHeight { get; }
         public Setting<bool> FullscreenMode   { get; }
 
+        // ini settings
         public Setting<string> InstallPath    { get; }
         public Setting<string> EntryPoint     { get; }
         public Setting<bool>   BorderlessMode { get; }
@@ -24,6 +26,7 @@ namespace GenshinLauncher
         {
             _settingsIni = new SettingsIni("config.ini");
 
+            // Load registry settings
             using (GenshinRegistry genshinRegistry = new GenshinRegistry(false))
             {
                 ResolutionWidth  = new Setting<int>(genshinRegistry.ResolutionWidth);
@@ -31,6 +34,7 @@ namespace GenshinLauncher
                 FullscreenMode   = new Setting<bool>(genshinRegistry.FullscreenMode);
             }
 
+            // Load ini settings
             InstallPath    = new Setting<string>(_settingsIni.GameInstallPath);
             EntryPoint     = new Setting<string>(_settingsIni.GameStartName);
             BorderlessMode = new Setting<bool>(Convert.ToBoolean(_settingsIni.BorderlessMode));
@@ -40,6 +44,7 @@ namespace GenshinLauncher
 
         public void Save()
         {
+            // Save registry settings
             using (GenshinRegistry genshinRegistry = new GenshinRegistry(true))
             {
                 if (ResolutionWidth.NewValue != ResolutionWidth.CurrentValue)
@@ -58,6 +63,7 @@ namespace GenshinLauncher
                 }
             }
 
+            // Save ini settings
             if (InstallPath.NewValue != InstallPath.CurrentValue)
             {
                 _settingsIni.GameInstallPath = InstallPath.CurrentValue = InstallPath.NewValue;
