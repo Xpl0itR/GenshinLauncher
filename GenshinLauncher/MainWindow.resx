@@ -112,15 +112,18 @@
   <data name="_trayMenuItemExit.Text" xml:space="preserve">
     <value>Exit</value>
   </data>
+  <data name="_buttonLaunch.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 20pt</value>
+  </data>
   <data name="_buttonLaunch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>254, 8</value>
+    <value>916, 625</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_buttonLaunch.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 5, 5, 5</value>
   </data>
   <data name="_buttonLaunch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 62</value>
+    <value>238, 65</value>
   </data>
   <data name="_buttonLaunch.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -138,16 +141,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_buttonLaunch.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>4</value>
   </data>
   <data name="_checkBoxCloseToTray.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="_checkBoxCloseToTray.Location" type="System.Drawing.Point, System.Drawing">
-    <value>342, 150</value>
+    <value>1176, 1</value>
+  </data>
+  <data name="_checkBoxCloseToTray.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 11, 0</value>
   </data>
   <data name="_checkBoxCloseToTray.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 19</value>
+    <value>104, 22</value>
   </data>
   <data name="_checkBoxCloseToTray.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -165,16 +171,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_checkBoxCloseToTray.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>1</value>
   </data>
   <data name="_checkBoxExitOnLaunch.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="_checkBoxExitOnLaunch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>342, 175</value>
+    <value>1176, 23</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
   </data>
   <data name="_checkBoxExitOnLaunch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 19</value>
+    <value>104, 22</value>
   </data>
   <data name="_checkBoxExitOnLaunch.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -192,13 +201,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_checkBoxExitOnLaunch.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>2</value>
   </data>
   <data name="_labelWindowMode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="_labelWindowMode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 107</value>
+    <value>6, 118</value>
   </data>
   <data name="_labelWindowMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>88, 15</value>
@@ -216,25 +225,25 @@
     <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;_labelWindowMode.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>_groupBoxSettings</value>
   </data>
   <data name="&gt;&gt;_labelWindowMode.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>1</value>
   </data>
   <data name="_labelWindowWidth.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="_labelWindowWidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 11</value>
+    <value>6, 27</value>
   </data>
   <data name="_labelWindowWidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 15</value>
+    <value>86, 15</value>
   </data>
   <data name="_labelWindowWidth.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
   <data name="_labelWindowWidth.Text" xml:space="preserve">
-    <value>Window Width:</value>
+    <value>Window Width</value>
   </data>
   <data name="&gt;&gt;_labelWindowWidth.Name" xml:space="preserve">
     <value>_labelWindowWidth</value>
@@ -243,25 +252,25 @@
     <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;_labelWindowWidth.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>_groupBoxSettings</value>
   </data>
   <data name="&gt;&gt;_labelWindowWidth.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>0</value>
   </data>
   <data name="_labelWindowHeight.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="_labelWindowHeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 40</value>
+    <value>6, 56</value>
   </data>
   <data name="_labelWindowHeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 15</value>
+    <value>90, 15</value>
   </data>
   <data name="_labelWindowHeight.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="_labelWindowHeight.Text" xml:space="preserve">
-    <value>Window Height:</value>
+    <value>Window Height</value>
   </data>
   <data name="&gt;&gt;_labelWindowHeight.Name" xml:space="preserve">
     <value>_labelWindowHeight</value>
@@ -270,13 +279,13 @@
     <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;_labelWindowHeight.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>_groupBoxSettings</value>
   </data>
   <data name="&gt;&gt;_labelWindowHeight.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>3</value>
   </data>
   <data name="_numericWindowWidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>105, 8</value>
+    <value>102, 24</value>
   </data>
   <data name="_numericWindowWidth.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 23</value>
@@ -291,13 +300,13 @@
     <value>DarkUI.Controls.DarkNumericUpDown, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;_numericWindowWidth.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>_groupBoxSettings</value>
   </data>
   <data name="&gt;&gt;_numericWindowWidth.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="_numericWindowHeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>105, 38</value>
+    <value>102, 54</value>
   </data>
   <data name="_numericWindowHeight.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 23</value>
@@ -312,13 +321,13 @@
     <value>DarkUI.Controls.DarkNumericUpDown, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;_numericWindowHeight.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>_groupBoxSettings</value>
   </data>
   <data name="&gt;&gt;_numericWindowHeight.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="_buttonUseScreenResolution.Location" type="System.Drawing.Point, System.Drawing">
-    <value>105, 67</value>
+    <value>102, 83</value>
   </data>
   <data name="_buttonUseScreenResolution.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 5, 5, 5</value>
@@ -339,16 +348,16 @@
     <value>DarkUI.Controls.DarkButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;_buttonUseScreenResolution.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>_groupBoxSettings</value>
   </data>
   <data name="&gt;&gt;_buttonUseScreenResolution.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>9</value>
   </data>
   <data name="_radioButtonFullscreen.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="_radioButtonFullscreen.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 129</value>
+    <value>9, 140</value>
   </data>
   <data name="_radioButtonFullscreen.Size" type="System.Drawing.Size, System.Drawing">
     <value>129, 19</value>
@@ -366,16 +375,16 @@
     <value>DarkUI.Controls.DarkRadioButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;_radioButtonFullscreen.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>_groupBoxSettings</value>
   </data>
   <data name="&gt;&gt;_radioButtonFullscreen.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>10</value>
   </data>
   <data name="_radioButtonWindowed.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="_radioButtonWindowed.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 152</value>
+    <value>9, 163</value>
   </data>
   <data name="_radioButtonWindowed.Size" type="System.Drawing.Size, System.Drawing">
     <value>82, 19</value>
@@ -393,16 +402,16 @@
     <value>DarkUI.Controls.DarkRadioButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;_radioButtonWindowed.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>_groupBoxSettings</value>
   </data>
   <data name="&gt;&gt;_radioButtonWindowed.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>8</value>
   </data>
   <data name="_radioButtonBorderless.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="_radioButtonBorderless.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 175</value>
+    <value>9, 186</value>
   </data>
   <data name="_radioButtonBorderless.Size" type="System.Drawing.Size, System.Drawing">
     <value>139, 19</value>
@@ -420,10 +429,82 @@
     <value>DarkUI.Controls.DarkRadioButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;_radioButtonBorderless.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>_groupBoxSettings</value>
   </data>
   <data name="&gt;&gt;_radioButtonBorderless.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>6</value>
+  </data>
+  <data name="_numericMonitorIndex.Location" type="System.Drawing.Point, System.Drawing">
+    <value>62, 83</value>
+  </data>
+  <data name="_numericMonitorIndex.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 23</value>
+  </data>
+  <data name="_numericMonitorIndex.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;_numericMonitorIndex.Name" xml:space="preserve">
+    <value>_numericMonitorIndex</value>
+  </data>
+  <data name="&gt;&gt;_numericMonitorIndex.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkNumericUpDown, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_numericMonitorIndex.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_numericMonitorIndex.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="_labelMonitorIndex.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_labelMonitorIndex.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 86</value>
+  </data>
+  <data name="_labelMonitorIndex.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 15</value>
+  </data>
+  <data name="_labelMonitorIndex.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="_labelMonitorIndex.Text" xml:space="preserve">
+    <value>Monitor</value>
+  </data>
+  <data name="&gt;&gt;_labelMonitorIndex.Name" xml:space="preserve">
+    <value>_labelMonitorIndex</value>
+  </data>
+  <data name="&gt;&gt;_labelMonitorIndex.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_labelMonitorIndex.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_labelMonitorIndex.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="_groupBoxSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>50, 224</value>
+  </data>
+  <data name="_groupBoxSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>460, 213</value>
+  </data>
+  <data name="_groupBoxSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="_groupBoxSettings.Text" xml:space="preserve">
+    <value>Extended Settings</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxSettings.Name" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxSettings.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkGroupBox, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxSettings.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxSettings.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -431,8 +512,12 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>96, 96</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Stretch</value>
+  </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>452, 203</value>
+    <value>1280, 730</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Genshin Impact Launcher</value>

@@ -1,4 +1,4 @@
-﻿// Copyright © 2021 Xpl0itR
+// Copyright © 2021 Xpl0itR
 //
 // SPDX-License-Identifier: MPL-2.0
 
@@ -22,13 +22,15 @@ namespace GenshinLauncher
                 throw new DirectoryNotFoundException();
             }
 
-            if (string.IsNullOrWhiteSpace(entryPoint))
+            string exePath = Path.Join(installDirectory, entryPoint);
+
+            if (!File.Exists(exePath))
             {
-                throw new ArgumentNullException(nameof(entryPoint));
+                throw new FileNotFoundException();
             }
 
             _genshinProcess = new Process();
-            _genshinProcess.StartInfo.FileName = Path.Combine(installDirectory, entryPoint);
+            _genshinProcess.StartInfo.FileName = exePath;
         }
 
         public void Start()

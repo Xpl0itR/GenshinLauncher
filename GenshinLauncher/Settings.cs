@@ -3,43 +3,50 @@
 // SPDX-License-Identifier: MPL-2.0
 
 using System;
+using System.IO;
 
 namespace GenshinLauncher
 {
     public class Settings
     {
-        //Registry settings
+        // Registry settings
         public Setting<int>  ResolutionWidth  { get; }
         public Setting<int>  ResolutionHeight { get; }
         public Setting<bool> FullscreenMode   { get; }
+        public Setting<int>  MonitorIndex     { get; }
 
         // ini settings
-        public Setting<string> InstallPath    { get; }
-        public Setting<string> EntryPoint     { get; }
-        public Setting<bool>   BorderlessMode { get; }
-        public Setting<bool>   CloseToTray    { get; }
-        public Setting<bool>   ExitOnLaunch   { get; }
+        public Setting<string> InstallPath       { get; }
+        public Setting<string> BackgroundName    { get; }
+        public Setting<string> EntryPoint        { get; }
+        public Setting<bool>   CloseToTray       { get; }
+        public Setting<bool>   BorderlessMode    { get; }
+        public Setting<bool>   ExitOnLaunch      { get; }
 
-        private readonly SettingsIni _settingsIni;
+        private readonly GenshinIni _genshinIni;
+        private readonly string     _iniPath;
 
         public Settings()
         {
-            _settingsIni = new SettingsIni("config.ini");
+            _iniPath    = Path.Combine(AppContext.BaseDirectory, "config.ini");
+            _genshinIni = new GenshinIni(_iniPath);
 
             // Load registry settings
             using (GenshinRegistry genshinRegistry = new GenshinRegistry(false))
             {
-                ResolutionWidth  = new Setting<int>(genshinRegistry.ResolutionWidth);
-                ResolutionHeight = new Setting<int>(genshinRegistry.ResolutionHeight);
                 FullscreenMode   = new Setting<bool>(genshinRegistry.FullscreenMode);
+                ResolutionHeight = new Setting<int>(genshinRegistry.ResolutionHeight);
+                ResolutionWidth  = new Setting<int>(genshinRegistry.ResolutionWidth);
+                MonitorIndex     = new Setting<int>(genshinRegistry.MonitorIndex);
             }
 
             // Load ini settings
-            InstallPath    = new Setting<string>(_settingsIni.GameInstallPath);
-            EntryPoint     = new Setting<string>(_settingsIni.GameStartName);
-            BorderlessMode = new Setting<bool>(Convert.ToBoolean(_settingsIni.BorderlessMode));
-            CloseToTray    = new Setting<bool>(_settingsIni.ExitType == "1");
-            ExitOnLaunch   = new Setting<bool>(Convert.ToBoolean(_settingsIni.ExitOnLaunch));
+            InstallPath    = new Setting<string>(_genshinIni.GameInstallPath);
+            BackgroundName = new Setting<string>(_genshinIni.GameDynamicBgName);
+            EntryPoint     = new Setting<string>(_genshinIni.GameStartName);
+            CloseToTray    = new Setting<bool>(_genshinIni.ExitType == "1");
+            BorderlessMode = new Setting<bool>(Convert.ToBoolean(_genshinIni.BorderlessMode));
+            ExitOnLaunch   = new Setting<bool>(Convert.ToBoolean(_genshinIni.ExitOnLaunch));
         }
 
         public void Save()
@@ -47,9 +54,9 @@ namespace GenshinLauncher
             // Save registry settings
             using (GenshinRegistry genshinRegistry = new GenshinRegistry(true))
             {
-                if (ResolutionWidth.NewValue != ResolutionWidth.CurrentValue)
+                if (FullscreenMode.NewValue != FullscreenMode.CurrentValue)
                 {
-                    genshinRegistry.ResolutionWidth = ResolutionWidth.CurrentValue = ResolutionWidth.NewValue;
+                    genshinRegistry.FullscreenMode = FullscreenMode.CurrentValue = FullscreenMode.NewValue;
                 }
 
                 if (ResolutionHeight.NewValue != ResolutionHeight.CurrentValue)
@@ -57,42 +64,52 @@ namespace GenshinLauncher
                     genshinRegistry.ResolutionHeight = ResolutionHeight.CurrentValue = ResolutionHeight.NewValue;
                 }
 
-                if (FullscreenMode.NewValue != FullscreenMode.CurrentValue)
+                if (ResolutionWidth.NewValue != ResolutionWidth.CurrentValue)
                 {
-                    genshinRegistry.FullscreenMode = FullscreenMode.CurrentValue = FullscreenMode.NewValue;
+                    genshinRegistry.ResolutionWidth = ResolutionWidth.CurrentValue = ResolutionWidth.NewValue;
+                }
+
+                if (MonitorIndex.NewValue != MonitorIndex.CurrentValue)
+                {
+                    genshinRegistry.MonitorIndex = MonitorIndex.CurrentValue = MonitorIndex.NewValue;
                 }
             }
 
             // Save ini settings
             if (InstallPath.NewValue != InstallPath.CurrentValue)
             {
-                _settingsIni.GameInstallPath = InstallPath.CurrentValue = InstallPath.NewValue;
+                _genshinIni.GameInstallPath = InstallPath.CurrentValue = InstallPath.NewValue;
+            }
+
+            if (BackgroundName.NewValue != BackgroundName.CurrentValue)
+            {
+                _genshinIni.GameDynamicBgName = BackgroundName.CurrentValue = BackgroundName.NewValue;
             }
 
             if (EntryPoint.NewValue != EntryPoint.CurrentValue)
             {
-                _settingsIni.GameStartName = EntryPoint.CurrentValue = EntryPoint.NewValue;
-            }
-
-            if (BorderlessMode.NewValue != BorderlessMode.CurrentValue)
-            {
-                // ReSharper disable once AssignmentInConditionalExpression
-                _settingsIni.BorderlessMode = (BorderlessMode.CurrentValue = BorderlessMode.NewValue) ? "true" : "false";
+                _genshinIni.GameStartName = EntryPoint.CurrentValue = EntryPoint.NewValue;
             }
 
             if (CloseToTray.NewValue != CloseToTray.CurrentValue)
             {
                 // ReSharper disable once AssignmentInConditionalExpression
-                _settingsIni.ExitType = (CloseToTray.CurrentValue = CloseToTray.NewValue) ? "1" : "2";
+                _genshinIni.ExitType = (CloseToTray.CurrentValue = CloseToTray.NewValue) ? "1" : "2";
+            }
+
+            if (BorderlessMode.NewValue != BorderlessMode.CurrentValue)
+            {
+                // ReSharper disable once AssignmentInConditionalExpression
+                _genshinIni.BorderlessMode = (BorderlessMode.CurrentValue = BorderlessMode.NewValue) ? "true" : "false";
             }
 
             if (ExitOnLaunch.NewValue != ExitOnLaunch.CurrentValue)
             {
                 // ReSharper disable once AssignmentInConditionalExpression
-                _settingsIni.ExitOnLaunch = (ExitOnLaunch.CurrentValue = ExitOnLaunch.NewValue) ? "true" : "false";
+                _genshinIni.ExitOnLaunch = (ExitOnLaunch.CurrentValue = ExitOnLaunch.NewValue) ? "true" : "false";
             }
 
-            _settingsIni.WriteFile("config.ini");
+            _genshinIni.WriteFile(_iniPath);
         }
 
         public class Setting<T>

@@ -7,7 +7,6 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using DarkUI.Forms;
-using GenshinLauncher.Properties;
 
 namespace GenshinLauncher
 {
@@ -20,6 +19,8 @@ namespace GenshinLauncher
             _settings = settings;
             InitializeComponent();
 
+            _numericMonitorIndex.Maximum   = Screen.AllScreens.Length - 1;
+            _numericMonitorIndex.Value     = _settings.MonitorIndex.CurrentValue;
             _checkBoxCloseToTray.Checked   = _settings.CloseToTray.CurrentValue;
             _checkBoxExitOnLaunch.Checked  = _settings.ExitOnLaunch.CurrentValue;
             _numericWindowWidth.Value      = _settings.ResolutionWidth.CurrentValue;
@@ -37,6 +38,12 @@ namespace GenshinLauncher
             else
             {
                 _radioButtonWindowed.Checked = true;
+            }
+
+            string backgroundPath = Path.Join(AppContext.BaseDirectory, "bg", _settings.BackgroundName.CurrentValue);
+            if (File.Exists(backgroundPath))
+            {
+                base.BackgroundImage = Image.FromFile(backgroundPath);
             }
         }
 
@@ -73,14 +80,14 @@ namespace GenshinLauncher
                     process.ResizeToFillScreen();
                 }
             }
-            catch (DirectoryNotFoundException)
-            {
-                DarkMessageBox.ShowError(Resources.ErrorNotInstalled, this.Text);
-                return;
-            }
             catch (InvalidOperationException)
             {
                 DarkMessageBox.ShowError(Resources.ErrorProcessAlreadyRunning, this.Text);
+                return;
+            }
+            catch (Exception e) when (e is DirectoryNotFoundException or FileNotFoundException)
+            {
+                DarkMessageBox.ShowError(Resources.ErrorNotInstalled, this.Text);
                 return;
             }
             finally
@@ -117,6 +124,11 @@ namespace GenshinLauncher
         private void NumericWindowHeight_ValueChanged(object sender, EventArgs args)
         {
             _settings.ResolutionHeight.NewValue = (int)_numericWindowHeight.Value;
+        }
+
+        private void NumericMonitorIndex_ValueChanged(object sender, EventArgs args)
+        {
+            _settings.MonitorIndex.NewValue = (int)_numericMonitorIndex.Value;
         }
 
         private void CheckBoxCloseToTray_CheckedChanged(object sender, EventArgs args)

@@ -1,4 +1,4 @@
-﻿// Copyright © 2021 Xpl0itR
+// Copyright © 2021 Xpl0itR
 //
 // SPDX-License-Identifier: MPL-2.0
 
@@ -55,9 +55,14 @@ namespace GenshinLauncher
             this._radioButtonFullscreen = new DarkUI.Controls.DarkRadioButton();
             this._radioButtonWindowed = new DarkUI.Controls.DarkRadioButton();
             this._radioButtonBorderless = new DarkUI.Controls.DarkRadioButton();
+            this._numericMonitorIndex = new DarkUI.Controls.DarkNumericUpDown();
+            this._labelMonitorIndex = new DarkUI.Controls.DarkLabel();
+            this._groupBoxSettings = new DarkUI.Controls.DarkGroupBox();
             this._trayMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._numericWindowWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._numericWindowHeight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._numericMonitorIndex)).BeginInit();
+            this._groupBoxSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // _trayIcon
@@ -186,23 +191,51 @@ namespace GenshinLauncher
             this._radioButtonBorderless.TabStop = true;
             this._radioButtonBorderless.CheckedChanged += new System.EventHandler(this.WindowMode_CheckedChanged);
             // 
+            // _numericMonitorIndex
+            // 
+            resources.ApplyResources(this._numericMonitorIndex, "_numericMonitorIndex");
+            this._numericMonitorIndex.Maximum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this._numericMonitorIndex.Name = "_numericMonitorIndex";
+            this._numericMonitorIndex.ValueChanged += new System.EventHandler(this.NumericMonitorIndex_ValueChanged);
+            // 
+            // _labelMonitorIndex
+            // 
+            resources.ApplyResources(this._labelMonitorIndex, "_labelMonitorIndex");
+            this._labelMonitorIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this._labelMonitorIndex.Name = "_labelMonitorIndex";
+            // 
+            // _groupBoxSettings
+            // 
+            this._groupBoxSettings.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this._groupBoxSettings.Controls.Add(this._labelWindowWidth);
+            this._groupBoxSettings.Controls.Add(this._labelWindowMode);
+            this._groupBoxSettings.Controls.Add(this._labelMonitorIndex);
+            this._groupBoxSettings.Controls.Add(this._labelWindowHeight);
+            this._groupBoxSettings.Controls.Add(this._numericMonitorIndex);
+            this._groupBoxSettings.Controls.Add(this._numericWindowWidth);
+            this._groupBoxSettings.Controls.Add(this._radioButtonBorderless);
+            this._groupBoxSettings.Controls.Add(this._numericWindowHeight);
+            this._groupBoxSettings.Controls.Add(this._radioButtonWindowed);
+            this._groupBoxSettings.Controls.Add(this._buttonUseScreenResolution);
+            this._groupBoxSettings.Controls.Add(this._radioButtonFullscreen);
+            resources.ApplyResources(this._groupBoxSettings, "_groupBoxSettings");
+            this._groupBoxSettings.Name = "_groupBoxSettings";
+            this._groupBoxSettings.TabStop = false;
+            // 
             // MainWindow
             // 
             this.AcceptButton = this._buttonLaunch;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Controls.Add(this._radioButtonBorderless);
-            this.Controls.Add(this._radioButtonWindowed);
-            this.Controls.Add(this._radioButtonFullscreen);
-            this.Controls.Add(this._buttonUseScreenResolution);
-            this.Controls.Add(this._numericWindowHeight);
-            this.Controls.Add(this._numericWindowWidth);
-            this.Controls.Add(this._labelWindowHeight);
-            this.Controls.Add(this._labelWindowWidth);
-            this.Controls.Add(this._labelWindowMode);
-            this.Controls.Add(this._checkBoxExitOnLaunch);
             this.Controls.Add(this._checkBoxCloseToTray);
+            this.Controls.Add(this._checkBoxExitOnLaunch);
+            this.Controls.Add(this._groupBoxSettings);
             this.Controls.Add(this._buttonLaunch);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainWindow";
@@ -211,6 +244,9 @@ namespace GenshinLauncher
             this._trayMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._numericWindowWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._numericWindowHeight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._numericMonitorIndex)).EndInit();
+            this._groupBoxSettings.ResumeLayout(false);
+            this._groupBoxSettings.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -234,5 +270,8 @@ namespace GenshinLauncher
         private ToolStripMenuItem  _trayMenuItemOpen;
         private ToolStripMenuItem  _trayMenuItemExit;
         private ToolStripSeparator _trayMenuSeparator;
+        private DarkNumericUpDown  _numericMonitorIndex;
+        private DarkLabel          _labelMonitorIndex;
+        private DarkGroupBox       _groupBoxSettings;
     }
 }

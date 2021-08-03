@@ -9,12 +9,18 @@ using IniParser.Model;
 
 namespace GenshinLauncher
 {
-    public class SettingsIni
+    public class GenshinIni
     {
         public string GameInstallPath
         {
             get => Launcher["game_install_path"];
             set => Launcher["game_install_path"] = value;
+        }
+
+        public string GameDynamicBgName
+        {
+            get => Launcher["game_dynamic_bg_name"];
+            set => Launcher["game_dynamic_bg_name"] = value;
         }
 
         public string GameStartName
@@ -47,14 +53,15 @@ namespace GenshinLauncher
         private readonly FileIniDataParser _parser;
         private readonly IniData           _data;
 
-        public SettingsIni(string path)
+        public GenshinIni(string path)
         {
             _parser = new FileIniDataParser();
-            _data   = File.Exists(path) 
-                ? _parser.ReadFile(path, Encoding.UTF8) 
+            _data   = File.Exists(path)
+                ? _parser.ReadFile(path, Encoding.UTF8)
                 : new IniData();
         }
 
-        public void WriteFile(string path) => _parser.WriteFile(path, _data, Encoding.UTF8);
+        public void WriteFile(string path) =>
+            _parser.WriteFile(path, _data, Encoding.UTF8);
     }
 }
