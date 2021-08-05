@@ -8,7 +8,7 @@ using System.IO;
 using System.Windows.Forms;
 using DarkUI.Forms;
 
-namespace GenshinLauncher
+namespace GenshinLauncher.Ui
 {
     public partial class MainWindow : DarkForm
     {

@@ -21,27 +21,18 @@ namespace GenshinLauncher
 
         private const string SdkUrlGlobal        = "https://sdk-os-static.mihoyo.com";
         private const string SdkUrlChina         = "https://sdk-static.mihoyo.com";
-        private const string ApiUrlGlobal        = "https://api-os-takumi.mihoyo.com";
-        private const string ApiUrlChina         = "https://api-sdk.mihoyo.com";
-        private const string WebsiteUrlGlobal    = "https://genshin.mihoyo.com";
-        private const string WebsiteUrlChina     = "https://ys.mihoyo.com";
         private const string Hk4EGlobalEndpoint  = "/hk4e_global";
         private const string Hk4EChinaEndpoint   = "/hk4e_cn";
         private const string LauncherApiEndpoint = "/mdk/launcher/api";
         private const string ContentEndpoint     = "/content";
         private const string ResourceEndpoint    = "/resource";
-        private const string LauncherEndpoint    = "/launcher";
         private const string KeyGlobal           = "";
         private const string KeyChina            = "";
 
-        private const string ContentUrlGlobal     = SdkUrlGlobal     + Hk4EGlobalEndpoint + LauncherApiEndpoint + ContentEndpoint;
-        private const string ContentUrlChina      = SdkUrlChina      + Hk4EChinaEndpoint  + LauncherApiEndpoint + ContentEndpoint;
-        private const string ResourceUrlGlobal    = SdkUrlGlobal     + Hk4EGlobalEndpoint + LauncherApiEndpoint + ResourceEndpoint;
-        private const string ResourceUrlChina     = SdkUrlChina      + Hk4EChinaEndpoint  + LauncherApiEndpoint + ResourceEndpoint;
-        private const string LauncherApiUrlGlobal = ApiUrlGlobal     + Hk4EGlobalEndpoint;
-        private const string LauncherApiUrlChina  = ApiUrlChina      + Hk4EChinaEndpoint;
-        private const string LauncherWebUrlGlobal = WebsiteUrlGlobal + LauncherEndpoint;
-        private const string LauncherWebUrlChina  = WebsiteUrlChina  + LauncherEndpoint;
+        private const string ContentUrlGlobal  = SdkUrlGlobal + Hk4EGlobalEndpoint + LauncherApiEndpoint + ContentEndpoint;
+        private const string ContentUrlChina   = SdkUrlChina  + Hk4EChinaEndpoint  + LauncherApiEndpoint + ContentEndpoint;
+        private const string ResourceUrlGlobal = SdkUrlGlobal + Hk4EGlobalEndpoint + LauncherApiEndpoint + ResourceEndpoint;
+        private const string ResourceUrlChina  = SdkUrlChina  + Hk4EChinaEndpoint  + LauncherApiEndpoint + ResourceEndpoint;
 
         private readonly HttpClient _httpClient;
 
@@ -70,17 +61,12 @@ namespace GenshinLauncher
             await response.Content.CopyToAsync(outStream, cancellationToken);
         }
 
-        private Task<HttpResponseMessage> GetLauncherHtmlResponse(bool globalVersion = true) =>
-            _httpClient.GetAsync(globalVersion
-                ? $"{LauncherWebUrlGlobal}/{LauncherIdGlobal}/en-us?api_url={LauncherApiUrlGlobal}&prev=false"
-                : $"{LauncherWebUrlChina}/{LauncherIdChina}?api_url={LauncherApiUrlChina}&prev=false");
-
         private Task<HttpResponseMessage> GetContentResponse(string language)
         {
             string url = language == "zh-cn" ? ContentUrlChina : ContentUrlGlobal;
             var json = new
             {
-                filter_adv = "true",
+                filter_adv = "false",
                 language,
                 launcher_id = language == "zh-cn" ? LauncherIdChina : LauncherIdGlobal
             };

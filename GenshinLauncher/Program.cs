@@ -5,6 +5,7 @@
 using System;
 using System.Windows.Forms;
 using DarkUI.Win32;
+using GenshinLauncher.Ui;
 
 namespace GenshinLauncher
 {

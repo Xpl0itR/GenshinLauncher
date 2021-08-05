@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using DarkUI.Controls;
 
-namespace GenshinLauncher
+namespace GenshinLauncher.Ui
 {
     partial class MainWindow
     {
