@@ -17,7 +17,7 @@ namespace GenshinLauncher
         public static void Main()
         {
             Settings settings = new Settings();
-            
+
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
