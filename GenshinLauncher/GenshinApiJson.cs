@@ -1,11 +1,15 @@
 ﻿// Copyright © 2021 Xpl0itR
 //
-// SPDX-License-Identifier: MPL-2.0
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using System;
 using System.Net.Http;
 using System.Text.Json.Serialization;
 
+// ReSharper disable UnusedMember.Global, StringLiteralTypo
+#nullable disable
 namespace GenshinLauncher
 {
     public abstract record Data;

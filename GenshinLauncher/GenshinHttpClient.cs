@@ -1,6 +1,8 @@
 // Copyright © 2021 Xpl0itR
 //
-// SPDX-License-Identifier: MPL-2.0
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using System;
 using System.IO;
@@ -42,6 +44,7 @@ namespace GenshinLauncher
             {
                 DefaultRequestHeaders =
                 {
+                    // ReSharper disable once StringLiteralTypo
                     { "User-Agent", "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.12.5 Chrome/69.0.3497.128 Safari/537.36" }
                 }
             };
@@ -92,7 +95,7 @@ namespace GenshinLauncher
         {
             response.EnsureSuccessStatusCode();
 
-            GenshinApiJson<T> resource = await response.Content.ReadFromJsonAsync<GenshinApiJson<T>>();
+            GenshinApiJson<T>? resource = await response.Content.ReadFromJsonAsync<GenshinApiJson<T>>();
             resource!.EnsureSuccessRetCode();
 
             return resource.Data;
@@ -100,7 +103,7 @@ namespace GenshinLauncher
 
         void IDisposable.Dispose()
         {
-            _httpClient?.Dispose();
+            _httpClient.Dispose();
         }
     }
 }

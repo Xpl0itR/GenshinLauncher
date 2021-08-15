@@ -1,12 +1,8 @@
-// Copyright © 2021 Xpl0itR
-//
-// SPDX-License-Identifier: MPL-2.0
-
 using System.ComponentModel;
 using System.Windows.Forms;
 using DarkUI.Controls;
 
-namespace GenshinLauncher.Ui
+namespace GenshinLauncher.WinForms
 {
     partial class MainWindow
     {

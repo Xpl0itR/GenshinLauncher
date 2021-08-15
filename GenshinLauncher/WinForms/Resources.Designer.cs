@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GenshinLauncher.Ui {
+namespace GenshinLauncher.WinForms {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace GenshinLauncher.Ui {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GenshinLauncher.Ui.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GenshinLauncher.WinForms.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,15 +57,6 @@ namespace GenshinLauncher.Ui {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Genshin Impact is not installed!.
-        /// </summary>
-        internal static string ErrorNotInstalled {
-            get {
-                return ResourceManager.GetString("ErrorNotInstalled", resourceCulture);
             }
         }
         
