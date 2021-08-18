@@ -50,28 +50,28 @@ namespace GenshinLauncher
             };
         }
 
-        public async Task<Content> GetContent(string language = "en-us") =>
-            await GetData<Content>(await GetContentResponse(language));
-
-        public async Task<Resource> GetResource(bool globalVersion = true) =>
-            await GetData<Resource>(await GetResourceResponse(globalVersion));
-
-        public async Task Download(string url, Stream outStream, CancellationToken cancellationToken = default)
+        public async Task Download(Uri uri, Stream outStream, CancellationToken cancellationToken = default)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(url, cancellationToken);
+            HttpResponseMessage response = await _httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             response.EnsureSuccessStatusCode();
 
             await response.Content.CopyToAsync(outStream, cancellationToken);
         }
 
-        private Task<HttpResponseMessage> GetContentResponse(string language)
+        public async Task<Content> GetContent(bool globalVersion, string language) =>
+            await GetData<Content>(await GetContentResponse(globalVersion, language));
+
+        public async Task<Resource> GetResource(bool globalVersion) =>
+            await GetData<Resource>(await GetResourceResponse(globalVersion));
+
+        private Task<HttpResponseMessage> GetContentResponse(bool globalVersion, string language)
         {
-            string url = language == "zh-cn" ? ContentUrlChina : ContentUrlGlobal;
+            string url = globalVersion ? ContentUrlGlobal : ContentUrlChina;
             var json = new
             {
-                filter_adv = "false",
-                language,
-                launcher_id = language == "zh-cn" ? LauncherIdChina : LauncherIdGlobal
+                filter_adv  = "false",
+                language    = globalVersion ? language         : "zh-cn",
+                launcher_id = globalVersion ? LauncherIdGlobal : LauncherIdChina
             };
 
             return _httpClient.PostAsync(url, JsonContent.Create(json));
@@ -101,7 +101,7 @@ namespace GenshinLauncher
             return resource.Data;
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             _httpClient.Dispose();
         }

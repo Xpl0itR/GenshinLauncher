@@ -69,7 +69,7 @@ namespace GenshinLauncher
             }
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             _genshinRegistryKey.Dispose();
         }

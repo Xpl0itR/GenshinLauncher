@@ -4,13 +4,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-using System.Text;
-using IniParser;
 using IniParser.Model;
 
 namespace GenshinLauncher
 {
-    public class LauncherConfig
+    public class LauncherConfig : Ini
     {
         private const string LauncherSectionName        = "launcher";
         private const string CpsKeyName                 = "cps";
@@ -27,21 +25,11 @@ namespace GenshinLauncher
         private const string BorderlessModeKeyName      = "borderless_mode";
         private const string ExitOnLaunchKeyName        = "exit_on_launch";
 
-        private KeyDataCollection Launcher        => _data[LauncherSectionName];
-        private KeyDataCollection GenshinLauncher => _data[GenshinLauncherSectionName]; //TODO: rename after v1
+        private KeyDataCollection Launcher        => this.Data[LauncherSectionName];
+        private KeyDataCollection GenshinLauncher => this.Data[GenshinLauncherSectionName]; //TODO: rename after v1
 
-        private readonly FileIniDataParser _parser = new FileIniDataParser();
-        private readonly IniData           _data;
-
-        public LauncherConfig()
-        {
-            _data = new IniData();
-        }
-
-        public LauncherConfig(string path)
-        {
-            _data = _parser.ReadFile(path, Encoding.UTF8);
-        }
+        public LauncherConfig() : base() { }
+        public LauncherConfig(string path) : base(path) { }
 
         public string? Channel
         {
@@ -96,8 +84,5 @@ namespace GenshinLauncher
             get => GenshinLauncher[ExitOnLaunchKeyName];
             set => GenshinLauncher[ExitOnLaunchKeyName] = value;
         }
-
-        public void WriteFile(string path) =>
-            _parser.WriteFile(path, _data, Encoding.UTF8);
     }
 }

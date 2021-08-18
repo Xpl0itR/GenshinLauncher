@@ -5,6 +5,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -22,12 +23,22 @@ namespace GenshinLauncher.WinForms
 
             InitializeComponent();
             LoadValues();
+            LoadAdditionalContentAsync();
         }
 
         private void LoadValues()
         {
             _checkBoxCloseToTray.Checked  = _launcher.CloseToTray;
             _checkBoxExitOnLaunch.Checked = _launcher.ExitOnLaunch;
+
+            if (string.IsNullOrWhiteSpace(_launcher.GameInstallDir))
+            {
+                _textBoxInstallDir.Select();
+            }
+            else
+            {
+                _textBoxInstallDir.Text = _launcher.GameInstallDir;
+            }
 
             if (File.Exists(_launcher.EntryPointPath))
             {
@@ -61,7 +72,7 @@ namespace GenshinLauncher.WinForms
             else
             {
                 _groupBoxSettings.Enabled = false;
-                _buttonLaunch.Enabled     = false;
+                ShowDownloadButton();
             }
 
             if (File.Exists(_launcher.BackgroundPath))
@@ -70,24 +81,112 @@ namespace GenshinLauncher.WinForms
             }
         }
 
-        private void UnHideMainForm()
+        private async void LoadAdditionalContentAsync()
+        {
+            (string bgName, string bgMd5, Banner[] banners, Post[] posts, Stream? bgStream) = await _launcher.GetAdditionalContent(Resources.LauncherApiContentLanguage);
+
+            _launcher.BackgroundMd5      = bgMd5;
+            _launcher.BackgroundFileName = bgName;
+            _launcher.SaveLauncherConfig();
+
+            if (bgStream != null)
+            {
+                base.BackgroundImage = Image.FromStream(bgStream);
+            }
+
+            //TODO: implement banner and post viewers into UI
+        }
+
+        private void UnHideMainWindow()
         {
             this.Show();
             this.WindowState = FormWindowState.Normal;
+        }
+
+        private void ShowLaunchButton()
+        {
+            _buttonLaunch.Show();
+            _buttonDownload.Hide();
+            _radioButtonGlobalVersion.Hide();
+            _radioButtonChinaVersion.Hide();
+        }
+
+        private void ShowDownloadButton()
+        {
+            _buttonLaunch.Hide();
+            _buttonDownload.Show();
+            _radioButtonGlobalVersion.Show();
+            _radioButtonChinaVersion.Show();
+        }
+
+        private void ShowProgressBar()
+        {
+            _textBoxInstallDir.Hide();
+            _buttonInstallPath.Hide();
+            _labelProgressBarTitle.Show();
+            _progressBarDownload.Show();
+            _labelProgressBarText.Show();
+        }
+
+        private void ShowInstallPath()
+        {
+            _textBoxInstallDir.Show();
+            _buttonInstallPath.Show();
+            _labelProgressBarTitle.Hide();
+            _progressBarDownload.Hide();
+            _labelProgressBarText.Hide();
         }
 
         private void UseScreenResolution()
         {
             Rectangle bounds = Screen.FromControl(this).Bounds;
 
-            _numericWindowWidth.Value  = bounds.Width;
+            _numericWindowWidth.Value = bounds.Width;
+            _launcher.ResolutionWidth.SetValue(bounds.Width);
+
             _numericWindowHeight.Value = bounds.Height;
+            _launcher.ResolutionHeight.SetValue(bounds.Height);
         }
 
-        private void ButtonUseScreenResolution_Click(object sender, EventArgs args) =>
-            UseScreenResolution();
+        private void UpdateInstallPath()
+        {
+            _launcher.GameInstallDir = _textBoxInstallDir.Text.Replace(@"\", "/");
 
-        // Launch button events
+            if (File.Exists(Path.Combine(_launcher.GameInstallDir, Launcher.ExeNameGlobal)))
+            {
+                _launcher.EntryPoint = Launcher.ExeNameGlobal;
+                ShowLaunchButton();
+            }
+            else if (File.Exists(Path.Combine(_launcher.GameInstallDir, Launcher.ExeNameChina)))
+            {
+                _launcher.EntryPoint = Launcher.ExeNameChina;
+                ShowLaunchButton();
+            }
+            else
+            {
+                _launcher.EntryPoint = string.Empty;
+                ShowDownloadButton();
+            }
+        }
+
+        private void TextBoxInstallPath_Validating(object sender, CancelEventArgs args)
+        {
+            if (IsFolderPathValid(_textBoxInstallDir.Text))
+            {
+                return;
+            }
+
+            args.Cancel = true;
+            _errorProvider.SetError(_textBoxInstallDir, Resources.ErrorInvalidCharactersInPath);
+        }
+
+        private void TextBoxInstallPath_Validated(object sender, EventArgs args)
+        {
+            _errorProvider.SetError(_textBoxInstallDir, null);
+            UpdateInstallPath();
+        }
+
+        // Button events
         private void ButtonLaunch_Click(object sender, EventArgs args)
         {
             _launcher.SaveLauncherConfig();
@@ -113,6 +212,32 @@ namespace GenshinLauncher.WinForms
                 Application.Exit();
             }
         }
+
+        private async void ButtonDownload_Click(object sender, EventArgs args)
+        {
+            _launcher.SaveLauncherConfig();
+
+            _buttonLaunch.Enabled = false;
+            ShowLaunchButton();
+            //ShowProgressBar();
+
+            await _launcher.DownloadLatestVersion(_radioButtonGlobalVersion.Checked);
+
+            ShowInstallPath();
+            _buttonLaunch.Enabled = true;
+        }
+
+        private void ButtonInstallPath_Click(object sender, EventArgs args)
+        {
+            if (_folderBrowser.ShowDialog() == DialogResult.OK)
+            {
+                _textBoxInstallDir.Text = _folderBrowser.SelectedPath;
+                UpdateInstallPath();
+            }
+        }
+
+        private void ButtonUseScreenResolution_Click(object sender, EventArgs args) =>
+            UseScreenResolution();
 
         // Setting changed events
         private void WindowMode_CheckedChanged(object sender, EventArgs args)
@@ -178,12 +303,30 @@ namespace GenshinLauncher.WinForms
 
         // Tray events
         private void TrayIcon_DoubleClick(object sender, EventArgs args) =>
-            UnHideMainForm();
+            UnHideMainWindow();
 
         private void OpenTrayMenuItem_Click(object sender, EventArgs args) =>
-            UnHideMainForm();
+            UnHideMainWindow();
 
         private void ExitTrayMenuItem_Click(object sender, EventArgs args) =>
             Application.Exit();
+
+        private static bool IsFolderPathValid(string path) //TODO: Come up with a better method of validating paths
+        {
+            if (string.IsNullOrWhiteSpace(path) || path.IndexOfAny(Path.GetInvalidPathChars()) != -1)
+            {
+                return false;
+            }
+
+            try
+            {
+                Directory.CreateDirectory(path);
+                return true;
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+        }
     }
 }

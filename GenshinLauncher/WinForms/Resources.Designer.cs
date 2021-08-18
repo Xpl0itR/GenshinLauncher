@@ -59,13 +59,35 @@ namespace GenshinLauncher.WinForms {
                 resourceCulture = value;
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Characters in Path.
+        /// </summary>
+        internal static string ErrorInvalidCharactersInPath
+        {
+            get
+            {
+                return ResourceManager.GetString("ErrorInvalidCharactersInPath", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Another instance of Genshin Impact is already running!.
         /// </summary>
         internal static string ErrorProcessAlreadyRunning {
             get {
                 return ResourceManager.GetString("ErrorProcessAlreadyRunning", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to en-us.
+        /// </summary>
+        internal static string LauncherApiContentLanguage
+        {
+            get
+            {
+                return ResourceManager.GetString("LauncherApiContentLanguage", resourceCulture);
             }
         }
     }
