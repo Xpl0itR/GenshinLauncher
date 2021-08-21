@@ -1,0 +1,46 @@
+﻿// Copyright © 2021 Xpl0itR
+//
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+using System;
+using System.Drawing;
+
+namespace GenshinLauncher.Ui.Common
+{
+    public interface IMainWindow
+    {
+        event EventHandler<string> GameDirectoryUpdate;
+        event EventHandler         ButtonLaunchClick;
+        event EventHandler         ButtonDownloadClick;
+        event EventHandler         ButtonUseScreenResolutionClick;
+        event EventHandler         NumericWindowHeightValueChanged;
+        event EventHandler         NumericWindowWidthValueChanged;
+        event EventHandler         NumericMonitorIndexValueChanged;
+        event EventHandler         CheckBoxCloseToTrayCheckedChanged;
+        event EventHandler         CheckBoxExitOnLaunchCheckedChanged;
+        event EventHandler         WindowModeCheckedChanged;
+
+        Image  BackgroundImage                 { get; set; }
+        bool   ButtonLaunchEnabled             { get; set; }
+        bool   GroupBoxSettingsEnabled         { get; set; }
+        bool   CheckBoxCloseToTrayChecked      { get; set; }
+        bool   CheckBoxExitOnLaunchChecked     { get; set; }
+        bool   RadioButtonFullscreenChecked    { get; set; }
+        bool   RadioButtonBorderlessChecked    { get; set; }
+        bool   RadioButtonWindowedChecked      { get; set; }
+        bool   RadioButtonGlobalVersionChecked { get; set; }
+        int    NumericMonitorIndexValue        { get; set; }
+        int    NumericWindowHeightValue        { get; set; }
+        int    NumericWindowWidthValue         { get; set; }
+        string TextBoxGameDirText              { get; set; }
+
+        Rectangle GetCurrentScreenBounds();
+        void      ShowErrorProcessAlreadyRunning();
+        void      ShowButtonLaunch();
+        void      ShowButtonDownload();
+        void      ShowProgressBar();
+        void      ShowInstallPath();
+    }
+}

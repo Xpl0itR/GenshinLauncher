@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using DarkUI.Controls;
 
-namespace GenshinLauncher.WinForms
+namespace GenshinLauncher.Ui.WinForms
 {
     partial class MainWindow
     {
@@ -55,7 +55,7 @@ namespace GenshinLauncher.WinForms
             this._labelMonitorIndex = new DarkUI.Controls.DarkLabel();
             this._groupBoxSettings = new DarkUI.Controls.DarkGroupBox();
             this._textBoxInstallDir = new DarkUI.Controls.DarkTextBox();
-            this._buttonInstallPath = new DarkUI.Controls.DarkButton();
+            this._buttonInstallDirectory = new DarkUI.Controls.DarkButton();
             this._folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this._errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this._buttonDownload = new DarkUI.Controls.DarkButton();
@@ -117,19 +117,16 @@ namespace GenshinLauncher.WinForms
             // 
             resources.ApplyResources(this._buttonLaunch, "_buttonLaunch");
             this._buttonLaunch.Name = "_buttonLaunch";
-            this._buttonLaunch.Click += new System.EventHandler(this.ButtonLaunch_Click);
             // 
             // _checkBoxCloseToTray
             // 
             resources.ApplyResources(this._checkBoxCloseToTray, "_checkBoxCloseToTray");
             this._checkBoxCloseToTray.Name = "_checkBoxCloseToTray";
-            this._checkBoxCloseToTray.CheckedChanged += new System.EventHandler(this.CheckBoxCloseToTray_CheckedChanged);
             // 
             // _checkBoxExitOnLaunch
             // 
             resources.ApplyResources(this._checkBoxExitOnLaunch, "_checkBoxExitOnLaunch");
             this._checkBoxExitOnLaunch.Name = "_checkBoxExitOnLaunch";
-            this._checkBoxExitOnLaunch.CheckedChanged += new System.EventHandler(this.CheckBoxExitOnLaunch_CheckedChanged);
             // 
             // _labelWindowMode
             // 
@@ -158,7 +155,6 @@ namespace GenshinLauncher.WinForms
             0,
             0});
             this._numericWindowWidth.Name = "_numericWindowWidth";
-            this._numericWindowWidth.ValueChanged += new System.EventHandler(this.NumericWindowWidth_ValueChanged);
             // 
             // _numericWindowHeight
             // 
@@ -169,34 +165,29 @@ namespace GenshinLauncher.WinForms
             0,
             0});
             this._numericWindowHeight.Name = "_numericWindowHeight";
-            this._numericWindowHeight.ValueChanged += new System.EventHandler(this.NumericWindowHeight_ValueChanged);
             // 
             // _buttonUseScreenResolution
             // 
             resources.ApplyResources(this._buttonUseScreenResolution, "_buttonUseScreenResolution");
             this._buttonUseScreenResolution.Name = "_buttonUseScreenResolution";
-            this._buttonUseScreenResolution.Click += new System.EventHandler(this.ButtonUseScreenResolution_Click);
             // 
             // _radioButtonFullscreen
             // 
             resources.ApplyResources(this._radioButtonFullscreen, "_radioButtonFullscreen");
             this._radioButtonFullscreen.Name = "_radioButtonFullscreen";
             this._radioButtonFullscreen.TabStop = true;
-            this._radioButtonFullscreen.CheckedChanged += new System.EventHandler(this.WindowMode_CheckedChanged);
             // 
             // _radioButtonWindowed
             // 
             resources.ApplyResources(this._radioButtonWindowed, "_radioButtonWindowed");
             this._radioButtonWindowed.Name = "_radioButtonWindowed";
             this._radioButtonWindowed.TabStop = true;
-            this._radioButtonWindowed.CheckedChanged += new System.EventHandler(this.WindowMode_CheckedChanged);
             // 
             // _radioButtonBorderless
             // 
             resources.ApplyResources(this._radioButtonBorderless, "_radioButtonBorderless");
             this._radioButtonBorderless.Name = "_radioButtonBorderless";
             this._radioButtonBorderless.TabStop = true;
-            this._radioButtonBorderless.CheckedChanged += new System.EventHandler(this.WindowMode_CheckedChanged);
             // 
             // _numericMonitorIndex
             // 
@@ -207,7 +198,6 @@ namespace GenshinLauncher.WinForms
             0,
             0});
             this._numericMonitorIndex.Name = "_numericMonitorIndex";
-            this._numericMonitorIndex.ValueChanged += new System.EventHandler(this.NumericMonitorIndex_ValueChanged);
             // 
             // _labelMonitorIndex
             // 
@@ -240,15 +230,15 @@ namespace GenshinLauncher.WinForms
             resources.ApplyResources(this._textBoxInstallDir, "_textBoxInstallDir");
             this._textBoxInstallDir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this._textBoxInstallDir.Name = "_textBoxInstallDir";
-            this._textBoxInstallDir.Validating += new System.ComponentModel.CancelEventHandler(this.TextBoxInstallPath_Validating);
-            this._textBoxInstallDir.Validated += new System.EventHandler(this.TextBoxInstallPath_Validated);
+            this._textBoxInstallDir.Validating += new System.ComponentModel.CancelEventHandler(this.TextBoxInstallDir_Validating);
+            this._textBoxInstallDir.Validated += new System.EventHandler(this.TextBoxInstallDir_Validated);
             // 
-            // _buttonInstallPath
+            // _buttonInstallDirectory
             // 
-            this._buttonInstallPath.CausesValidation = false;
-            resources.ApplyResources(this._buttonInstallPath, "_buttonInstallPath");
-            this._buttonInstallPath.Name = "_buttonInstallPath";
-            this._buttonInstallPath.Click += new System.EventHandler(this.ButtonInstallPath_Click);
+            this._buttonInstallDirectory.CausesValidation = false;
+            resources.ApplyResources(this._buttonInstallDirectory, "_buttonInstallDirectory");
+            this._buttonInstallDirectory.Name = "_buttonInstallDirectory";
+            this._buttonInstallDirectory.Click += new System.EventHandler(this.ButtonInstallDir_Click);
             // 
             // _errorProvider
             // 
@@ -259,7 +249,6 @@ namespace GenshinLauncher.WinForms
             // 
             resources.ApplyResources(this._buttonDownload, "_buttonDownload");
             this._buttonDownload.Name = "_buttonDownload";
-            this._buttonDownload.Click += new System.EventHandler(this.ButtonDownload_Click);
             // 
             // _radioButtonGlobalVersion
             // 
@@ -301,7 +290,7 @@ namespace GenshinLauncher.WinForms
             this.Controls.Add(this._radioButtonChinaVersion);
             this.Controls.Add(this._radioButtonGlobalVersion);
             this.Controls.Add(this._buttonDownload);
-            this.Controls.Add(this._buttonInstallPath);
+            this.Controls.Add(this._buttonInstallDirectory);
             this.Controls.Add(this._textBoxInstallDir);
             this.Controls.Add(this._checkBoxCloseToTray);
             this.Controls.Add(this._checkBoxExitOnLaunch);
@@ -326,35 +315,35 @@ namespace GenshinLauncher.WinForms
         }
 
         #endregion
-        private DarkButton          _buttonLaunch;
-        private DarkButton          _buttonUseScreenResolution;
-        private DarkCheckBox        _checkBoxCloseToTray;
-        private DarkCheckBox        _checkBoxExitOnLaunch;
-        private DarkLabel           _labelWindowMode;
-        private DarkLabel           _labelWindowWidth;
-        private DarkLabel           _labelWindowHeight;
-        private DarkNumericUpDown   _numericWindowWidth;
-        private DarkNumericUpDown   _numericWindowHeight;
-        private DarkRadioButton     _radioButtonFullscreen;
-        private DarkRadioButton     _radioButtonWindowed;
-        private DarkRadioButton     _radioButtonBorderless;
-        private NotifyIcon          _trayIcon;
-        private DarkContextMenu     _trayMenu;
-        private ToolStripMenuItem   _trayMenuItemOpen;
-        private ToolStripMenuItem   _trayMenuItemExit;
-        private ToolStripSeparator  _trayMenuSeparator;
-        private DarkNumericUpDown   _numericMonitorIndex;
-        private DarkLabel           _labelMonitorIndex;
-        private DarkGroupBox        _groupBoxSettings;
-        private DarkTextBox         _textBoxInstallDir;
-        private DarkButton          _buttonInstallPath;
+        private DarkButton _buttonLaunch;
+        private DarkButton _buttonUseScreenResolution;
+        private DarkCheckBox _checkBoxCloseToTray;
+        private DarkCheckBox _checkBoxExitOnLaunch;
+        private DarkLabel _labelWindowMode;
+        private DarkLabel _labelWindowWidth;
+        private DarkLabel _labelWindowHeight;
+        private DarkNumericUpDown _numericWindowWidth;
+        private DarkNumericUpDown _numericWindowHeight;
+        private DarkRadioButton _radioButtonFullscreen;
+        private DarkRadioButton _radioButtonWindowed;
+        private DarkRadioButton _radioButtonBorderless;
+        private NotifyIcon _trayIcon;
+        private DarkContextMenu _trayMenu;
+        private ToolStripMenuItem _trayMenuItemOpen;
+        private ToolStripMenuItem _trayMenuItemExit;
+        private ToolStripSeparator _trayMenuSeparator;
+        private DarkNumericUpDown _numericMonitorIndex;
+        private DarkLabel _labelMonitorIndex;
+        private DarkGroupBox _groupBoxSettings;
+        private DarkTextBox _textBoxInstallDir;
+        private DarkButton _buttonInstallDirectory;
         private FolderBrowserDialog _folderBrowser;
-        private ErrorProvider       _errorProvider;
-        private DarkButton          _buttonDownload;
-        private DarkRadioButton     _radioButtonChinaVersion;
-        private DarkRadioButton     _radioButtonGlobalVersion;
-        private ProgressBar         _progressBarDownload;
-        private DarkLabel           _labelProgressBarText;
-        private DarkLabel           _labelProgressBarTitle;
+        private ErrorProvider _errorProvider;
+        private DarkButton _buttonDownload;
+        private DarkRadioButton _radioButtonChinaVersion;
+        private DarkRadioButton _radioButtonGlobalVersion;
+        private ProgressBar _progressBarDownload;
+        private DarkLabel _labelProgressBarText;
+        private DarkLabel _labelProgressBarTitle;
     }
 }

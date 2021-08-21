@@ -530,34 +530,34 @@
   <data name="&gt;&gt;_textBoxInstallDir.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="_buttonInstallPath.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="_buttonInstallDirectory.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9.75pt</value>
   </data>
-  <data name="_buttonInstallPath.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_buttonInstallDirectory.Location" type="System.Drawing.Point, System.Drawing">
     <value>50, 671</value>
   </data>
-  <data name="_buttonInstallPath.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="_buttonInstallDirectory.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 5, 5, 5</value>
   </data>
-  <data name="_buttonInstallPath.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_buttonInstallDirectory.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 26</value>
   </data>
-  <data name="_buttonInstallPath.TabIndex" type="System.Int32, mscorlib">
+  <data name="_buttonInstallDirectory.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
   </data>
-  <data name="_buttonInstallPath.Text" xml:space="preserve">
+  <data name="_buttonInstallDirectory.Text" xml:space="preserve">
     <value>Change install path</value>
   </data>
-  <data name="&gt;&gt;_buttonInstallPath.Name" xml:space="preserve">
-    <value>_buttonInstallPath</value>
+  <data name="&gt;&gt;_buttonInstallDirectory.Name" xml:space="preserve">
+    <value>_buttonInstallDirectory</value>
   </data>
-  <data name="&gt;&gt;_buttonInstallPath.Type" xml:space="preserve">
+  <data name="&gt;&gt;_buttonInstallDirectory.Type" xml:space="preserve">
     <value>DarkUI.Controls.DarkButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;_buttonInstallPath.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_buttonInstallDirectory.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;_buttonInstallPath.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_buttonInstallDirectory.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
   <metadata name="_folderBrowser.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
