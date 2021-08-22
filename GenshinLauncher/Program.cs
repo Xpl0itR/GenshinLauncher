@@ -5,199 +5,362 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Threading.Tasks;
+using GenshinLauncher.FileParsers;
+using GenshinLauncher.MiHoYoApi;
 using GenshinLauncher.Ui.Common;
-using GenshinLauncher.Ui.WinForms;
 
 namespace GenshinLauncher
 {
     public static class Program
     {
+        private const string ExeNameGlobal = "GenshinImpact.exe";
+        private const string ExeNameChina  = "YuanShen.exe";
+
+        private static readonly IUserInterface  Ui;
+        private static readonly IMainWindow     MainWindow;
+        private static readonly MiHoYoApiClient ApiClient;
+        private static readonly string          BgDirectory;
+        private static readonly string          LauncherIniPath;
+
+        public  static string EntryPointPath  => Path.Combine(GameInstallDir, EntryPoint);
+        private static string BackgroundPath  => Path.Combine(BgDirectory, BackgroundFileName);
+        public  static bool   ValidEntryPoint => EntryPoint is ExeNameGlobal or ExeNameChina;
+
+        public static bool   CloseToTray        { get; set; }
+        public static bool   BorderlessMode     { get; set; }
+        public static bool   ExitOnLaunch       { get; set; }
+        public static string GameInstallDir     { get; set; }
+        public static string BackgroundFileName { get; set; }
+        public static string BackgroundMd5      { get; set; }
+        public static string EntryPoint         { get; set; }
+
+        public static RegistrySetting<int?>  ResolutionWidth    { get; }
+        public static RegistrySetting<int?>  ResolutionHeight   { get; }
+        public static RegistrySetting<bool?> FullscreenMode     { get; }
+        public static RegistrySetting<int?>  MonitorIndex       { get; }
+
+        static Program()
+        {
+            Ui              = new Ui.WinForms.UserInterface();
+            MainWindow      = new Ui.WinForms.MainWindow();
+            ApiClient       = new MiHoYoApiClient();
+            BgDirectory     = Path.Combine(AppContext.BaseDirectory, "bg");
+            LauncherIniPath = Path.Combine(AppContext.BaseDirectory, "config.ini");
+
+            LauncherIni ini = File.Exists(LauncherIniPath)
+                ? new LauncherIni(LauncherIniPath)
+                : new LauncherIni();
+
+            GameInstallDir     = ini.GameInstallPath                     ?? string.Empty;
+            BackgroundFileName = ini.GameDynamicBgName                   ?? string.Empty;
+            BackgroundMd5      = ini.GameDynamicBgMd5                    ?? string.Empty;
+            EntryPoint         = ini.GameStartName                       ?? string.Empty;
+            CloseToTray        = NullableStringEquals(ini.ExitType, "1") ?? false;
+            BorderlessMode     = ToBoolean(ini.BorderlessMode)           ?? false;
+            ExitOnLaunch       = ToBoolean(ini.ExitOnLaunch)             ?? false;
+
+            using GenshinRegistry? genshinRegistry = ValidEntryPoint
+                ? new GenshinRegistry(false, EntryPoint != ExeNameChina)
+                : null;
+
+            ResolutionWidth  = new RegistrySetting<int?>(genshinRegistry?.ResolutionWidth, 0);
+            ResolutionHeight = new RegistrySetting<int?>(genshinRegistry?.ResolutionHeight, 0);
+            FullscreenMode   = new RegistrySetting<bool?>(genshinRegistry?.FullscreenMode, true);
+            MonitorIndex     = new RegistrySetting<int?>(genshinRegistry?.MonitorIndex, 0);
+        }
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         public static void Main()
         {
-            IUserInterface ui         = new UserInterface();
-            IMainWindow    mainWindow = new MainWindow();
-            Launcher       launcher   = new Launcher();
+            MainWindow.CheckBoxCloseToTrayChecked  = CloseToTray;
+            MainWindow.CheckBoxExitOnLaunchChecked = ExitOnLaunch;
+            MainWindow.TextBoxGameDirText          = GameInstallDir;
+            MainWindow.NumericMonitorIndexValue    = (int)MonitorIndex;
 
-            mainWindow.GameDirectoryUpdate += (_, newPath) =>
+            if (BorderlessMode)
             {
-                launcher.GameInstallDir = newPath.Replace(@"\", "/");
-
-                if (File.Exists(Path.Combine(launcher.GameInstallDir, Launcher.ExeNameGlobal)))
-                {
-                    launcher.EntryPoint = Launcher.ExeNameGlobal;
-                    mainWindow.ShowButtonLaunch();
-                }
-                else if (File.Exists(Path.Combine(launcher.GameInstallDir, Launcher.ExeNameChina)))
-                {
-                    launcher.EntryPoint = Launcher.ExeNameChina;
-                    mainWindow.ShowButtonLaunch();
-                }
-                else
-                {
-                    launcher.EntryPoint = string.Empty;
-                    mainWindow.ShowButtonDownload();
-                }
-            };
-
-            mainWindow.ButtonLaunchClick += (_, _) =>
-            {
-                launcher.SaveLauncherConfig();
-
-                try
-                {
-                    launcher.StartGame();
-
-                    if (launcher.BorderlessMode)
-                    {
-                        launcher.RemoveGameTitlebar();
-                        launcher.ResizeGameToFillBounds();
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-                    mainWindow.ShowErrorProcessAlreadyRunning();
-                    return;
-                }
-
-                if (launcher.ExitOnLaunch)
-                {
-                    ui.Exit();
-                }
-            };
-
-            mainWindow.ButtonDownloadClick += (_, _) =>
-                OnMainWindowOnButtonDownloadClick(mainWindow, launcher);
-
-            mainWindow.ButtonUseScreenResolutionClick += (_, _) =>
-            {
-                Rectangle bounds = mainWindow.GetCurrentScreenBounds();
-
-                mainWindow.NumericWindowWidthValue = bounds.Width;
-                launcher.ResolutionWidth.SetValue(bounds.Width);
-
-                mainWindow.NumericWindowHeightValue = bounds.Height;
-                launcher.ResolutionHeight.SetValue(bounds.Height);
-            };
-
-            mainWindow.WindowModeCheckedChanged += (_, _) =>
-            {
-                if (mainWindow.RadioButtonBorderlessChecked)
-                {
-                    launcher.BorderlessMode = true;
-                    launcher.FullscreenMode.SetValue(false);
-                }
-                else
-                {
-                    launcher.BorderlessMode = false;
-                    launcher.FullscreenMode.SetValue(mainWindow.RadioButtonFullscreenChecked);
-                }
-            };
-
-            mainWindow.NumericWindowWidthValueChanged += (_, _) =>
-            {
-                launcher.ResolutionWidth.SetValue(mainWindow.NumericWindowWidthValue);
-            };
-
-            mainWindow.NumericWindowHeightValueChanged += (_, _) =>
-            {
-                launcher.ResolutionHeight.SetValue(mainWindow.NumericWindowHeightValue);
-            };
-
-            mainWindow.NumericMonitorIndexValueChanged += (_, _) =>
-            {
-                launcher.MonitorIndex.SetValue(mainWindow.NumericMonitorIndexValue);
-            };
-
-            mainWindow.CheckBoxCloseToTrayCheckedChanged += (_, _) =>
-            {
-                launcher.CloseToTray = mainWindow.CheckBoxCloseToTrayChecked;
-            };
-
-            mainWindow.CheckBoxExitOnLaunchCheckedChanged += (_, _) =>
-            {
-                launcher.ExitOnLaunch = mainWindow.CheckBoxExitOnLaunchChecked;
-            };
-
-            mainWindow.CheckBoxCloseToTrayChecked   = launcher.CloseToTray;
-            mainWindow.CheckBoxExitOnLaunchChecked  = launcher.ExitOnLaunch;
-            mainWindow.TextBoxGameDirText           = launcher.GameInstallDir;
-            mainWindow.NumericMonitorIndexValue     = (int)launcher.MonitorIndex;
-
-            if (launcher.BorderlessMode)
-            {
-                mainWindow.RadioButtonBorderlessChecked = true;
+                MainWindow.RadioButtonBorderlessChecked = true;
             }
-            else if ((bool)launcher.FullscreenMode)
+            else if ((bool)FullscreenMode)
             {
-                mainWindow.RadioButtonFullscreenChecked = true;
+                MainWindow.RadioButtonFullscreenChecked = true;
             }
             else
             {
-                mainWindow.RadioButtonWindowedChecked = true;
+                MainWindow.RadioButtonWindowedChecked = true;
             }
 
-            if (launcher.ResolutionHeight == 0 || launcher.ResolutionWidth == 0)
+            MainWindow.NumericWindowWidthValueChanged  += NumericWindowWidth_ValueChanged;
+            MainWindow.NumericWindowHeightValueChanged += NumericWindowHeight_ValueChanged;
+
+            if (ResolutionHeight == 0 || ResolutionWidth == 0)
             {
-                Rectangle bounds = mainWindow.GetCurrentScreenBounds();
-                mainWindow.NumericWindowWidthValue  = bounds.Width;
-                mainWindow.NumericWindowHeightValue = bounds.Height;
+                Rectangle bounds = MainWindow.GetCurrentScreenBounds();
+                MainWindow.NumericWindowWidthValue  = bounds.Width;
+                MainWindow.NumericWindowHeightValue = bounds.Height;
             }
             else
             {
-                mainWindow.NumericWindowWidthValue  = (int)launcher.ResolutionWidth;
-                mainWindow.NumericWindowHeightValue = (int)launcher.ResolutionHeight;
+                MainWindow.NumericWindowWidthValue  = (int)ResolutionWidth;
+                MainWindow.NumericWindowHeightValue = (int)ResolutionHeight;
             }
 
-            if (!File.Exists(launcher.EntryPointPath))
+            MainWindow.GameDirectoryUpdate                += GameDirectoryUpdated;
+            MainWindow.ButtonLaunchClick                  += ButtonLaunch_Click;
+            MainWindow.ButtonDownloadClick                += ButtonDownload_Click;
+            MainWindow.ButtonUseScreenResolutionClick     += ButtonUseScreenResolution_Click;
+            MainWindow.WindowModeCheckedChanged           += WindowMode_CheckedChanged;
+            MainWindow.NumericMonitorIndexValueChanged    += NumericMonitorIndex_ValueChanged;
+            MainWindow.CheckBoxCloseToTrayCheckedChanged  += CheckBoxCloseToTray_CheckedChanged;
+            MainWindow.CheckBoxExitOnLaunchCheckedChanged += CheckBoxExitOnLaunch_CheckedChanged;
+
+            if (!File.Exists(EntryPointPath))
             {
-                mainWindow.GroupBoxSettingsEnabled = false;
-                mainWindow.ShowButtonDownload();
+                MainWindow.GroupBoxSettingsEnabled = false;
+                MainWindow.ShowButtonDownload();
             }
 
-            if (File.Exists(launcher.BackgroundPath))
+            if (File.Exists(BackgroundPath))
             {
-                mainWindow.BackgroundImage = Image.FromFile(launcher.BackgroundPath);
+                MainWindow.BackgroundImage = Image.FromFile(BackgroundPath);
             }
 
-            LoadAdditionalContentAsync(mainWindow, launcher);
+            LoadAdditionalContentAsync();
 
-            ui.Run(mainWindow);
+            Ui.Run(MainWindow);
         }
 
-        private static async void LoadAdditionalContentAsync(IMainWindow mainWindow, Launcher launcher)
+        public static void SaveLauncherConfig()
         {
-            (string bgName, string bgMd5, Banner[] _, Post[] _, Stream? bgStream) = await launcher.GetAdditionalContent("en-us"); //TODO: load this from CultureInfo
+            LauncherIni ini = File.Exists(LauncherIniPath)
+                ? new LauncherIni(LauncherIniPath)
+                : new LauncherIni();
 
-            launcher.BackgroundMd5      = bgMd5;
-            launcher.BackgroundFileName = bgName;
-            launcher.SaveLauncherConfig();
+            ini.GameInstallPath   = GameInstallDir;
+            ini.GameDynamicBgName = BackgroundFileName;
+            ini.GameDynamicBgMd5  = BackgroundMd5;
+            ini.GameStartName     = EntryPoint;
+            ini.ExitType          = CloseToTray ? "1" : "2";
+            ini.BorderlessMode    = BorderlessMode ? "true" : "false";
+            ini.ExitOnLaunch      = ExitOnLaunch ? "true" : "false";
+            ini.WriteFile(LauncherIniPath);
+
+            if (ValidEntryPoint)
+            {
+                using GenshinRegistry genshinRegistry = new GenshinRegistry(true, EntryPoint != ExeNameChina);
+
+                if (ResolutionWidth.Updated)
+                {
+                    genshinRegistry.ResolutionWidth = ResolutionWidth;
+                }
+
+                if (ResolutionHeight.Updated)
+                {
+                    genshinRegistry.ResolutionHeight = ResolutionHeight;
+                }
+
+                if (FullscreenMode.Updated)
+                {
+                    genshinRegistry.FullscreenMode = FullscreenMode;
+                }
+
+                if (MonitorIndex.Updated)
+                {
+                    genshinRegistry.MonitorIndex = MonitorIndex;
+                }
+            }
+        }
+
+        private static async void LoadAdditionalContentAsync()
+        {
+            Content content  = await ApiClient.GetContent(EntryPoint != ExeNameChina, "en-us"); //TODO: load this from CultureInfo
+            string  bgName   = Path.GetFileName(content.Adv.Background);
+            string  bgPath   = Path.Combine(BgDirectory, bgName);
+            Stream? bgStream = null;
+
+            if (!File.Exists(bgPath))
+            {
+                bgStream = new FileStream(bgPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, 4096, true);
+                await ApiClient.Download(content.Adv.Background, bgStream);
+            }
+
+            BackgroundMd5 = content.Adv.BgChecksum;
+            BackgroundFileName = bgName;
 
             if (bgStream != null)
             {
-                mainWindow.BackgroundImage = Image.FromStream(bgStream);
+                MainWindow.BackgroundImage = Image.FromStream(bgStream);
             }
 
             //TODO: implement banner and post viewers into UI
+
+            SaveLauncherConfig();
         }
 
-        private static async void OnMainWindowOnButtonDownloadClick(IMainWindow mainWindow, Launcher launcher)
+        private static async Task InstallPackage(Package package)
         {
-            launcher.SaveLauncherConfig();
+            string fileName = Path.GetFileName(package.Path);
+            string filePath = Path.Combine(GameInstallDir, fileName + "_tmp");
 
-            mainWindow.ButtonLaunchEnabled = false;
-            mainWindow.ShowButtonLaunch();
-            //mainWindow.ShowProgressBar();
+            await using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, true))
+            {
+                while (!Utils.VerifyMd5(stream, package.Md5))
+                {
+                    stream.SetLength(0);
+                    await ApiClient.Download(package.Path, stream);
+                }
 
-            await launcher.DownloadLatestVersion(mainWindow.RadioButtonGlobalVersionChecked);
+                using ZipArchive zip = new ZipArchive(stream, ZipArchiveMode.Read);
 
-            mainWindow.ShowInstallPath();
-            mainWindow.ButtonLaunchEnabled = true;
+                foreach (ZipArchiveEntry entry in zip.Entries)
+                {
+                    entry.ExtractRelativeToDirectory(GameInstallDir, true);
+                }
+            }
+
+            File.Delete(filePath);
+        }
+
+        private static bool? NullableStringEquals(string? value, string equals) =>
+            value == null ? null : value == equals;
+
+        private static bool? ToBoolean(string? value) =>
+            (value as IConvertible)?.ToBoolean(null);
+
+        private static void GameDirectoryUpdated(object? sender, string newPath)
+        {
+            GameInstallDir = newPath.Replace(@"\", "/");
+
+            if (File.Exists(Path.Combine(GameInstallDir, ExeNameGlobal)))
+            {
+                EntryPoint = ExeNameGlobal;
+                MainWindow.GroupBoxSettingsEnabled = true;
+                MainWindow.ShowButtonLaunch();
+            }
+            else if (File.Exists(Path.Combine(GameInstallDir, ExeNameChina)))
+            {
+                EntryPoint = ExeNameChina;
+                MainWindow.GroupBoxSettingsEnabled = true;
+                MainWindow.ShowButtonLaunch();
+            }
+            else
+            {
+                EntryPoint = string.Empty;
+                MainWindow.GroupBoxSettingsEnabled = false;
+                MainWindow.ShowButtonDownload();
+            }
+        }
+
+        private static void ButtonLaunch_Click(object? sender, EventArgs args)
+        {
+            SaveLauncherConfig();
+
+            string genshinProcessName = Path.GetFileNameWithoutExtension(EntryPoint);
+            if (Process.GetProcesses().Any(process => process.ProcessName == genshinProcessName))
+            {
+                MainWindow.ShowErrorProcessAlreadyRunning();
+                return;
+            }
+
+            Process process = new Process{ StartInfo = { FileName = EntryPointPath } };
+            process.Start();
+
+            if (BorderlessMode)
+            {
+                IntPtr hWnd = process.GetMainWindowHandle();
+
+                Utils.RemoveWindowTitlebar(hWnd);
+                Utils.ResizeWindowToFillScreen(hWnd);
+            }
+
+            if (ExitOnLaunch)
+            {
+                Ui.Exit();
+            }
+        }
+
+        private static async void ButtonDownload_Click(object? sender, EventArgs args)
+        {
+            SaveLauncherConfig();
+
+            MainWindow.ButtonLaunchEnabled = false;
+            MainWindow.ShowButtonLaunch();
+            //MainWindow.ShowProgressBar();
+
+            Resource resource = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
+            Package  latest   = resource.Game.Latest;
+
+            await InstallPackage(latest);
+
+            string gameIniPath = Path.Combine(GameInstallDir, "config.ini");
+            GameIni ini = File.Exists(gameIniPath)
+                ? new GameIni(gameIniPath)
+                : new GameIni();
+
+            ini.GameVersion = latest.Version;
+            ini.WriteFile(gameIniPath);
+
+            MainWindow.ShowInstallPath();
+            MainWindow.ButtonLaunchEnabled = true;
+        }
+
+        private static void ButtonUseScreenResolution_Click(object? sender, EventArgs args)
+        {
+            Rectangle bounds = MainWindow.GetCurrentScreenBounds();
+
+            MainWindow.NumericWindowWidthValue = bounds.Width;
+            ResolutionWidth.SetValue(bounds.Width);
+
+            MainWindow.NumericWindowHeightValue = bounds.Height;
+            ResolutionHeight.SetValue(bounds.Height);
+        }
+
+        private static void WindowMode_CheckedChanged(object? sender, EventArgs args)
+        {
+            if (MainWindow.RadioButtonBorderlessChecked)
+            {
+                BorderlessMode = true;
+                FullscreenMode.SetValue(false);
+            }
+            else
+            {
+                BorderlessMode = false;
+                FullscreenMode.SetValue(MainWindow.RadioButtonFullscreenChecked);
+            }
+        }
+
+        private static void NumericWindowWidth_ValueChanged(object? sender, EventArgs args)
+        {
+            ResolutionWidth.SetValue(MainWindow.NumericWindowWidthValue);
+        }
+
+        private static void NumericWindowHeight_ValueChanged(object? sender, EventArgs args)
+        {
+            ResolutionHeight.SetValue(MainWindow.NumericWindowHeightValue);
+        }
+
+        private static void NumericMonitorIndex_ValueChanged(object? sender, EventArgs args)
+        {
+            MonitorIndex.SetValue(MainWindow.NumericMonitorIndexValue);
+        }
+
+        private static void CheckBoxCloseToTray_CheckedChanged(object? sender, EventArgs args)
+        {
+            CloseToTray = MainWindow.CheckBoxCloseToTrayChecked;
+        }
+
+        private static void CheckBoxExitOnLaunch_CheckedChanged(object? sender, EventArgs args)
+        {
+            ExitOnLaunch = MainWindow.CheckBoxExitOnLaunchChecked;
         }
     }
 }

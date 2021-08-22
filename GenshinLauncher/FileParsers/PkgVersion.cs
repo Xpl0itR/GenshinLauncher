@@ -9,7 +9,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace GenshinLauncher
+namespace GenshinLauncher.FileParsers
 {
     public class PkgVersion : List<PkgVersionEntry>
     {
@@ -25,7 +25,6 @@ namespace GenshinLauncher
     }
 
 #nullable disable
-    // ReSharper disable UnusedMember.Global
     public record PkgVersionEntry
     {
         [JsonPropertyName("remoteName")]
@@ -37,6 +36,5 @@ namespace GenshinLauncher
         [JsonPropertyName("fileSize")]
         public int FileSize { get; init; }
     }
-    // ReSharper restore UnusedMember.Global
 #nullable restore
 }

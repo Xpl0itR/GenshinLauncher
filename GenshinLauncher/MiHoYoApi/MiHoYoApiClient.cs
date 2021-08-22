@@ -11,34 +11,32 @@ using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GenshinLauncher
+namespace GenshinLauncher.MiHoYoApi
 {
-    public class GenshinHttpClient : IDisposable
+    public class MiHoYoApiClient : IDisposable
     {
-        private const int LauncherIdGlobal   = 10;
-        private const int LauncherIdChina    = 18;
-        private const int SubChannelIdGlobal = 0;
-        private const int SubChannelIdChina  = 1;
-        private const int ChannelId          = 1;
+        private const int LauncherIdGenshin    = 10;
+        private const int LauncherIdYuanshen   = 18;
+        private const int SubChannelIdGenshin  = 0;
+        private const int SubChannelIdYuanshen = 1;
+        private const int ChannelId            = 1;
 
-        private const string SdkUrlGlobal        = "https://sdk-os-static.mihoyo.com";
-        private const string SdkUrlChina         = "https://sdk-static.mihoyo.com";
-        private const string Hk4EGlobalEndpoint  = "/hk4e_global";
-        private const string Hk4EChinaEndpoint   = "/hk4e_cn";
+        private const string ApiUrlGlobal        = "https://sdk-os-static.mihoyo.com/hk4e_global";
+        private const string ApiUrlChina         = "https://sdk-static.mihoyo.com/hk4e_cn";
         private const string LauncherApiEndpoint = "/mdk/launcher/api";
         private const string ContentEndpoint     = "/content";
         private const string ResourceEndpoint    = "/resource";
-        private const string KeyGlobal           = "";
-        private const string KeyChina            = "";
+        private const string ApiKeyGlobal        = "";
+        private const string ApiKeyChina         = "";
 
-        private const string ContentUrlGlobal  = SdkUrlGlobal + Hk4EGlobalEndpoint + LauncherApiEndpoint + ContentEndpoint;
-        private const string ContentUrlChina   = SdkUrlChina  + Hk4EChinaEndpoint  + LauncherApiEndpoint + ContentEndpoint;
-        private const string ResourceUrlGlobal = SdkUrlGlobal + Hk4EGlobalEndpoint + LauncherApiEndpoint + ResourceEndpoint;
-        private const string ResourceUrlChina  = SdkUrlChina  + Hk4EChinaEndpoint  + LauncherApiEndpoint + ResourceEndpoint;
+        private const string ContentUrlGlobal  = ApiUrlGlobal + LauncherApiEndpoint + ContentEndpoint;
+        private const string ContentUrlChina   = ApiUrlChina  + LauncherApiEndpoint + ContentEndpoint;
+        private const string ResourceUrlGlobal = ApiUrlGlobal + LauncherApiEndpoint + ResourceEndpoint;
+        private const string ResourceUrlChina  = ApiUrlChina  + LauncherApiEndpoint + ResourceEndpoint;
 
         private readonly HttpClient _httpClient;
 
-        public GenshinHttpClient()
+        public MiHoYoApiClient()
         {
             _httpClient = new HttpClient
             {
@@ -50,9 +48,9 @@ namespace GenshinLauncher
             };
         }
 
-        public async Task Download(Uri uri, Stream outStream, CancellationToken cancellationToken = default)
+        public async Task Download(string url, Stream outStream, CancellationToken cancellationToken = default)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            HttpResponseMessage response = await _httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             response.EnsureSuccessStatusCode();
 
             await response.Content.CopyToAsync(outStream, cancellationToken);
@@ -69,9 +67,9 @@ namespace GenshinLauncher
             string url = globalVersion ? ContentUrlGlobal : ContentUrlChina;
             var json = new
             {
+                language,
                 filter_adv  = "false",
-                language    = globalVersion ? language         : "zh-cn",
-                launcher_id = globalVersion ? LauncherIdGlobal : LauncherIdChina
+                launcher_id = globalVersion ? LauncherIdGenshin : LauncherIdYuanshen
             };
 
             return _httpClient.PostAsync(url, JsonContent.Create(json));
@@ -82,9 +80,9 @@ namespace GenshinLauncher
             string url = globalVersion ? ResourceUrlGlobal : ResourceUrlChina;
             var json = new
             {
-                launcher_id    = globalVersion ? LauncherIdGlobal   : LauncherIdChina,
-                key            = globalVersion ? KeyGlobal          : KeyChina,
-                sub_channel_id = globalVersion ? SubChannelIdGlobal : SubChannelIdChina,
+                launcher_id    = globalVersion ? LauncherIdGenshin   : LauncherIdYuanshen,
+                key            = globalVersion ? ApiKeyGlobal        : ApiKeyChina,
+                sub_channel_id = globalVersion ? SubChannelIdGenshin : SubChannelIdYuanshen,
                 channel_id     = ChannelId
             };
 
@@ -95,8 +93,8 @@ namespace GenshinLauncher
         {
             response.EnsureSuccessStatusCode();
 
-            GenshinApiJson<T>? resource = await response.Content.ReadFromJsonAsync<GenshinApiJson<T>>();
-            resource!.EnsureSuccessRetCode();
+            ResponseJson<T>? resource = await response.Content.ReadFromJsonAsync<ResponseJson<T>>();
+            resource!.EnsureSuccessStatusCode();
 
             return resource.Data;
         }

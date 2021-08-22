@@ -6,9 +6,9 @@
 
 using IniParser.Model;
 
-namespace GenshinLauncher
+namespace GenshinLauncher.FileParsers
 {
-    public class GameConfig : Ini
+    public class GameIni : Ini
     {
         private const string GeneralSectionName = "General";
         private const string ChannelKeyName     = "channel";
@@ -19,8 +19,7 @@ namespace GenshinLauncher
 
         private KeyDataCollection General => this.Data[GeneralSectionName];
 
-        public GameConfig() : base() { }
-        public GameConfig(string path) : base(path) { }
+        public GameIni(string? path = null) : base(path) { }
 
         public string? Channel
         {

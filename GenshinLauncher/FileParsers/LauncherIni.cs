@@ -6,9 +6,9 @@
 
 using IniParser.Model;
 
-namespace GenshinLauncher
+namespace GenshinLauncher.FileParsers
 {
-    public class LauncherConfig : Ini
+    public class LauncherIni : Ini
     {
         private const string LauncherSectionName        = "launcher";
         private const string CpsKeyName                 = "cps";
@@ -21,6 +21,7 @@ namespace GenshinLauncher
         private const string IsFirstExitKeyName         = "is_first_exit";
         private const string ExitTypeKeyName            = "exit_type";
         private const string SpeedLimitEnabledKeyName   = "speed_limit_enabled";
+
         private const string GenshinLauncherSectionName = "GenshinLauncher";
         private const string BorderlessModeKeyName      = "borderless_mode";
         private const string ExitOnLaunchKeyName        = "exit_on_launch";
@@ -28,8 +29,7 @@ namespace GenshinLauncher
         private KeyDataCollection Launcher        => this.Data[LauncherSectionName];
         private KeyDataCollection GenshinLauncher => this.Data[GenshinLauncherSectionName]; //TODO: rename after v1
 
-        public LauncherConfig() : base() { }
-        public LauncherConfig(string path) : base(path) { }
+        public LauncherIni(string? path = null) : base(path) { }
 
         public string? Channel
         {

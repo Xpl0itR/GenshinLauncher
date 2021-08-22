@@ -7,7 +7,6 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using DarkUI.Forms;
 using GenshinLauncher.Ui.Common;
@@ -234,7 +233,7 @@ namespace GenshinLauncher.Ui.WinForms
 
         private void TextBoxInstallDir_Validating(object sender, CancelEventArgs args)
         {
-            if (IsFolderPathValid(_textBoxInstallDir.Text))
+            if (Utils.IsFolderPathValid(_textBoxInstallDir.Text))
             {
                 return;
             }
@@ -280,23 +279,5 @@ namespace GenshinLauncher.Ui.WinForms
 
         private void ExitTrayMenuItem_Click(object sender, EventArgs args) =>
             Application.Exit();
-
-        private static bool IsFolderPathValid(string path) //TODO: Come up with a better method of validating paths
-        {
-            if (string.IsNullOrWhiteSpace(path) || path.IndexOfAny(Path.GetInvalidPathChars()) != -1)
-            {
-                return false;
-            }
-
-            try
-            {
-                Directory.CreateDirectory(path);
-                return true;
-            }
-            catch (IOException)
-            {
-                return false;
-            }
-        }
     }
 }
