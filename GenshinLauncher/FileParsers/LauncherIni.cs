@@ -27,7 +27,7 @@ namespace GenshinLauncher.FileParsers
         private const string ExitOnLaunchKeyName        = "exit_on_launch";
 
         private KeyDataCollection Launcher        => this.Data[LauncherSectionName];
-        private KeyDataCollection GenshinLauncher => this.Data[GenshinLauncherSectionName]; //TODO: rename after v1
+        private KeyDataCollection GenshinLauncher => this.Data[GenshinLauncherSectionName]; //TODO: rename after program name is finalized
 
         public LauncherIni(string? path = null) : base(path) { }
 

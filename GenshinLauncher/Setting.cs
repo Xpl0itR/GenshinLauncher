@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace GenshinLauncher
 {
-    public class RegistrySetting<T>
+    public class Setting<T>
     {
         public bool Updated { get; private set; }
 
@@ -18,7 +18,7 @@ namespace GenshinLauncher
         [DisallowNull, NotNull]
         private readonly T _defaultValue;
 
-        public RegistrySetting([AllowNull] T value, [DisallowNull] T defaultValue)
+        public Setting([AllowNull] T value, [DisallowNull] T defaultValue)
         {
             _value        = value;
             _defaultValue = defaultValue;
@@ -39,6 +39,6 @@ namespace GenshinLauncher
         public T Value => _value ?? _defaultValue;
 
         [return: NotNull]
-        public static implicit operator T(RegistrySetting<T> setting) => setting.Value;
+        public static implicit operator T(Setting<T> setting) => setting.Value;
     }
 }

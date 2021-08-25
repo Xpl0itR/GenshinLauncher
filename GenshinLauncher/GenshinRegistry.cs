@@ -16,14 +16,14 @@ namespace GenshinLauncher
         private const string ResolutionWidthKeyName  = "Screenmanager Resolution Width_h182942802";
         private const string MonitorIndexKeyName     = "UnitySelectMonitor_h17969598";
         private const string MiHoYoKeyName           = "Software\\miHoYo\\";
-        private const string GlobalReleaseKeyName    = MiHoYoKeyName + "Genshin Impact";
-        private const string ChinaReleaseKeyName     = MiHoYoKeyName + "原神";
+        private const string GenshinReleaseKeyName   = MiHoYoKeyName + "Genshin Impact";
+        private const string YuanshenReleaseKeyName  = MiHoYoKeyName + "原神";
 
         private readonly RegistryKey _genshinRegistryKey;
 
         public GenshinRegistry(bool writable, bool globalVersion)
         {
-            string keyName = globalVersion ? GlobalReleaseKeyName : ChinaReleaseKeyName;
+            string keyName = globalVersion ? GenshinReleaseKeyName : YuanshenReleaseKeyName;
             _genshinRegistryKey = Registry.CurrentUser.OpenSubKey(keyName, writable) ?? Registry.CurrentUser.CreateSubKey(keyName, writable);
         }
 

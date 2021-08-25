@@ -56,11 +56,11 @@ namespace GenshinLauncher.MiHoYoApi
             await response.Content.CopyToAsync(outStream, cancellationToken);
         }
 
-        public async Task<Content> GetContent(bool globalVersion, string language) =>
-            await GetData<Content>(await GetContentResponse(globalVersion, language));
+        public async Task<ContentJson> GetContent(bool globalVersion, string language) =>
+            await GetData<ContentJson>(await GetContentResponse(globalVersion, language));
 
-        public async Task<Resource> GetResource(bool globalVersion) =>
-            await GetData<Resource>(await GetResourceResponse(globalVersion));
+        public async Task<ResourceJson> GetResource(bool globalVersion) =>
+            await GetData<ResourceJson>(await GetResourceResponse(globalVersion));
 
         private Task<HttpResponseMessage> GetContentResponse(bool globalVersion, string language)
         {
@@ -89,14 +89,14 @@ namespace GenshinLauncher.MiHoYoApi
             return _httpClient.PostAsync(url, JsonContent.Create(json));
         }
 
-        private static async Task<T> GetData<T>(HttpResponseMessage response) where T : Data
+        private static async Task<T> GetData<T>(HttpResponseMessage response) where T : IDataJson
         {
             response.EnsureSuccessStatusCode();
 
-            ResponseJson<T>? resource = await response.Content.ReadFromJsonAsync<ResponseJson<T>>();
-            resource!.EnsureSuccessStatusCode();
+            ResponseJson<T>? responseJson = await response.Content.ReadFromJsonAsync<ResponseJson<T>>();
+            responseJson!.EnsureSuccessStatusCode();
 
-            return resource.Data;
+            return responseJson.Data;
         }
 
         public void Dispose()

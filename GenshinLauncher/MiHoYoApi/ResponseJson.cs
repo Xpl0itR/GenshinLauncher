@@ -10,9 +10,9 @@ using System.Text.Json.Serialization;
 #nullable disable
 namespace GenshinLauncher.MiHoYoApi
 {
-    public abstract record Data;
+    public interface IDataJson {}
 
-    public record ResponseJson<T> where T : Data
+    public record ResponseJson<T> where T : IDataJson
     {
         // ReSharper disable once StringLiteralTypo
         [JsonPropertyName("retcode")]

@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using GenshinLauncher.FileParsers;
 using GenshinLauncher.MiHoYoApi;
@@ -40,10 +41,10 @@ namespace GenshinLauncher
         public static string BackgroundMd5      { get; set; }
         public static string EntryPoint         { get; set; }
 
-        public static RegistrySetting<int?>  ResolutionWidth    { get; }
-        public static RegistrySetting<int?>  ResolutionHeight   { get; }
-        public static RegistrySetting<bool?> FullscreenMode     { get; }
-        public static RegistrySetting<int?>  MonitorIndex       { get; }
+        public static Setting<int?>  ResolutionWidth  { get; }
+        public static Setting<int?>  ResolutionHeight { get; }
+        public static Setting<bool?> FullscreenMode   { get; }
+        public static Setting<int?>  MonitorIndex     { get; }
 
         static Program()
         {
@@ -69,10 +70,10 @@ namespace GenshinLauncher
                 ? new GenshinRegistry(false, EntryPoint != ExeNameChina)
                 : null;
 
-            ResolutionWidth  = new RegistrySetting<int?>(genshinRegistry?.ResolutionWidth, 0);
-            ResolutionHeight = new RegistrySetting<int?>(genshinRegistry?.ResolutionHeight, 0);
-            FullscreenMode   = new RegistrySetting<bool?>(genshinRegistry?.FullscreenMode, true);
-            MonitorIndex     = new RegistrySetting<int?>(genshinRegistry?.MonitorIndex, 0);
+            ResolutionWidth  = new Setting<int?>(genshinRegistry?.ResolutionWidth, 0);
+            ResolutionHeight = new Setting<int?>(genshinRegistry?.ResolutionHeight, 0);
+            FullscreenMode   = new Setting<bool?>(genshinRegistry?.FullscreenMode, true);
+            MonitorIndex     = new Setting<int?>(genshinRegistry?.MonitorIndex, 0);
         }
 
         /// <summary>
@@ -182,18 +183,18 @@ namespace GenshinLauncher
 
         private static async void LoadAdditionalContentAsync()
         {
-            Content content  = await ApiClient.GetContent(EntryPoint != ExeNameChina, "en-us"); //TODO: load this from CultureInfo
-            string  bgName   = Path.GetFileName(content.Adv.Background);
+            ContentJson contentJson = await ApiClient.GetContent(EntryPoint != ExeNameChina, "en-us"); //TODO: load this from CultureInfo
+            string  bgName   = Path.GetFileName(contentJson.Adv.Background);
             string  bgPath   = Path.Combine(BgDirectory, bgName);
             Stream? bgStream = null;
 
             if (!File.Exists(bgPath))
             {
                 bgStream = new FileStream(bgPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, 4096, true);
-                await ApiClient.Download(content.Adv.Background, bgStream);
+                await ApiClient.Download(contentJson.Adv.Background, bgStream);
             }
 
-            BackgroundMd5 = content.Adv.BgChecksum;
+            BackgroundMd5 = contentJson.Adv.BgChecksum;
             BackgroundFileName = bgName;
 
             if (bgStream != null)
@@ -213,7 +214,8 @@ namespace GenshinLauncher
 
             await using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, true))
             {
-                while (!Utils.VerifyMd5(stream, package.Md5))
+                using MD5 md5Alg = MD5.Create();
+                while (!VerifyHash(stream, md5Alg, package.Md5))
                 {
                     stream.SetLength(0);
                     await ApiClient.Download(package.Path, stream);
@@ -228,6 +230,14 @@ namespace GenshinLauncher
             }
 
             File.Delete(filePath);
+        }
+
+        private static bool VerifyHash(Stream stream, HashAlgorithm hashAlgorithm, string expectedHash)
+        {
+            stream.Seek(0, SeekOrigin.Begin);
+            byte[] hash = hashAlgorithm.ComputeHash(stream);
+
+            return Convert.ToHexString(hash).Equals(expectedHash, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static bool? NullableStringEquals(string? value, string equals) =>
@@ -260,7 +270,7 @@ namespace GenshinLauncher
             }
         }
 
-        private static void ButtonLaunch_Click(object? sender, EventArgs args)
+        private static async void ButtonLaunch_Click(object? sender, EventArgs args)
         {
             SaveLauncherConfig();
 
@@ -276,7 +286,7 @@ namespace GenshinLauncher
 
             if (BorderlessMode)
             {
-                IntPtr hWnd = process.GetMainWindowHandle();
+                IntPtr hWnd = await process.GetMainWindowHandle();
 
                 Utils.RemoveWindowTitlebar(hWnd);
                 Utils.ResizeWindowToFillScreen(hWnd);
@@ -296,8 +306,8 @@ namespace GenshinLauncher
             MainWindow.ShowButtonLaunch();
             //MainWindow.ShowProgressBar();
 
-            Resource resource = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
-            Package  latest   = resource.Game.Latest;
+            ResourceJson resourceJson = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
+            Package      latest       = resourceJson.Game.Latest;
 
             await InstallPackage(latest);
 
