@@ -10,7 +10,9 @@ using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using GenshinLauncher.FileParsers;
 using GenshinLauncher.MiHoYoApi;
@@ -29,9 +31,11 @@ namespace GenshinLauncher
         private static readonly string          BgDirectory;
         private static readonly string          LauncherIniPath;
 
-        public  static string EntryPointPath  => Path.Combine(GameInstallDir, EntryPoint);
-        private static string BackgroundPath  => Path.Combine(BgDirectory, BackgroundFileName);
-        public  static bool   ValidEntryPoint => EntryPoint is ExeNameGlobal or ExeNameChina;
+        private static CancellationTokenSource? _cts;
+
+        public static string EntryPointPath  => Path.Combine(GameInstallDir, EntryPoint);
+        public static string BackgroundPath  => Path.Combine(BgDirectory, BackgroundFileName);
+        public static bool   ValidEntryPoint => EntryPoint is ExeNameGlobal or ExeNameChina;
 
         public static bool   CloseToTray        { get; set; }
         public static bool   BorderlessMode     { get; set; }
@@ -123,6 +127,7 @@ namespace GenshinLauncher
             MainWindow.NumericMonitorIndexValueChanged    += NumericMonitorIndex_ValueChanged;
             MainWindow.CheckBoxCloseToTrayCheckedChanged  += CheckBoxCloseToTray_CheckedChanged;
             MainWindow.CheckBoxExitOnLaunchCheckedChanged += CheckBoxExitOnLaunch_CheckedChanged;
+            MainWindow.ButtonStopDownloadClick            += (_, _) => _cts?.Cancel();
 
             if (!File.Exists(EntryPointPath))
             {
@@ -150,9 +155,9 @@ namespace GenshinLauncher
             ini.GameDynamicBgName = BackgroundFileName;
             ini.GameDynamicBgMd5  = BackgroundMd5;
             ini.GameStartName     = EntryPoint;
-            ini.ExitType          = CloseToTray ? "1" : "2";
+            ini.ExitType          = CloseToTray    ? "1" : "2";
             ini.BorderlessMode    = BorderlessMode ? "true" : "false";
-            ini.ExitOnLaunch      = ExitOnLaunch ? "true" : "false";
+            ini.ExitOnLaunch      = ExitOnLaunch   ? "true" : "false";
             ini.WriteFile(LauncherIniPath);
 
             if (ValidEntryPoint)
@@ -207,37 +212,52 @@ namespace GenshinLauncher
             SaveLauncherConfig();
         }
 
-        private static async Task InstallPackage(Package package)
+        private static async Task InstallPackage(Package package, string installDir, IProgress<double>? progress, CancellationToken cancellationToken)
         {
             string fileName = Path.GetFileName(package.Path);
             string filePath = Path.Combine(GameInstallDir, fileName + "_tmp");
 
-            await using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096, true))
+            await using (FileStream fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, Utils.DefaultFileStreamBufferSize, true))
             {
                 using MD5 md5Alg = MD5.Create();
-                while (!VerifyHash(stream, md5Alg, package.Md5))
+
+                if (fileStream.Length > 0)
                 {
-                    stream.SetLength(0);
-                    await ApiClient.Download(package.Path, stream);
+                    MainWindow.LabelProgressBarDownloadTitleText = "Hashing existing parts...";
+
+                    await md5Alg.HashStreamAsync(fileStream, progress, cancellationToken, doFinal: false);
                 }
 
-                using ZipArchive zip = new ZipArchive(stream, ZipArchiveMode.Read);
-
-                foreach (ZipArchiveEntry entry in zip.Entries)
+                byte[]? hash;
+                if (fileStream.Length == long.Parse(package.Size))
                 {
-                    entry.ExtractRelativeToDirectory(GameInstallDir, true);
+                    md5Alg.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+                    hash = md5Alg.Hash;
                 }
+                else
+                {
+                    MainWindow.LabelProgressBarDownloadTitleText = "Downloading...";
+
+                    RangeHeaderValue range = new RangeHeaderValue(fileStream.Position, null);
+                    await ApiClient.Download(package.Path, fileStream, range, md5Alg, progress, cancellationToken);
+                    hash = md5Alg.Hash;
+                }
+
+                while (!Convert.ToHexString(hash!).Equals(package.Md5, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    MainWindow.LabelProgressBarDownloadTitleText = "Hash mismatch! Re-downloading...";
+                    fileStream.SetLength(0);
+
+                    await ApiClient.Download(package.Path, fileStream, null, md5Alg, progress, cancellationToken);
+                    hash = md5Alg.Hash;
+                }
+
+                MainWindow.LabelProgressBarDownloadTitleText = "Extracting...";
+                using ZipArchive zip = new ZipArchive(fileStream, ZipArchiveMode.Read);
+                zip.ExtractToDirectory(installDir);
             }
 
             File.Delete(filePath);
-        }
-
-        private static bool VerifyHash(Stream stream, HashAlgorithm hashAlgorithm, string expectedHash)
-        {
-            stream.Seek(0, SeekOrigin.Begin);
-            byte[] hash = hashAlgorithm.ComputeHash(stream);
-
-            return Convert.ToHexString(hash).Equals(expectedHash, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static bool? NullableStringEquals(string? value, string equals) =>
@@ -302,25 +322,37 @@ namespace GenshinLauncher
         {
             SaveLauncherConfig();
 
-            MainWindow.ButtonLaunchEnabled = false;
-            MainWindow.ShowButtonLaunch();
-            //MainWindow.ShowProgressBar();
-
+            MainWindow.ShowProgressBar();
+            MainWindow.SetProgressBarDownloadStyleMarquee();
+            MainWindow.LabelProgressBarDownloadTitleText = "Fetching manifest...";
             ResourceJson resourceJson = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
             Package      latest       = resourceJson.Game.Latest;
 
-            await InstallPackage(latest);
+            _cts?.Dispose();
+            _cts = new CancellationTokenSource();
+            Progress<double> progress = new Progress<double>(Progress_Changed);
 
-            string gameIniPath = Path.Combine(GameInstallDir, "config.ini");
-            GameIni ini = File.Exists(gameIniPath)
-                ? new GameIni(gameIniPath)
-                : new GameIni();
+            try
+            {
+                MainWindow.SetProgressBarDownloadStyleBlock();
+                await InstallPackage(latest, GameInstallDir, progress, _cts.Token);
 
-            ini.GameVersion = latest.Version;
-            ini.WriteFile(gameIniPath);
+                string gameIniPath = Path.Combine(GameInstallDir, "config.ini");
+                GameIni ini = File.Exists(gameIniPath)
+                    ? new GameIni(gameIniPath)
+                    : new GameIni();
 
+                ini.GameVersion = latest.Version;
+                ini.WriteFile(gameIniPath);
+
+                MainWindow.ShowButtonLaunch();
+            }
+            catch (TaskCanceledException) { }
+
+            MainWindow.ProgressBarDownloadValue  = 0;
+            MainWindow.LabelProgressBarDownloadTitleText = string.Empty;
+            MainWindow.LabelProgressBarDownloadText      = string.Empty;
             MainWindow.ShowInstallPath();
-            MainWindow.ButtonLaunchEnabled = true;
         }
 
         private static void ButtonUseScreenResolution_Click(object? sender, EventArgs args)
@@ -371,6 +403,12 @@ namespace GenshinLauncher
         private static void CheckBoxExitOnLaunch_CheckedChanged(object? sender, EventArgs args)
         {
             ExitOnLaunch = MainWindow.CheckBoxExitOnLaunchChecked;
+        }
+
+        private static void Progress_Changed(double decimalPercentage)
+        {
+            MainWindow.ProgressBarDownloadValue = (int)(decimalPercentage * int.MaxValue);
+            MainWindow.LabelProgressBarDownloadText     = $"{(int)(decimalPercentage / int.MaxValue * 100)}%";
         }
     }
 }

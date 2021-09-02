@@ -14,6 +14,7 @@ namespace GenshinLauncher.Ui.Common
         event EventHandler<string> GameDirectoryUpdate;
         event EventHandler         ButtonLaunchClick;
         event EventHandler         ButtonDownloadClick;
+        event EventHandler         ButtonStopDownloadClick;
         event EventHandler         ButtonUseScreenResolutionClick;
         event EventHandler         NumericWindowHeightValueChanged;
         event EventHandler         NumericWindowWidthValueChanged;
@@ -22,19 +23,21 @@ namespace GenshinLauncher.Ui.Common
         event EventHandler         CheckBoxExitOnLaunchCheckedChanged;
         event EventHandler         WindowModeCheckedChanged;
 
-        Image  BackgroundImage                 { get; set; }
-        bool   ButtonLaunchEnabled             { get; set; }
-        bool   GroupBoxSettingsEnabled         { get; set; }
-        bool   CheckBoxCloseToTrayChecked      { get; set; }
-        bool   CheckBoxExitOnLaunchChecked     { get; set; }
-        bool   RadioButtonFullscreenChecked    { get; set; }
-        bool   RadioButtonBorderlessChecked    { get; set; }
-        bool   RadioButtonWindowedChecked      { get; set; }
-        bool   RadioButtonGlobalVersionChecked { get; set; }
-        int    NumericMonitorIndexValue        { get; set; }
-        int    NumericWindowHeightValue        { get; set; }
-        int    NumericWindowWidthValue         { get; set; }
-        string TextBoxGameDirText              { get; set; }
+        Image  BackgroundImage                   { get; set; }
+        bool   CheckBoxCloseToTrayChecked        { get; set; }
+        bool   CheckBoxExitOnLaunchChecked       { get; set; }
+        bool   GroupBoxSettingsEnabled           { get; set; }
+        bool   RadioButtonFullscreenChecked      { get; set; }
+        bool   RadioButtonBorderlessChecked      { get; set; }
+        bool   RadioButtonWindowedChecked        { get; set; }
+        bool   RadioButtonGlobalVersionChecked   { get; set; }
+        int    NumericMonitorIndexValue          { get; set; }
+        int    NumericWindowHeightValue          { get; set; }
+        int    NumericWindowWidthValue           { get; set; }
+        int    ProgressBarDownloadValue          { get; set; }
+        string LabelProgressBarDownloadTitleText { get; set; }
+        string LabelProgressBarDownloadText      { get; set; }
+        string TextBoxGameDirText                { get; set; }
 
         Rectangle GetCurrentScreenBounds();
         void      ShowErrorProcessAlreadyRunning();
@@ -42,5 +45,7 @@ namespace GenshinLauncher.Ui.Common
         void      ShowButtonDownload();
         void      ShowProgressBar();
         void      ShowInstallPath();
+        void      SetProgressBarDownloadStyleBlock();
+        void      SetProgressBarDownloadStyleMarquee();
     }
 }

@@ -7,7 +7,9 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -48,12 +50,16 @@ namespace GenshinLauncher.MiHoYoApi
             };
         }
 
-        public async Task Download(string url, Stream outStream, CancellationToken cancellationToken = default)
+        public async Task Download(string url, Stream outStream, RangeHeaderValue? range = null, HashAlgorithm? hashAlgorithm = null, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Range = range;
+
+            HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            await response.Content.CopyToAsync(outStream, cancellationToken);
+            await using Stream contentStream = await response.Content.OpenStreamAsync(cancellationToken);
+            await contentStream.CopyToAsync(outStream, hashAlgorithm, progress, cancellationToken);
         }
 
         public async Task<ContentJson> GetContent(bool globalVersion, string language) =>

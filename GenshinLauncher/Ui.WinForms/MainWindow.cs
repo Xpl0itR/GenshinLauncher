@@ -36,6 +36,12 @@ namespace GenshinLauncher.Ui.WinForms
             remove => _buttonDownload.Click -= value;
         }
 
+        public event EventHandler ButtonStopDownloadClick
+        {
+            add    => _buttonStopDownload.Click += value;
+            remove => _buttonStopDownload.Click -= value;
+        }
+
         public event EventHandler ButtonUseScreenResolutionClick
         {
             add    => _buttonUseScreenResolution.Click += value;
@@ -91,18 +97,6 @@ namespace GenshinLauncher.Ui.WinForms
         #endregion
 
         #region Properties
-        public bool ButtonLaunchEnabled
-        {
-            get => _buttonLaunch.Enabled;
-            set => _buttonLaunch.Enabled = value;
-        }
-
-        public bool GroupBoxSettingsEnabled
-        {
-            get => _groupBoxSettings.Enabled;
-            set => _groupBoxSettings.Enabled = value;
-        }
-
         public bool CheckBoxCloseToTrayChecked
         {
             get => _checkBoxCloseToTray.Checked;
@@ -113,6 +107,12 @@ namespace GenshinLauncher.Ui.WinForms
         {
             get => _checkBoxExitOnLaunch.Checked;
             set => _checkBoxExitOnLaunch.Checked = value;
+        }
+
+        public bool GroupBoxSettingsEnabled
+        {
+            get => _groupBoxSettings.Enabled;
+            set => _groupBoxSettings.Enabled = value;
         }
 
         public bool RadioButtonFullscreenChecked
@@ -155,6 +155,24 @@ namespace GenshinLauncher.Ui.WinForms
         {
             get => (int)_numericWindowWidth.Value;
             set => _numericWindowWidth.Value = value;
+        }
+
+        public int ProgressBarDownloadValue
+        {
+            get => _progressBarDownload.Value;
+            set => _progressBarDownload.Value = value;
+        }
+
+        public string LabelProgressBarDownloadTitleText
+        {
+            get => _labelProgressBarTitle.Text;
+            set => _labelProgressBarTitle.Text = value;
+        }
+
+        public string LabelProgressBarDownloadText
+        {
+            get => _labelProgressBarText.Text;
+            set => _labelProgressBarText.Text = value;
         }
 
         public string TextBoxGameDirText
@@ -201,6 +219,7 @@ namespace GenshinLauncher.Ui.WinForms
         {
             _textBoxInstallDir.Hide();
             _buttonInstallDirectory.Hide();
+            _buttonStopDownload.Show();
             _labelProgressBarTitle.Show();
             _progressBarDownload.Show();
             _labelProgressBarText.Show();
@@ -210,10 +229,17 @@ namespace GenshinLauncher.Ui.WinForms
         {
             _textBoxInstallDir.Show();
             _buttonInstallDirectory.Show();
+            _buttonStopDownload.Hide();
             _labelProgressBarTitle.Hide();
             _progressBarDownload.Hide();
             _labelProgressBarText.Hide();
         }
+
+        public void SetProgressBarDownloadStyleBlock() =>
+            _progressBarDownload.Style = ProgressBarStyle.Blocks;
+
+        public void SetProgressBarDownloadStyleMarquee() =>
+            _progressBarDownload.Style = ProgressBarStyle.Marquee;
 
         private void UnHideMainWindow()
         {

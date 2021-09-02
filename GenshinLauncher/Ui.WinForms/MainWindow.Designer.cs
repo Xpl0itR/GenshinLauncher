@@ -64,6 +64,7 @@ namespace GenshinLauncher.Ui.WinForms
             this._progressBarDownload = new System.Windows.Forms.ProgressBar();
             this._labelProgressBarText = new DarkUI.Controls.DarkLabel();
             this._labelProgressBarTitle = new DarkUI.Controls.DarkLabel();
+            this._buttonStopDownload = new DarkUI.Controls.DarkButton();
             this._trayMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._numericWindowWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._numericWindowHeight)).BeginInit();
@@ -265,6 +266,8 @@ namespace GenshinLauncher.Ui.WinForms
             // _progressBarDownload
             // 
             resources.ApplyResources(this._progressBarDownload, "_progressBarDownload");
+            this._progressBarDownload.MarqueeAnimationSpeed = 1;
+            this._progressBarDownload.Maximum = int.MaxValue;
             this._progressBarDownload.Name = "_progressBarDownload";
             // 
             // _labelProgressBarText
@@ -279,11 +282,17 @@ namespace GenshinLauncher.Ui.WinForms
             this._labelProgressBarTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this._labelProgressBarTitle.Name = "_labelProgressBarTitle";
             // 
+            // _buttonStopDownload
+            // 
+            resources.ApplyResources(this._buttonStopDownload, "_buttonStopDownload");
+            this._buttonStopDownload.Name = "_buttonStopDownload";
+            // 
             // MainWindow
             // 
             this.AcceptButton = this._buttonLaunch;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.Controls.Add(this._buttonStopDownload);
             this.Controls.Add(this._labelProgressBarTitle);
             this.Controls.Add(this._labelProgressBarText);
             this.Controls.Add(this._progressBarDownload);
@@ -345,5 +354,6 @@ namespace GenshinLauncher.Ui.WinForms
         private ProgressBar _progressBarDownload;
         private DarkLabel _labelProgressBarText;
         private DarkLabel _labelProgressBarTitle;
+        private DarkButton _buttonStopDownload;
     }
 }
