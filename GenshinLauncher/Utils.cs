@@ -7,12 +7,11 @@
 using System;
 using System.Buffers;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,19 +20,7 @@ namespace GenshinLauncher
 {
     public static class Utils
     {
-        public const int DefaultFileStreamBufferSize = 4096;
-        
-        private static MethodInfo? _extractRelativeToDirectory;
-
-        [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicMethods, "System.IO.Compression.ZipFileExtensions", "System.IO.Compression.ZipFile")]
-        public static void ExtractToDirectory(this ZipArchive zipArchive, string destination)
-        {
-            foreach (ZipArchiveEntry entry in zipArchive.Entries)
-            {
-                _extractRelativeToDirectory ??= typeof(ZipFileExtensions).GetMethod("ExtractRelativeToDirectory", BindingFlags.NonPublic | BindingFlags.Static)!;
-                _extractRelativeToDirectory.Invoke(null, new object[] { entry, destination, true });
-            }
-        }
+        public const int DefaultFileStreamBufferSize = 0x1000;
 
         public static async Task<IntPtr> GetMainWindowHandle(this Process process)
         {
@@ -72,52 +59,82 @@ namespace GenshinLauncher
 
         public static async Task CopyToAsync(this Stream inStream, Stream outStream, HashAlgorithm? hashAlgorithm = null, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
         {
-            await inStream.IterateAsync((buffer, bytesRead) =>
+            Task HashAndWrite(byte[] buffer, int bytesRead)
             {
                 hashAlgorithm?.TransformBlock(buffer, 0, bytesRead, null, 0);
                 return outStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
-            }, progress, cancellationToken);
+            }
+
+            await (progress == null
+                ? inStream.IterateAsync(HashAndWrite, cancellationToken)
+                : inStream.IterateAsync(HashAndWrite, progress, cancellationToken));
 
             hashAlgorithm?.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
         }
 
         public static async Task HashStreamAsync(this HashAlgorithm hashAlgorithm, Stream inStream, IProgress<double>? progress = null, CancellationToken cancellationToken = default, bool doFinal = true)
         {
-            await inStream.IterateAsync((buffer, bytesRead) =>
+            Task Hash(byte[] buffer, int bytesRead)
             {
                 hashAlgorithm.TransformBlock(buffer, 0, bytesRead, null, 0);
                 return Task.CompletedTask;
-            }, progress, cancellationToken);
-            
+            }
+
+            await (progress == null 
+                ? inStream.IterateAsync(Hash, cancellationToken) 
+                : inStream.IterateAsync(Hash, progress, cancellationToken));
+
             if (doFinal)
             {
                 hashAlgorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
             }
         }
 
-        public static async Task IterateAsync(this Stream stream, Func<byte[], int, Task> func, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
+        public static async Task ExtractToDirectory(this ZipArchive zipArchive, string destinationPath, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
         {
-            long   totalBytes     = progress == null ? 0 : stream.Length;
-            double totalBytesRead = 0;
+            destinationPath = Directory.CreateDirectory(destinationPath).FullName;
+            long   uncompressedLength = progress == null ? 0 : zipArchive.Entries.Aggregate(0L, (current, entry) => current + entry.Length);
+            double decompressedLength = 0;
 
-            byte[] buffer = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
-            try
+            foreach (ZipArchiveEntry entry in zipArchive.Entries)
             {
-                int bytesRead;
-                while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
+                cancellationToken.ThrowIfCancellationRequested();
+
+                string entryPath = Path.GetFullPath(Path.Combine(destinationPath, entry.FullName));
+
+                if (!entryPath.StartsWith(destinationPath, StringComparison.OrdinalIgnoreCase))
                 {
-                    await func(buffer, bytesRead);
-
-                    if (progress != null)
-                    {
-                        totalBytesRead += bytesRead;
-                        progress.Report(totalBytesRead / totalBytes);
-                    }
+                    throw new IOException("Zip entry path is outside the destination directory");
                 }
-            }
-            finally
-            {
-                ArrayPool<byte>.Shared.Return(buffer);
+
+                if (entry.Name == string.Empty)
+                {
+                    if (entry.Length > 0)
+                    {
+                        throw new IOException("Zip entry is supposed to be a folder but contains data");
+                    }
+
+                    Directory.CreateDirectory(entryPath);
+                }
+                else
+                {
+                    await using (Stream outStream   = new FileStream(entryPath, FileMode.Create, FileAccess.Write, FileShare.None, DefaultFileStreamBufferSize, true))
+                    await using (Stream entryStream = entry.Open())
+                    {
+                        await entryStream.IterateAsync((buffer, bytesRead) =>
+                        {
+                            if (progress != null)
+                            {
+                                decompressedLength += bytesRead;
+                                progress.Report(decompressedLength / uncompressedLength);
+                            }
+
+                            return outStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
+                        }, cancellationToken);
+                    }
+
+                    File.SetLastWriteTime(entryPath, entry.LastWriteTime.DateTime);
+                }
             }
         }
 
@@ -131,6 +148,37 @@ namespace GenshinLauncher
             catch (Exception exception) when (exception is ArgumentNullException or IOException)
             {
                 return false;
+            }
+        }
+
+        private static Task IterateAsync(this Stream stream, Func<byte[], int, Task> func, IProgress<double> progress, CancellationToken cancellationToken = default)
+        {
+            long   totalBytes     = stream.Length;
+            double totalBytesRead = 0;
+
+            return stream.IterateAsync((buffer, bytesRead) =>
+            {
+                totalBytesRead += bytesRead;
+                progress.Report(totalBytesRead / totalBytes);
+
+                return func(buffer, bytesRead);
+            }, cancellationToken);
+        }
+
+        private static async Task IterateAsync(this Stream stream, Func<byte[], int, Task> func, CancellationToken cancellationToken = default)
+        {
+            byte[] buffer = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
+            try
+            {
+                int bytesRead;
+                while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
+                {
+                    await func(buffer, bytesRead);
+                }
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
             }
         }
     }

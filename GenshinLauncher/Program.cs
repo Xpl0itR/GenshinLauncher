@@ -195,7 +195,7 @@ namespace GenshinLauncher
 
             if (!File.Exists(bgPath))
             {
-                bgStream = new FileStream(bgPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, 4096, true);
+                bgStream = new FileStream(bgPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, Utils.DefaultFileStreamBufferSize, true);
                 await ApiClient.Download(contentJson.Adv.Background, bgStream);
             }
 
@@ -254,7 +254,7 @@ namespace GenshinLauncher
 
                 MainWindow.LabelProgressBarDownloadTitleText = "Extracting...";
                 using ZipArchive zip = new ZipArchive(fileStream, ZipArchiveMode.Read);
-                zip.ExtractToDirectory(installDir);
+                await zip.ExtractToDirectory(installDir, progress, cancellationToken);
             }
 
             File.Delete(filePath);
@@ -407,8 +407,8 @@ namespace GenshinLauncher
 
         private static void Progress_Changed(double decimalPercentage)
         {
-            MainWindow.ProgressBarDownloadValue = (int)(decimalPercentage * int.MaxValue);
-            MainWindow.LabelProgressBarDownloadText     = $"{(int)(decimalPercentage / int.MaxValue * 100)}%";
+            MainWindow.ProgressBarDownloadValue     = (int)(decimalPercentage * int.MaxValue);
+            MainWindow.LabelProgressBarDownloadText = $"{(int)(decimalPercentage * 100)}%";
         }
     }
 }
