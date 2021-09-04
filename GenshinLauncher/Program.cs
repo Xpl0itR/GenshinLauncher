@@ -30,6 +30,7 @@ namespace GenshinLauncher
         private static readonly MiHoYoApiClient ApiClient;
         private static readonly string          BgDirectory;
         private static readonly string          LauncherIniPath;
+        private static readonly SemaphoreSlim   InstallerSemaphore;
 
         private static CancellationTokenSource? _cts;
 
@@ -52,11 +53,12 @@ namespace GenshinLauncher
 
         static Program()
         {
-            Ui              = new Ui.WinForms.UserInterface();
-            MainWindow      = new Ui.WinForms.MainWindow();
-            ApiClient       = new MiHoYoApiClient();
-            BgDirectory     = Path.Combine(AppContext.BaseDirectory, "bg");
-            LauncherIniPath = Path.Combine(AppContext.BaseDirectory, "config.ini");
+            Ui                 = new Ui.WinForms.UserInterface();
+            MainWindow         = new Ui.WinForms.MainWindow();
+            ApiClient          = new MiHoYoApiClient();
+            BgDirectory        = Path.Combine(AppContext.BaseDirectory, "bg");
+            LauncherIniPath    = Path.Combine(AppContext.BaseDirectory, "config.ini");
+            InstallerSemaphore = new SemaphoreSlim(1);
 
             LauncherIni ini = File.Exists(LauncherIniPath)
                 ? new LauncherIni(LauncherIniPath)
@@ -122,6 +124,7 @@ namespace GenshinLauncher
             MainWindow.GameDirectoryUpdate                += GameDirectoryUpdated;
             MainWindow.ButtonLaunchClick                  += ButtonLaunch_Click;
             MainWindow.ButtonDownloadClick                += ButtonDownload_Click;
+            MainWindow.ButtonInstallDirectXClick          += ButtonInstallDirectX_Click;
             MainWindow.ButtonUseScreenResolutionClick     += ButtonUseScreenResolution_Click;
             MainWindow.WindowModeCheckedChanged           += WindowMode_CheckedChanged;
             MainWindow.NumericMonitorIndexValueChanged    += NumericMonitorIndex_ValueChanged;
@@ -212,10 +215,14 @@ namespace GenshinLauncher
             SaveLauncherConfig();
         }
 
-        private static async Task InstallPackage(Package package, string installDir, IProgress<double>? progress, CancellationToken cancellationToken)
+        private static async Task InstallPackage(Package package, string installDir)
         {
+            _cts?.Dispose();
+            _cts = new CancellationTokenSource();
+            Progress<double> progress = new Progress<double>(Progress_Changed);
+
             string fileName = Path.GetFileName(package.Path);
-            string filePath = Path.Combine(GameInstallDir, fileName + "_tmp");
+            string filePath = Path.Combine(installDir, fileName + "_tmp");
 
             await using (FileStream fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, Utils.DefaultFileStreamBufferSize, true))
             {
@@ -225,7 +232,7 @@ namespace GenshinLauncher
                 {
                     MainWindow.LabelProgressBarDownloadTitleText = "Hashing existing parts...";
 
-                    await md5Alg.HashStreamAsync(fileStream, progress, cancellationToken, doFinal: false);
+                    await md5Alg.HashStreamAsync(fileStream, progress, _cts.Token, doFinal: false);
                 }
 
                 byte[]? hash;
@@ -239,7 +246,7 @@ namespace GenshinLauncher
                     MainWindow.LabelProgressBarDownloadTitleText = "Downloading...";
 
                     RangeHeaderValue range = new RangeHeaderValue(fileStream.Position, null);
-                    await ApiClient.Download(package.Path, fileStream, range, md5Alg, progress, cancellationToken);
+                    await ApiClient.Download(package.Path, fileStream, range, md5Alg, progress, _cts.Token);
                     hash = md5Alg.Hash;
                 }
 
@@ -248,13 +255,13 @@ namespace GenshinLauncher
                     MainWindow.LabelProgressBarDownloadTitleText = "Hash mismatch! Re-downloading...";
                     fileStream.SetLength(0);
 
-                    await ApiClient.Download(package.Path, fileStream, null, md5Alg, progress, cancellationToken);
+                    await ApiClient.Download(package.Path, fileStream, null, md5Alg, progress, _cts.Token);
                     hash = md5Alg.Hash;
                 }
 
                 MainWindow.LabelProgressBarDownloadTitleText = "Extracting...";
                 using ZipArchive zip = new ZipArchive(fileStream, ZipArchiveMode.Read);
-                await zip.ExtractToDirectory(installDir, progress, cancellationToken);
+                await zip.ExtractToDirectory(installDir, progress, _cts.Token);
             }
 
             File.Delete(filePath);
@@ -322,37 +329,77 @@ namespace GenshinLauncher
         {
             SaveLauncherConfig();
 
-            MainWindow.ShowProgressBar();
-            MainWindow.SetProgressBarDownloadStyleMarquee();
-            MainWindow.LabelProgressBarDownloadTitleText = "Fetching manifest...";
-            ResourceJson resourceJson = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
-            Package      latest       = resourceJson.Game.Latest;
+            MainWindow.ButtonDownloadEnabled = false;
+            await InstallerSemaphore.WaitAsync();
+            try
+            {
+                MainWindow.ShowProgressBar();
+                MainWindow.SetProgressBarDownloadStyleMarquee();
+                MainWindow.LabelProgressBarDownloadTitleText = "Fetching manifest...";
+                ResourceJson resourceJson = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
+                Package      latest       = resourceJson.Game.Latest;
 
-            _cts?.Dispose();
-            _cts = new CancellationTokenSource();
-            Progress<double> progress = new Progress<double>(Progress_Changed);
+                try
+                {
+                    MainWindow.SetProgressBarDownloadStyleBlock();
+                    await InstallPackage(latest, GameInstallDir);
+
+                    string gameIniPath = Path.Combine(GameInstallDir, "config.ini");
+                    GameIni ini = File.Exists(gameIniPath)
+                        ? new GameIni(gameIniPath)
+                        : new GameIni();
+
+                    ini.GameVersion = latest.Version;
+                    ini.WriteFile(gameIniPath);
+
+                    MainWindow.ShowButtonLaunch();
+                }
+                catch (TaskCanceledException) { }
+
+                MainWindow.ProgressBarDownloadValue          = 0;
+                MainWindow.LabelProgressBarDownloadTitleText = string.Empty;
+                MainWindow.LabelProgressBarDownloadText      = string.Empty;
+                MainWindow.ShowInstallPath();
+            }
+            finally
+            {
+                InstallerSemaphore.Release(1);
+                MainWindow.ButtonDownloadEnabled = true;
+            }
+        }
+
+        private static async void ButtonInstallDirectX_Click(object? sender, EventArgs args)
+        {
+            MainWindow.ButtonInstallDirectXEnabled = false;
+            await InstallerSemaphore.WaitAsync();
 
             try
             {
-                MainWindow.SetProgressBarDownloadStyleBlock();
-                await InstallPackage(latest, GameInstallDir, progress, _cts.Token);
+                MainWindow.ShowProgressBar();
+                MainWindow.SetProgressBarDownloadStyleMarquee();
+                MainWindow.LabelProgressBarDownloadTitleText = "Fetching manifest...";
+                ResourceJson resourceJson = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
+                Package      directX      = resourceJson.Plugin.Plugins.First(package => package.Name == "DXSETUP.zip");
 
-                string gameIniPath = Path.Combine(GameInstallDir, "config.ini");
-                GameIni ini = File.Exists(gameIniPath)
-                    ? new GameIni(gameIniPath)
-                    : new GameIni();
+                try
+                {
+                    MainWindow.SetProgressBarDownloadStyleBlock();
+                    await InstallPackage(directX, AppContext.BaseDirectory);
 
-                ini.GameVersion = latest.Version;
-                ini.WriteFile(gameIniPath);
+                    Process.Start(Path.Combine(AppContext.BaseDirectory, "DXSETUP", "DXSETUP.exe"));
+                }
+                catch (TaskCanceledException) { }
 
-                MainWindow.ShowButtonLaunch();
+                MainWindow.ProgressBarDownloadValue          = 0;
+                MainWindow.LabelProgressBarDownloadTitleText = string.Empty;
+                MainWindow.LabelProgressBarDownloadText      = string.Empty;
+                MainWindow.ShowInstallPath();
             }
-            catch (TaskCanceledException) { }
-
-            MainWindow.ProgressBarDownloadValue  = 0;
-            MainWindow.LabelProgressBarDownloadTitleText = string.Empty;
-            MainWindow.LabelProgressBarDownloadText      = string.Empty;
-            MainWindow.ShowInstallPath();
+            finally
+            {
+                InstallerSemaphore.Release(1);
+                MainWindow.ButtonInstallDirectXEnabled = true;
+            }
         }
 
         private static void ButtonUseScreenResolution_Click(object? sender, EventArgs args)

@@ -1,4 +1,4 @@
-﻿// Copyright © 2021 Xpl0itR
+// Copyright © 2021 Xpl0itR
 //
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -151,7 +151,7 @@ namespace GenshinLauncher
             }
         }
 
-        private static Task IterateAsync(this Stream stream, Func<byte[], int, Task> func, IProgress<double> progress, CancellationToken cancellationToken = default)
+        private static Task IterateAsync(this Stream stream, Func<byte[], int, Task> func, IProgress<double> progress, CancellationToken cancellationToken)
         {
             long   totalBytes     = stream.Length;
             double totalBytesRead = 0;
@@ -165,7 +165,7 @@ namespace GenshinLauncher
             }, cancellationToken);
         }
 
-        private static async Task IterateAsync(this Stream stream, Func<byte[], int, Task> func, CancellationToken cancellationToken = default)
+        private static async Task IterateAsync(this Stream stream, Func<byte[], int, Task> func, CancellationToken cancellationToken)
         {
             byte[] buffer = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
             try

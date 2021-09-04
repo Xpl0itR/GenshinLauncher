@@ -42,6 +42,12 @@ namespace GenshinLauncher.Ui.WinForms
             remove => _buttonStopDownload.Click -= value;
         }
 
+        public event EventHandler ButtonInstallDirectXClick
+        {
+            add    => _buttonInstallDirectX.Click += value;
+            remove => _buttonInstallDirectX.Click -= value;
+        }
+
         public event EventHandler ButtonUseScreenResolutionClick
         {
             add    => _buttonUseScreenResolution.Click += value;
@@ -97,6 +103,18 @@ namespace GenshinLauncher.Ui.WinForms
         #endregion
 
         #region Properties
+        public bool ButtonDownloadEnabled
+        {
+            get => _buttonDownload.Enabled;
+            set => _buttonDownload.Enabled = value;
+        }
+
+        public bool ButtonInstallDirectXEnabled
+        {
+            get => _buttonInstallDirectX.Enabled;
+            set => _buttonInstallDirectX.Enabled = value;
+        }
+
         public bool CheckBoxCloseToTrayChecked
         {
             get => _checkBoxCloseToTray.Checked;

@@ -65,6 +65,7 @@ namespace GenshinLauncher.Ui.WinForms
             this._labelProgressBarText = new DarkUI.Controls.DarkLabel();
             this._labelProgressBarTitle = new DarkUI.Controls.DarkLabel();
             this._buttonStopDownload = new DarkUI.Controls.DarkButton();
+            this._buttonInstallDirectX = new DarkUI.Controls.DarkButton();
             this._trayMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._numericWindowWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._numericWindowHeight)).BeginInit();
@@ -287,11 +288,17 @@ namespace GenshinLauncher.Ui.WinForms
             resources.ApplyResources(this._buttonStopDownload, "_buttonStopDownload");
             this._buttonStopDownload.Name = "_buttonStopDownload";
             // 
+            // _buttonInstallDirectX
+            // 
+            resources.ApplyResources(this._buttonInstallDirectX, "_buttonInstallDirectX");
+            this._buttonInstallDirectX.Name = "_buttonInstallDirectX";
+            // 
             // MainWindow
             // 
             this.AcceptButton = this._buttonLaunch;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.Controls.Add(this._buttonInstallDirectX);
             this.Controls.Add(this._buttonStopDownload);
             this.Controls.Add(this._labelProgressBarTitle);
             this.Controls.Add(this._labelProgressBarText);
@@ -355,5 +362,6 @@ namespace GenshinLauncher.Ui.WinForms
         private DarkLabel _labelProgressBarText;
         private DarkLabel _labelProgressBarTitle;
         private DarkButton _buttonStopDownload;
+        private DarkButton _buttonInstallDirectX;
     }
 }

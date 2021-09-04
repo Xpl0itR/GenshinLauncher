@@ -15,6 +15,7 @@ namespace GenshinLauncher.Ui.Common
         event EventHandler         ButtonLaunchClick;
         event EventHandler         ButtonDownloadClick;
         event EventHandler         ButtonStopDownloadClick;
+        event EventHandler         ButtonInstallDirectXClick;
         event EventHandler         ButtonUseScreenResolutionClick;
         event EventHandler         NumericWindowHeightValueChanged;
         event EventHandler         NumericWindowWidthValueChanged;
@@ -24,6 +25,8 @@ namespace GenshinLauncher.Ui.Common
         event EventHandler         WindowModeCheckedChanged;
 
         Image  BackgroundImage                   { get; set; }
+        bool   ButtonDownloadEnabled             { get; set; }
+        bool   ButtonInstallDirectXEnabled       { get; set; }
         bool   CheckBoxCloseToTrayChecked        { get; set; }
         bool   CheckBoxExitOnLaunchChecked       { get; set; }
         bool   GroupBoxSettingsEnabled           { get; set; }
