@@ -88,10 +88,12 @@ namespace GenshinLauncher
         [STAThread]
         public static void Main()
         {
+            MainWindow.Components                  = Components.InstallDirOptions | Components.ButtonDirectX;
             MainWindow.CheckBoxCloseToTrayChecked  = CloseToTray;
             MainWindow.CheckBoxExitOnLaunchChecked = ExitOnLaunch;
             MainWindow.TextBoxGameDirText          = GameInstallDir;
             MainWindow.NumericMonitorIndexValue    = (int)MonitorIndex;
+            MainWindow.NumericMonitorIndexMaximum  = WinApi.GetSystemMetrics(WinApi.SM_CMONITORS) - 1;
 
             if (BorderlessMode)
             {
@@ -122,8 +124,7 @@ namespace GenshinLauncher
             }
 
             MainWindow.GameDirectoryUpdate                += GameDirectoryUpdated;
-            MainWindow.ButtonLaunchClick                  += ButtonLaunch_Click;
-            MainWindow.ButtonDownloadClick                += ButtonDownload_Click;
+            MainWindow.ButtonAcceptClick                  += ButtonAccept_Click;
             MainWindow.ButtonInstallDirectXClick          += ButtonInstallDirectX_Click;
             MainWindow.ButtonUseScreenResolutionClick     += ButtonUseScreenResolution_Click;
             MainWindow.WindowModeCheckedChanged           += WindowMode_CheckedChanged;
@@ -132,10 +133,13 @@ namespace GenshinLauncher
             MainWindow.CheckBoxExitOnLaunchCheckedChanged += CheckBoxExitOnLaunch_CheckedChanged;
             MainWindow.ButtonStopDownloadClick            += (_, _) => _cts?.Cancel();
 
-            if (!File.Exists(EntryPointPath))
+            if (File.Exists(EntryPointPath))
             {
-                MainWindow.GroupBoxSettingsEnabled = false;
-                MainWindow.ShowButtonDownload();
+                MainWindow.Components |= Components.ButtonLaunch | Components.SettingsBox;
+            }
+            else
+            {
+                MainWindow.Components |= Components.ButtonDownload;
             }
 
             if (File.Exists(BackgroundPath))
@@ -145,7 +149,7 @@ namespace GenshinLauncher
 
             LoadAdditionalContentAsync();
 
-            Ui.Run(MainWindow);
+            Ui.RunMainWindow(MainWindow);
         }
 
         public static void SaveLauncherConfig()
@@ -215,6 +219,74 @@ namespace GenshinLauncher
             SaveLauncherConfig();
         }
 
+        private static async void Launch()
+        {
+            string genshinProcessName = Path.GetFileNameWithoutExtension(EntryPoint);
+            if (Process.GetProcesses().Any(process => process.ProcessName == genshinProcessName))
+            {
+                Ui.ShowErrorDialog("GenshinLauncher", "Another instance of Genshin Impact is already running");
+                return;
+            }
+
+            Process process = new Process { StartInfo = { FileName = EntryPointPath } };
+            process.Start();
+
+            if (BorderlessMode)
+            {
+                IntPtr hWnd = await process.GetMainWindowHandle();
+
+                Utils.RemoveWindowTitlebar(hWnd);
+                Utils.ResizeWindowToFillScreen(hWnd);
+            }
+
+            if (ExitOnLaunch)
+            {
+                Ui.Exit();
+            }
+        }
+
+        private static async void DownloadLatest()
+        {
+            MainWindow.Components &= ~Components.ButtonDownload;
+            await InstallerSemaphore.WaitAsync();
+            try
+            {
+                MainWindow.Components = MainWindow.Components & ~Components.ProgressBarBlocks & ~Components.InstallDirOptions | Components.ProgressBarMarquee;
+                MainWindow.LabelProgressBarDownloadTitleText = "Fetching manifest...";
+                ResourceJson resourceJson = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
+                Package latest = resourceJson.Game.Latest;
+
+                try
+                {
+                    MainWindow.Components = MainWindow.Components & ~Components.ProgressBarMarquee | Components.ProgressBarBlocks;
+                    await InstallPackage(latest, GameInstallDir);
+
+                    string gameIniPath = Path.Combine(GameInstallDir, "config.ini");
+                    GameIni ini = File.Exists(gameIniPath)
+                        ? new GameIni(gameIniPath)
+                        : new GameIni();
+
+                    ini.GameVersion = latest.Version;
+                    ini.WriteFile(gameIniPath);
+
+                    MainWindow.Components |= Components.ButtonLaunch;
+                }
+                catch (TaskCanceledException)
+                {
+                    MainWindow.Components |= Components.ButtonDownload;
+                }
+
+                MainWindow.ProgressBarDownloadValue = 0;
+                MainWindow.LabelProgressBarDownloadTitleText = string.Empty;
+                MainWindow.LabelProgressBarDownloadText = string.Empty;
+                MainWindow.Components = MainWindow.Components & ~Components.ProgressBar | Components.InstallDirOptions;
+            }
+            finally
+            {
+                InstallerSemaphore.Release(1);
+            }
+        }
+
         private static async Task InstallPackage(Package package, string installDir)
         {
             _cts?.Dispose();
@@ -279,111 +351,50 @@ namespace GenshinLauncher
 
             if (File.Exists(Path.Combine(GameInstallDir, ExeNameGlobal)))
             {
-                EntryPoint = ExeNameGlobal;
-                MainWindow.GroupBoxSettingsEnabled = true;
-                MainWindow.ShowButtonLaunch();
+                EntryPoint            = ExeNameGlobal;
+                MainWindow.Components = MainWindow.Components & ~Components.ButtonDownload | Components.SettingsBox | Components.ButtonLaunch;
             }
             else if (File.Exists(Path.Combine(GameInstallDir, ExeNameChina)))
             {
-                EntryPoint = ExeNameChina;
-                MainWindow.GroupBoxSettingsEnabled = true;
-                MainWindow.ShowButtonLaunch();
+                EntryPoint            = ExeNameChina;
+                MainWindow.Components = MainWindow.Components & ~Components.ButtonDownload | Components.SettingsBox | Components.ButtonLaunch;
             }
             else
             {
-                EntryPoint = string.Empty;
-                MainWindow.GroupBoxSettingsEnabled = false;
-                MainWindow.ShowButtonDownload();
+                EntryPoint            = string.Empty;
+                MainWindow.Components = MainWindow.Components & ~Components.ButtonLaunch & ~Components.SettingsBox | Components.ButtonDownload;
             }
         }
 
-        private static async void ButtonLaunch_Click(object? sender, EventArgs args)
+        private static void ButtonAccept_Click(object? sender, EventArgs args)
         {
             SaveLauncherConfig();
 
-            string genshinProcessName = Path.GetFileNameWithoutExtension(EntryPoint);
-            if (Process.GetProcesses().Any(process => process.ProcessName == genshinProcessName))
+            if (MainWindow.Components.HasFlag(Components.ButtonLaunch))
             {
-                MainWindow.ShowErrorProcessAlreadyRunning();
-                return;
+                Launch();
             }
-
-            Process process = new Process{ StartInfo = { FileName = EntryPointPath } };
-            process.Start();
-
-            if (BorderlessMode)
+            else if(MainWindow.Components.HasFlag(Components.ButtonDownload))
             {
-                IntPtr hWnd = await process.GetMainWindowHandle();
-
-                Utils.RemoveWindowTitlebar(hWnd);
-                Utils.ResizeWindowToFillScreen(hWnd);
-            }
-
-            if (ExitOnLaunch)
-            {
-                Ui.Exit();
-            }
-        }
-
-        private static async void ButtonDownload_Click(object? sender, EventArgs args)
-        {
-            SaveLauncherConfig();
-
-            MainWindow.ButtonDownloadEnabled = false;
-            await InstallerSemaphore.WaitAsync();
-            try
-            {
-                MainWindow.ShowProgressBar();
-                MainWindow.SetProgressBarDownloadStyleMarquee();
-                MainWindow.LabelProgressBarDownloadTitleText = "Fetching manifest...";
-                ResourceJson resourceJson = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
-                Package      latest       = resourceJson.Game.Latest;
-
-                try
-                {
-                    MainWindow.SetProgressBarDownloadStyleBlock();
-                    await InstallPackage(latest, GameInstallDir);
-
-                    string gameIniPath = Path.Combine(GameInstallDir, "config.ini");
-                    GameIni ini = File.Exists(gameIniPath)
-                        ? new GameIni(gameIniPath)
-                        : new GameIni();
-
-                    ini.GameVersion = latest.Version;
-                    ini.WriteFile(gameIniPath);
-
-                    MainWindow.ShowButtonLaunch();
-                }
-                catch (TaskCanceledException) { }
-
-                MainWindow.ProgressBarDownloadValue          = 0;
-                MainWindow.LabelProgressBarDownloadTitleText = string.Empty;
-                MainWindow.LabelProgressBarDownloadText      = string.Empty;
-                MainWindow.ShowInstallPath();
-            }
-            finally
-            {
-                InstallerSemaphore.Release(1);
-                MainWindow.ButtonDownloadEnabled = true;
+                DownloadLatest();
             }
         }
 
         private static async void ButtonInstallDirectX_Click(object? sender, EventArgs args)
         {
-            MainWindow.ButtonInstallDirectXEnabled = false;
+            MainWindow.Components &= ~Components.ButtonDirectX;
             await InstallerSemaphore.WaitAsync();
 
             try
             {
-                MainWindow.ShowProgressBar();
-                MainWindow.SetProgressBarDownloadStyleMarquee();
+                MainWindow.Components = MainWindow.Components & ~Components.ProgressBarBlocks & ~Components.InstallDirOptions | Components.ProgressBarMarquee;
                 MainWindow.LabelProgressBarDownloadTitleText = "Fetching manifest...";
                 ResourceJson resourceJson = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
                 Package      directX      = resourceJson.Plugin.Plugins.First(package => package.Name == "DXSETUP.zip");
 
                 try
                 {
-                    MainWindow.SetProgressBarDownloadStyleBlock();
+                    MainWindow.Components = MainWindow.Components & ~Components.ProgressBarMarquee | Components.ProgressBarBlocks;
                     await InstallPackage(directX, AppContext.BaseDirectory);
 
                     Process.Start(Path.Combine(AppContext.BaseDirectory, "DXSETUP", "DXSETUP.exe"));
@@ -393,12 +404,12 @@ namespace GenshinLauncher
                 MainWindow.ProgressBarDownloadValue          = 0;
                 MainWindow.LabelProgressBarDownloadTitleText = string.Empty;
                 MainWindow.LabelProgressBarDownloadText      = string.Empty;
-                MainWindow.ShowInstallPath();
+                MainWindow.Components                        = MainWindow.Components & ~Components.ProgressBar | Components.InstallDirOptions;
             }
             finally
             {
                 InstallerSemaphore.Release(1);
-                MainWindow.ButtonInstallDirectXEnabled = true;
+                MainWindow.Components |= Components.ButtonDirectX;
             }
         }
 

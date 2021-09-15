@@ -5,6 +5,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using System.Windows.Forms;
+using DarkUI.Forms;
 using GenshinLauncher.Ui.Common;
 
 namespace GenshinLauncher.Ui.WinForms
@@ -18,8 +19,14 @@ namespace GenshinLauncher.Ui.WinForms
             Application.SetCompatibleTextRenderingDefault(false);
         }
 
-        public void Run(IMainWindow mainWindow) =>
+        public void RunMainWindow(IMainWindow mainWindow) =>
             Application.Run((Form)mainWindow);
+
+        public void ShowErrorDialog(string title, string message, object? owner)
+        {
+            using DarkMessageBox darkMessageBox = new DarkMessageBox(message, title, DarkMessageBoxIcon.Error, DarkDialogButton.Ok);
+            darkMessageBox.ShowDialog(owner as IWin32Window);
+        }
 
         public void Exit() =>
             Application.Exit();

@@ -15,25 +15,20 @@ namespace GenshinLauncher.Ui.WinForms
 {
     public partial class MainWindow : DarkForm, IMainWindow
     {
+        private Components _components;
+
         public MainWindow()
         {
             InitializeComponent();
-            _numericMonitorIndex.Maximum = Screen.AllScreens.Length - 1;
         }
 
         #region Events
         public event EventHandler<string>? GameDirectoryUpdate;
 
-        public event EventHandler ButtonLaunchClick
+        public event EventHandler ButtonAcceptClick
         {
-            add    => _buttonLaunch.Click += value;
-            remove => _buttonLaunch.Click -= value;
-        }
-
-        public event EventHandler ButtonDownloadClick
-        {
-            add    => _buttonDownload.Click += value;
-            remove => _buttonDownload.Click -= value;
+            add    => _buttonAccept.Click += value;
+            remove => _buttonAccept.Click -= value;
         }
 
         public event EventHandler ButtonStopDownloadClick
@@ -103,18 +98,6 @@ namespace GenshinLauncher.Ui.WinForms
         #endregion
 
         #region Properties
-        public bool ButtonDownloadEnabled
-        {
-            get => _buttonDownload.Enabled;
-            set => _buttonDownload.Enabled = value;
-        }
-
-        public bool ButtonInstallDirectXEnabled
-        {
-            get => _buttonInstallDirectX.Enabled;
-            set => _buttonInstallDirectX.Enabled = value;
-        }
-
         public bool CheckBoxCloseToTrayChecked
         {
             get => _checkBoxCloseToTray.Checked;
@@ -125,12 +108,6 @@ namespace GenshinLauncher.Ui.WinForms
         {
             get => _checkBoxExitOnLaunch.Checked;
             set => _checkBoxExitOnLaunch.Checked = value;
-        }
-
-        public bool GroupBoxSettingsEnabled
-        {
-            get => _groupBoxSettings.Enabled;
-            set => _groupBoxSettings.Enabled = value;
         }
 
         public bool RadioButtonFullscreenChecked
@@ -155,6 +132,12 @@ namespace GenshinLauncher.Ui.WinForms
         {
             get => _radioButtonGlobalVersion.Checked;
             set => _radioButtonGlobalVersion.Checked = value;
+        }
+
+        public int NumericMonitorIndexMaximum 
+        {
+            get => (int)_numericMonitorIndex.Maximum;
+            set => _numericMonitorIndex.Maximum = value;
         }
 
         public int NumericMonitorIndexValue
@@ -209,61 +192,79 @@ namespace GenshinLauncher.Ui.WinForms
             }
         }
 
-#endregion
+        #endregion
+
+        public Components Components
+        {
+            get => _components;
+
+            set
+            {
+                _components = value;
+
+                _buttonInstallDirectX.Enabled = _components.HasFlag(Components.ButtonDirectX);
+                _groupBoxSettings.Enabled     = _components.HasFlag(Components.SettingsBox);
+
+                if (_components.HasFlag(Components.ButtonLaunch))
+                {
+                    _buttonAccept.Text    = "Launch";
+                    _buttonAccept.Enabled = true;
+                }
+                else if (_components.HasFlag(Components.ButtonDownload))
+                {
+                    _buttonAccept.Text    = "Download";
+                    _buttonAccept.Enabled = true;
+                }
+                else
+                {
+                    _buttonAccept.Enabled = false;
+                }
+
+                if (_components.HasFlag(Components.ButtonDownload))
+                {
+                    _radioButtonGlobalVersion.Show();
+                    _radioButtonChinaVersion.Show();
+                }
+                else
+                {
+                    _radioButtonGlobalVersion.Hide();
+                    _radioButtonChinaVersion.Hide();
+                }
+
+                if (_components.HasFlag(Components.InstallDirOptions))
+                {
+                    _textBoxInstallDir.Show();
+                    _buttonInstallDirectory.Show();
+                }
+                else
+                {
+                    _textBoxInstallDir.Hide();
+                    _buttonInstallDirectory.Hide();
+                }
+
+                if ((_components & Components.ProgressBar) == 0)
+                {
+                    _progressBarDownload.Hide();
+                    _buttonStopDownload.Hide();
+                    _labelProgressBarTitle.Hide();
+                    _labelProgressBarText.Hide();
+                }
+                else
+                {
+                    _progressBarDownload.Show();
+                    _buttonStopDownload.Show();
+                    _labelProgressBarTitle.Show();
+                    _labelProgressBarText.Show();
+
+                    _progressBarDownload.Style = _components.HasFlag(Components.ProgressBarMarquee)
+                        ? ProgressBarStyle.Marquee
+                        : ProgressBarStyle.Blocks;
+                }
+            }
+        }
 
         public Rectangle GetCurrentScreenBounds() =>
             Screen.FromControl(this).Bounds;
-
-        public void ShowErrorProcessAlreadyRunning() =>
-            DarkMessageBox.ShowError("Another instance of Genshin Impact is already running!", this.Text);
-
-        public void ShowButtonLaunch()
-        {
-            _buttonLaunch.Show();
-            _buttonDownload.Hide();
-            _radioButtonGlobalVersion.Hide();
-            _radioButtonChinaVersion.Hide();
-        }
-
-        public void ShowButtonDownload()
-        {
-            _buttonLaunch.Hide();
-            _buttonDownload.Show();
-            _radioButtonGlobalVersion.Show();
-            _radioButtonChinaVersion.Show();
-        }
-
-        public void ShowProgressBar()
-        {
-            _textBoxInstallDir.Hide();
-            _buttonInstallDirectory.Hide();
-            _buttonStopDownload.Show();
-            _labelProgressBarTitle.Show();
-            _progressBarDownload.Show();
-            _labelProgressBarText.Show();
-        }
-
-        public void ShowInstallPath()
-        {
-            _textBoxInstallDir.Show();
-            _buttonInstallDirectory.Show();
-            _buttonStopDownload.Hide();
-            _labelProgressBarTitle.Hide();
-            _progressBarDownload.Hide();
-            _labelProgressBarText.Hide();
-        }
-
-        public void SetProgressBarDownloadStyleBlock() =>
-            _progressBarDownload.Style = ProgressBarStyle.Blocks;
-
-        public void SetProgressBarDownloadStyleMarquee() =>
-            _progressBarDownload.Style = ProgressBarStyle.Marquee;
-
-        private void UnHideMainWindow()
-        {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
-        }
 
         // Install directory text box events
         private void ButtonInstallDir_Click(object sender, EventArgs args)
@@ -305,7 +306,8 @@ namespace GenshinLauncher.Ui.WinForms
         {
             if (args.CloseReason == CloseReason.UserClosing && _checkBoxCloseToTray.Checked)
             {
-                args.Cancel = true;
+                args.Cancel      = true;
+                this.WindowState = FormWindowState.Minimized;
                 this.Hide();
             }
             else
@@ -315,13 +317,19 @@ namespace GenshinLauncher.Ui.WinForms
         }
 
         // Tray events
+        private void TrayMenuItemExit_Click(object sender, EventArgs args) =>
+            Application.Exit();
+
+        private void TrayMenuItemOpen_Click(object sender, EventArgs args) =>
+            UnHideMainWindow();
+
         private void TrayIcon_DoubleClick(object sender, EventArgs args) =>
             UnHideMainWindow();
 
-        private void OpenTrayMenuItem_Click(object sender, EventArgs args) =>
-            UnHideMainWindow();
-
-        private void ExitTrayMenuItem_Click(object sender, EventArgs args) =>
-            Application.Exit();
+        private void UnHideMainWindow()
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
     }
 }

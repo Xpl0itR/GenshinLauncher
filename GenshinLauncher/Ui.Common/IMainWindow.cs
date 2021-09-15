@@ -12,8 +12,7 @@ namespace GenshinLauncher.Ui.Common
     public interface IMainWindow
     {
         event EventHandler<string> GameDirectoryUpdate;
-        event EventHandler         ButtonLaunchClick;
-        event EventHandler         ButtonDownloadClick;
+        event EventHandler         ButtonAcceptClick;
         event EventHandler         ButtonStopDownloadClick;
         event EventHandler         ButtonInstallDirectXClick;
         event EventHandler         ButtonUseScreenResolutionClick;
@@ -24,31 +23,23 @@ namespace GenshinLauncher.Ui.Common
         event EventHandler         CheckBoxExitOnLaunchCheckedChanged;
         event EventHandler         WindowModeCheckedChanged;
 
-        Image  BackgroundImage                   { get; set; }
-        bool   ButtonDownloadEnabled             { get; set; }
-        bool   ButtonInstallDirectXEnabled       { get; set; }
-        bool   CheckBoxCloseToTrayChecked        { get; set; }
-        bool   CheckBoxExitOnLaunchChecked       { get; set; }
-        bool   GroupBoxSettingsEnabled           { get; set; }
-        bool   RadioButtonFullscreenChecked      { get; set; }
-        bool   RadioButtonBorderlessChecked      { get; set; }
-        bool   RadioButtonWindowedChecked        { get; set; }
-        bool   RadioButtonGlobalVersionChecked   { get; set; }
-        int    NumericMonitorIndexValue          { get; set; }
-        int    NumericWindowHeightValue          { get; set; }
-        int    NumericWindowWidthValue           { get; set; }
-        int    ProgressBarDownloadValue          { get; set; }
-        string LabelProgressBarDownloadTitleText { get; set; }
-        string LabelProgressBarDownloadText      { get; set; }
-        string TextBoxGameDirText                { get; set; }
+        Components Components                        { get; set; }
+        Image      BackgroundImage                   { get; set; }
+        bool       CheckBoxCloseToTrayChecked        { get; set; }
+        bool       CheckBoxExitOnLaunchChecked       { get; set; }
+        bool       RadioButtonFullscreenChecked      { get; set; }
+        bool       RadioButtonBorderlessChecked      { get; set; }
+        bool       RadioButtonWindowedChecked        { get; set; }
+        bool       RadioButtonGlobalVersionChecked   { get; set; }
+        int        NumericMonitorIndexMaximum        { get; set; }
+        int        NumericMonitorIndexValue          { get; set; }
+        int        NumericWindowHeightValue          { get; set; }
+        int        NumericWindowWidthValue           { get; set; }
+        int        ProgressBarDownloadValue          { get; set; }
+        string     LabelProgressBarDownloadTitleText { get; set; }
+        string     LabelProgressBarDownloadText      { get; set; }
+        string     TextBoxGameDirText                { get; set; }
 
         Rectangle GetCurrentScreenBounds();
-        void      ShowErrorProcessAlreadyRunning();
-        void      ShowButtonLaunch();
-        void      ShowButtonDownload();
-        void      ShowProgressBar();
-        void      ShowInstallPath();
-        void      SetProgressBarDownloadStyleBlock();
-        void      SetProgressBarDownloadStyleMarquee();
     }
 }

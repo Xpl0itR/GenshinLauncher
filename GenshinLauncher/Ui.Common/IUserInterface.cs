@@ -8,7 +8,8 @@ namespace GenshinLauncher.Ui.Common
 {
     public interface IUserInterface
     {
-        void Run(IMainWindow mainWindow);
+        void RunMainWindow(IMainWindow mainWindow);
+        void ShowErrorDialog(string title, string message, object? owner = null);
         void Exit();
     }
 }

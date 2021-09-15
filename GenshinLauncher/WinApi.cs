@@ -17,6 +17,7 @@ namespace GenshinLauncher
 
         // ReSharper disable InconsistentNaming, IdentifierTypo
         public const int GWL_STYLE                = -16;
+        public const int SM_CMONITORS             = 80;
         public const int SWP_FRAMECHANGED         = 0x0020;
         public const int WS_CAPTION               = 0x00C00000;
         public const int WS_THICKFRAME            = 0x00040000;
@@ -37,6 +38,9 @@ namespace GenshinLauncher
 
         [DllImport(DllNameUser32, EntryPoint = "SetWindowLongPtr")]
         public static extern long SetWindowLong(IntPtr hWnd, int nIndex, long dwNewLong);
+
+        [DllImport(DllNameUser32)]
+        public static extern int GetSystemMetrics(int nIndex);
 
         [DllImport(DllNameUser32)]
         public static extern IntPtr MonitorFromWindow(IntPtr hWnd, int dwFlags);

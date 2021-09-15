@@ -4,8 +4,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-using IniParser.Model;
-
 namespace GenshinLauncher.FileParsers
 {
     public class LauncherIni : Ini
@@ -26,8 +24,8 @@ namespace GenshinLauncher.FileParsers
         private const string BorderlessModeKeyName      = "borderless_mode";
         private const string ExitOnLaunchKeyName        = "exit_on_launch";
 
-        private KeyDataCollection Launcher        => this.Data[LauncherSectionName];
-        private KeyDataCollection GenshinLauncher => this.Data[GenshinLauncherSectionName]; //TODO: rename after program name is finalized
+        private IniParser.Model.KeyDataCollection Launcher        => this.Data[LauncherSectionName];
+        private IniParser.Model.KeyDataCollection GenshinLauncher => this.Data[GenshinLauncherSectionName]; //TODO: rename after program name is finalized
 
         public LauncherIni(string? path = null) : base(path) { }
 

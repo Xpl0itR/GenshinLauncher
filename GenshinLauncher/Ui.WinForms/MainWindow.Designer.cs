@@ -39,7 +39,7 @@ namespace GenshinLauncher.Ui.WinForms
             this._trayMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
             this._trayMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
             this._trayMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
-            this._buttonLaunch = new DarkUI.Controls.DarkButton();
+            this._buttonAccept = new DarkUI.Controls.DarkButton();
             this._checkBoxCloseToTray = new DarkUI.Controls.DarkCheckBox();
             this._checkBoxExitOnLaunch = new DarkUI.Controls.DarkCheckBox();
             this._labelWindowMode = new DarkUI.Controls.DarkLabel();
@@ -58,7 +58,6 @@ namespace GenshinLauncher.Ui.WinForms
             this._buttonInstallDirectory = new DarkUI.Controls.DarkButton();
             this._folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this._errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this._buttonDownload = new DarkUI.Controls.DarkButton();
             this._radioButtonGlobalVersion = new DarkUI.Controls.DarkRadioButton();
             this._radioButtonChinaVersion = new DarkUI.Controls.DarkRadioButton();
             this._progressBarDownload = new System.Windows.Forms.ProgressBar();
@@ -97,7 +96,7 @@ namespace GenshinLauncher.Ui.WinForms
             this._trayMenuItemOpen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this._trayMenuItemOpen.Name = "_trayMenuItemOpen";
             resources.ApplyResources(this._trayMenuItemOpen, "_trayMenuItemOpen");
-            this._trayMenuItemOpen.Click += new System.EventHandler(this.OpenTrayMenuItem_Click);
+            this._trayMenuItemOpen.Click += new System.EventHandler(this.TrayMenuItemOpen_Click);
             // 
             // _trayMenuSeparator
             // 
@@ -113,12 +112,12 @@ namespace GenshinLauncher.Ui.WinForms
             this._trayMenuItemExit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this._trayMenuItemExit.Name = "_trayMenuItemExit";
             resources.ApplyResources(this._trayMenuItemExit, "_trayMenuItemExit");
-            this._trayMenuItemExit.Click += new System.EventHandler(this.ExitTrayMenuItem_Click);
+            this._trayMenuItemExit.Click += new System.EventHandler(this.TrayMenuItemExit_Click);
             // 
-            // _buttonLaunch
+            // _buttonAccept
             // 
-            resources.ApplyResources(this._buttonLaunch, "_buttonLaunch");
-            this._buttonLaunch.Name = "_buttonLaunch";
+            resources.ApplyResources(this._buttonAccept, "_buttonAccept");
+            this._buttonAccept.Name = "_buttonAccept";
             // 
             // _checkBoxCloseToTray
             // 
@@ -247,11 +246,6 @@ namespace GenshinLauncher.Ui.WinForms
             this._errorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this._errorProvider.ContainerControl = this;
             // 
-            // _buttonDownload
-            // 
-            resources.ApplyResources(this._buttonDownload, "_buttonDownload");
-            this._buttonDownload.Name = "_buttonDownload";
-            // 
             // _radioButtonGlobalVersion
             // 
             resources.ApplyResources(this._radioButtonGlobalVersion, "_radioButtonGlobalVersion");
@@ -295,7 +289,7 @@ namespace GenshinLauncher.Ui.WinForms
             // 
             // MainWindow
             // 
-            this.AcceptButton = this._buttonLaunch;
+            this.AcceptButton = this._buttonAccept;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this._buttonInstallDirectX);
@@ -305,13 +299,12 @@ namespace GenshinLauncher.Ui.WinForms
             this.Controls.Add(this._progressBarDownload);
             this.Controls.Add(this._radioButtonChinaVersion);
             this.Controls.Add(this._radioButtonGlobalVersion);
-            this.Controls.Add(this._buttonDownload);
             this.Controls.Add(this._buttonInstallDirectory);
             this.Controls.Add(this._textBoxInstallDir);
             this.Controls.Add(this._checkBoxCloseToTray);
             this.Controls.Add(this._checkBoxExitOnLaunch);
             this.Controls.Add(this._groupBoxSettings);
-            this.Controls.Add(this._buttonLaunch);
+            this.Controls.Add(this._buttonAccept);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -331,7 +324,7 @@ namespace GenshinLauncher.Ui.WinForms
         }
 
         #endregion
-        private DarkButton _buttonLaunch;
+        private DarkButton _buttonAccept;
         private DarkButton _buttonUseScreenResolution;
         private DarkCheckBox _checkBoxCloseToTray;
         private DarkCheckBox _checkBoxExitOnLaunch;
@@ -355,7 +348,6 @@ namespace GenshinLauncher.Ui.WinForms
         private DarkButton _buttonInstallDirectory;
         private FolderBrowserDialog _folderBrowser;
         private ErrorProvider _errorProvider;
-        private DarkButton _buttonDownload;
         private DarkRadioButton _radioButtonChinaVersion;
         private DarkRadioButton _radioButtonGlobalVersion;
         private ProgressBar _progressBarDownload;

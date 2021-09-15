@@ -4,8 +4,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-using IniParser.Model;
-
 namespace GenshinLauncher.FileParsers
 {
     public class GameIni : Ini
@@ -17,7 +15,7 @@ namespace GenshinLauncher.FileParsers
         private const string SubChannelKeyName  = "sub_channel";
         private const string SdkVersionKeyName  = "sdk_version";
 
-        private KeyDataCollection General => this.Data[GeneralSectionName];
+        private IniParser.Model.KeyDataCollection General => this.Data[GeneralSectionName];
 
         public GameIni(string? path = null) : base(path) { }
 

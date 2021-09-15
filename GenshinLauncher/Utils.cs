@@ -171,7 +171,7 @@ namespace GenshinLauncher
             try
             {
                 int bytesRead;
-                while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
+                while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false)) > 0)
                 {
                     await func(buffer, bytesRead);
                 }
