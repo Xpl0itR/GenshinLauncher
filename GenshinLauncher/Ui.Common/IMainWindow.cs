@@ -11,34 +11,17 @@ namespace GenshinLauncher.Ui.Common
 {
     public interface IMainWindow
     {
-        event EventHandler<string> GameDirectoryUpdate;
-        event EventHandler         ButtonAcceptClick;
-        event EventHandler         ButtonStopDownloadClick;
-        event EventHandler         ButtonInstallDirectXClick;
-        event EventHandler         ButtonUseScreenResolutionClick;
-        event EventHandler         NumericWindowHeightValueChanged;
-        event EventHandler         NumericWindowWidthValueChanged;
-        event EventHandler         NumericMonitorIndexValueChanged;
-        event EventHandler         CheckBoxCloseToTrayCheckedChanged;
-        event EventHandler         CheckBoxExitOnLaunchCheckedChanged;
-        event EventHandler         WindowModeCheckedChanged;
+        event EventHandler ButtonAcceptClick;
+        event EventHandler ButtonSettingsClick;
+        event EventHandler ButtonStopDownloadClick;
+        event EventHandler ButtonInstallDirectXClick;
 
         Components Components                        { get; set; }
         Image      BackgroundImage                   { get; set; }
-        bool       CheckBoxCloseToTrayChecked        { get; set; }
-        bool       CheckBoxExitOnLaunchChecked       { get; set; }
-        bool       RadioButtonFullscreenChecked      { get; set; }
-        bool       RadioButtonBorderlessChecked      { get; set; }
-        bool       RadioButtonWindowedChecked        { get; set; }
         bool       RadioButtonGlobalVersionChecked   { get; set; }
-        int        NumericMonitorIndexMaximum        { get; set; }
-        int        NumericMonitorIndexValue          { get; set; }
-        int        NumericWindowHeightValue          { get; set; }
-        int        NumericWindowWidthValue           { get; set; }
         int        ProgressBarDownloadValue          { get; set; }
         string     LabelProgressBarDownloadTitleText { get; set; }
         string     LabelProgressBarDownloadText      { get; set; }
-        string     TextBoxGameDirText                { get; set; }
 
         Rectangle GetCurrentScreenBounds();
     }

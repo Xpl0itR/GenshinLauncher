@@ -88,54 +88,15 @@ namespace GenshinLauncher
         [STAThread]
         public static void Main()
         {
-            MainWindow.Components                  = Components.InstallDirOptions | Components.ButtonDirectX;
-            MainWindow.CheckBoxCloseToTrayChecked  = CloseToTray;
-            MainWindow.CheckBoxExitOnLaunchChecked = ExitOnLaunch;
-            MainWindow.TextBoxGameDirText          = GameInstallDir;
-            MainWindow.NumericMonitorIndexValue    = (int)MonitorIndex;
-            MainWindow.NumericMonitorIndexMaximum  = WinApi.GetSystemMetrics(WinApi.SM_CMONITORS) - 1;
-
-            if (BorderlessMode)
-            {
-                MainWindow.RadioButtonBorderlessChecked = true;
-            }
-            else if ((bool)FullscreenMode)
-            {
-                MainWindow.RadioButtonFullscreenChecked = true;
-            }
-            else
-            {
-                MainWindow.RadioButtonWindowedChecked = true;
-            }
-
-            MainWindow.NumericWindowWidthValueChanged  += NumericWindowWidth_ValueChanged;
-            MainWindow.NumericWindowHeightValueChanged += NumericWindowHeight_ValueChanged;
-
-            if (ResolutionHeight == 0 || ResolutionWidth == 0)
-            {
-                Rectangle bounds = MainWindow.GetCurrentScreenBounds();
-                MainWindow.NumericWindowWidthValue  = bounds.Width;
-                MainWindow.NumericWindowHeightValue = bounds.Height;
-            }
-            else
-            {
-                MainWindow.NumericWindowWidthValue  = (int)ResolutionWidth;
-                MainWindow.NumericWindowHeightValue = (int)ResolutionHeight;
-            }
-
-            MainWindow.GameDirectoryUpdate                += GameDirectoryUpdated;
-            MainWindow.ButtonAcceptClick                  += ButtonAccept_Click;
-            MainWindow.ButtonInstallDirectXClick          += ButtonInstallDirectX_Click;
-            MainWindow.ButtonUseScreenResolutionClick     += ButtonUseScreenResolution_Click;
-            MainWindow.WindowModeCheckedChanged           += WindowMode_CheckedChanged;
-            MainWindow.NumericMonitorIndexValueChanged    += NumericMonitorIndex_ValueChanged;
-            MainWindow.CheckBoxCloseToTrayCheckedChanged  += CheckBoxCloseToTray_CheckedChanged;
-            MainWindow.CheckBoxExitOnLaunchCheckedChanged += CheckBoxExitOnLaunch_CheckedChanged;
-            MainWindow.ButtonStopDownloadClick            += (_, _) => _cts?.Cancel();
+            MainWindow.Components                =  Components.ButtonDirectX;
+            MainWindow.ButtonAcceptClick         += ButtonAccept_Click;
+            MainWindow.ButtonSettingsClick       += ButtonSettings_Click;
+            MainWindow.ButtonInstallDirectXClick += ButtonInstallDirectX_Click;
+            MainWindow.ButtonStopDownloadClick   += (_, _) => _cts?.Cancel();
 
             if (File.Exists(EntryPointPath))
             {
-                MainWindow.Components |= Components.ButtonLaunch | Components.SettingsBox;
+                MainWindow.Components |= Components.ButtonLaunch;
             }
             else
             {
@@ -152,47 +113,6 @@ namespace GenshinLauncher
             Ui.RunMainWindow(MainWindow);
         }
 
-        public static void SaveLauncherConfig()
-        {
-            LauncherIni ini = File.Exists(LauncherIniPath)
-                ? new LauncherIni(LauncherIniPath)
-                : new LauncherIni();
-
-            ini.GameInstallPath   = GameInstallDir;
-            ini.GameDynamicBgName = BackgroundFileName;
-            ini.GameDynamicBgMd5  = BackgroundMd5;
-            ini.GameStartName     = EntryPoint;
-            ini.ExitType          = CloseToTray    ? "1" : "2";
-            ini.BorderlessMode    = BorderlessMode ? "true" : "false";
-            ini.ExitOnLaunch      = ExitOnLaunch   ? "true" : "false";
-            ini.WriteFile(LauncherIniPath);
-
-            if (ValidEntryPoint)
-            {
-                using GenshinRegistry genshinRegistry = new GenshinRegistry(true, EntryPoint != ExeNameChina);
-
-                if (ResolutionWidth.Updated)
-                {
-                    genshinRegistry.ResolutionWidth = ResolutionWidth;
-                }
-
-                if (ResolutionHeight.Updated)
-                {
-                    genshinRegistry.ResolutionHeight = ResolutionHeight;
-                }
-
-                if (FullscreenMode.Updated)
-                {
-                    genshinRegistry.FullscreenMode = FullscreenMode;
-                }
-
-                if (MonitorIndex.Updated)
-                {
-                    genshinRegistry.MonitorIndex = MonitorIndex;
-                }
-            }
-        }
-
         private static async void LoadAdditionalContentAsync()
         {
             ContentJson contentJson = await ApiClient.GetContent(EntryPoint != ExeNameChina, "en-us"); //TODO: load this from CultureInfo
@@ -206,8 +126,13 @@ namespace GenshinLauncher
                 await ApiClient.Download(contentJson.Adv.Background, bgStream);
             }
 
-            BackgroundMd5 = contentJson.Adv.BgChecksum;
-            BackgroundFileName = bgName;
+            LauncherIni ini = File.Exists(LauncherIniPath)
+                ? new LauncherIni(LauncherIniPath)
+                : new LauncherIni();
+
+            ini.GameDynamicBgMd5  = contentJson.Adv.BgChecksum;
+            ini.GameDynamicBgName = bgName;
+            ini.WriteFile(LauncherIniPath);
 
             if (bgStream != null)
             {
@@ -215,8 +140,6 @@ namespace GenshinLauncher
             }
 
             //TODO: implement banner and post viewers into UI
-
-            SaveLauncherConfig();
         }
 
         private static async void Launch()
@@ -251,7 +174,7 @@ namespace GenshinLauncher
             await InstallerSemaphore.WaitAsync();
             try
             {
-                MainWindow.Components = MainWindow.Components & ~Components.ProgressBarBlocks & ~Components.InstallDirOptions | Components.ProgressBarMarquee;
+                MainWindow.Components = MainWindow.Components & ~Components.ProgressBarBlocks | Components.ProgressBarMarquee;
                 MainWindow.LabelProgressBarDownloadTitleText = "Fetching manifest...";
                 ResourceJson resourceJson = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
                 Package latest = resourceJson.Game.Latest;
@@ -276,10 +199,10 @@ namespace GenshinLauncher
                     MainWindow.Components |= Components.ButtonDownload;
                 }
 
-                MainWindow.ProgressBarDownloadValue = 0;
-                MainWindow.LabelProgressBarDownloadTitleText = string.Empty;
-                MainWindow.LabelProgressBarDownloadText = string.Empty;
-                MainWindow.Components = MainWindow.Components & ~Components.ProgressBar | Components.InstallDirOptions;
+                MainWindow.ProgressBarDownloadValue          =  0;
+                MainWindow.LabelProgressBarDownloadTitleText =  string.Empty;
+                MainWindow.LabelProgressBarDownloadText      =  string.Empty;
+                MainWindow.Components                        &= ~Components.ProgressBar;
             }
             finally
             {
@@ -352,24 +275,22 @@ namespace GenshinLauncher
             if (File.Exists(Path.Combine(GameInstallDir, ExeNameGlobal)))
             {
                 EntryPoint            = ExeNameGlobal;
-                MainWindow.Components = MainWindow.Components & ~Components.ButtonDownload | Components.SettingsBox | Components.ButtonLaunch;
+                MainWindow.Components = MainWindow.Components & ~Components.ButtonDownload | Components.ButtonLaunch;
             }
             else if (File.Exists(Path.Combine(GameInstallDir, ExeNameChina)))
             {
                 EntryPoint            = ExeNameChina;
-                MainWindow.Components = MainWindow.Components & ~Components.ButtonDownload | Components.SettingsBox | Components.ButtonLaunch;
+                MainWindow.Components = MainWindow.Components & ~Components.ButtonDownload | Components.ButtonLaunch;
             }
             else
             {
                 EntryPoint            = string.Empty;
-                MainWindow.Components = MainWindow.Components & ~Components.ButtonLaunch & ~Components.SettingsBox | Components.ButtonDownload;
+                MainWindow.Components = MainWindow.Components & ~Components.ButtonLaunch | Components.ButtonDownload;
             }
         }
 
         private static void ButtonAccept_Click(object? sender, EventArgs args)
         {
-            SaveLauncherConfig();
-
             if (MainWindow.Components.HasFlag(Components.ButtonLaunch))
             {
                 Launch();
@@ -380,6 +301,44 @@ namespace GenshinLauncher
             }
         }
 
+        private static void ButtonSettings_Click(object? sender, EventArgs args)
+        {
+            ISettingsWindow settingsWindow = new Ui.WinForms.SettingsWindow();
+
+            settingsWindow.CheckBoxCloseToTrayChecked  = CloseToTray;
+            settingsWindow.CheckBoxExitOnLaunchChecked = ExitOnLaunch;
+            settingsWindow.TextBoxGameDirText          = GameInstallDir;
+            settingsWindow.NumericMonitorIndexValue    = (int)MonitorIndex;
+            settingsWindow.NumericMonitorIndexMaximum  = WinApi.GetSystemMetrics(WinApi.SM_CMONITORS) - 1;
+            
+            if (BorderlessMode)
+            {
+                settingsWindow.RadioButtonBorderlessChecked = true;
+            }
+            else if ((bool)FullscreenMode)
+            {
+                settingsWindow.RadioButtonFullscreenChecked = true;
+            }
+            else
+            {
+                settingsWindow.RadioButtonWindowedChecked = true;
+            }
+
+            if (ResolutionHeight == 0 || ResolutionWidth == 0)
+            {
+                Rectangle bounds = MainWindow.GetCurrentScreenBounds();
+                settingsWindow.NumericWindowWidthValue  = bounds.Width;
+                settingsWindow.NumericWindowHeightValue = bounds.Height;
+            }
+            else
+            {
+                settingsWindow.NumericWindowWidthValue  = (int)ResolutionWidth;
+                settingsWindow.NumericWindowHeightValue = (int)ResolutionHeight;
+            }
+
+            settingsWindow.ShowDialog(MainWindow);
+        }
+
         private static async void ButtonInstallDirectX_Click(object? sender, EventArgs args)
         {
             MainWindow.Components &= ~Components.ButtonDirectX;
@@ -387,7 +346,7 @@ namespace GenshinLauncher
 
             try
             {
-                MainWindow.Components = MainWindow.Components & ~Components.ProgressBarBlocks & ~Components.InstallDirOptions | Components.ProgressBarMarquee;
+                MainWindow.Components = MainWindow.Components & ~Components.ProgressBarBlocks | Components.ProgressBarMarquee;
                 MainWindow.LabelProgressBarDownloadTitleText = "Fetching manifest...";
                 ResourceJson resourceJson = await ApiClient.GetResource(MainWindow.RadioButtonGlobalVersionChecked);
                 Package      directX      = resourceJson.Plugin.Plugins.First(package => package.Name == "DXSETUP.zip");
@@ -401,66 +360,16 @@ namespace GenshinLauncher
                 }
                 catch (TaskCanceledException) { }
 
-                MainWindow.ProgressBarDownloadValue          = 0;
-                MainWindow.LabelProgressBarDownloadTitleText = string.Empty;
-                MainWindow.LabelProgressBarDownloadText      = string.Empty;
-                MainWindow.Components                        = MainWindow.Components & ~Components.ProgressBar | Components.InstallDirOptions;
+                MainWindow.ProgressBarDownloadValue          =  0;
+                MainWindow.LabelProgressBarDownloadTitleText =  string.Empty;
+                MainWindow.LabelProgressBarDownloadText      =  string.Empty;
+                MainWindow.Components                        &= ~Components.ProgressBar;
             }
             finally
             {
                 InstallerSemaphore.Release(1);
                 MainWindow.Components |= Components.ButtonDirectX;
             }
-        }
-
-        private static void ButtonUseScreenResolution_Click(object? sender, EventArgs args)
-        {
-            Rectangle bounds = MainWindow.GetCurrentScreenBounds();
-
-            MainWindow.NumericWindowWidthValue = bounds.Width;
-            ResolutionWidth.SetValue(bounds.Width);
-
-            MainWindow.NumericWindowHeightValue = bounds.Height;
-            ResolutionHeight.SetValue(bounds.Height);
-        }
-
-        private static void WindowMode_CheckedChanged(object? sender, EventArgs args)
-        {
-            if (MainWindow.RadioButtonBorderlessChecked)
-            {
-                BorderlessMode = true;
-                FullscreenMode.SetValue(false);
-            }
-            else
-            {
-                BorderlessMode = false;
-                FullscreenMode.SetValue(MainWindow.RadioButtonFullscreenChecked);
-            }
-        }
-
-        private static void NumericWindowWidth_ValueChanged(object? sender, EventArgs args)
-        {
-            ResolutionWidth.SetValue(MainWindow.NumericWindowWidthValue);
-        }
-
-        private static void NumericWindowHeight_ValueChanged(object? sender, EventArgs args)
-        {
-            ResolutionHeight.SetValue(MainWindow.NumericWindowHeightValue);
-        }
-
-        private static void NumericMonitorIndex_ValueChanged(object? sender, EventArgs args)
-        {
-            MonitorIndex.SetValue(MainWindow.NumericMonitorIndexValue);
-        }
-
-        private static void CheckBoxCloseToTray_CheckedChanged(object? sender, EventArgs args)
-        {
-            CloseToTray = MainWindow.CheckBoxCloseToTrayChecked;
-        }
-
-        private static void CheckBoxExitOnLaunch_CheckedChanged(object? sender, EventArgs args)
-        {
-            ExitOnLaunch = MainWindow.CheckBoxExitOnLaunchChecked;
         }
 
         private static void Progress_Changed(double decimalPercentage)
