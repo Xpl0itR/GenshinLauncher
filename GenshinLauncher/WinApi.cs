@@ -13,7 +13,7 @@ namespace GenshinLauncher
 {
     public static class WinApi
     {
-        public const string DllNameUser32 = "User32.dll";
+        private const string DllNameUser32 = "User32.dll";
 
         // ReSharper disable InconsistentNaming, IdentifierTypo
         public const int GWL_STYLE                = -16;

@@ -48,6 +48,8 @@ namespace GenshinLauncher.Ui.WinForms
             this._buttonStopDownload = new DarkUI.Controls.DarkButton();
             this._buttonInstallDirectX = new DarkUI.Controls.DarkButton();
             this._buttonSettings = new DarkUI.Controls.DarkButton();
+            this._labelCheckingForUpdates = new DarkUI.Controls.DarkLabel();
+            this._buttonDownloadPreload = new DarkUI.Controls.DarkButton();
             this._trayMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -143,11 +145,24 @@ namespace GenshinLauncher.Ui.WinForms
             resources.ApplyResources(this._buttonSettings, "_buttonSettings");
             this._buttonSettings.Name = "_buttonSettings";
             // 
+            // _labelCheckingForUpdates
+            // 
+            resources.ApplyResources(this._labelCheckingForUpdates, "_labelCheckingForUpdates");
+            this._labelCheckingForUpdates.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this._labelCheckingForUpdates.Name = "_labelCheckingForUpdates";
+            // 
+            // _buttonDownloadPreload
+            // 
+            resources.ApplyResources(this._buttonDownloadPreload, "_buttonDownloadPreload");
+            this._buttonDownloadPreload.Name = "_buttonDownloadPreload";
+            // 
             // MainWindow
             // 
             this.AcceptButton = this._buttonAccept;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.Controls.Add(this._buttonDownloadPreload);
+            this.Controls.Add(this._labelCheckingForUpdates);
             this.Controls.Add(this._buttonSettings);
             this.Controls.Add(this._buttonInstallDirectX);
             this.Controls.Add(this._buttonStopDownload);
@@ -184,5 +199,7 @@ namespace GenshinLauncher.Ui.WinForms
         private DarkButton _buttonStopDownload;
         private DarkButton _buttonInstallDirectX;
         private DarkButton _buttonSettings;
+        private DarkLabel _labelCheckingForUpdates;
+        private DarkButton _buttonDownloadPreload;
     }
 }

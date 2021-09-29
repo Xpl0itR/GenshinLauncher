@@ -12,6 +12,7 @@ namespace GenshinLauncher.Ui.Common
     public interface IMainWindow
     {
         event EventHandler ButtonAcceptClick;
+        event EventHandler ButtonDownloadPreloadClick;
         event EventHandler ButtonSettingsClick;
         event EventHandler ButtonStopDownloadClick;
         event EventHandler ButtonInstallDirectXClick;
@@ -22,7 +23,5 @@ namespace GenshinLauncher.Ui.Common
         int        ProgressBarDownloadValue          { get; set; }
         string     LabelProgressBarDownloadTitleText { get; set; }
         string     LabelProgressBarDownloadText      { get; set; }
-
-        Rectangle GetCurrentScreenBounds();
     }
 }

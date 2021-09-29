@@ -6,8 +6,6 @@
 
 using System;
 using System.Buffers;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -21,35 +19,6 @@ namespace GenshinLauncher
     public static class Utils
     {
         public const int DefaultFileStreamBufferSize = 0x1000;
-
-        public static async Task<IntPtr> GetMainWindowHandle(this Process process)
-        {
-            IntPtr handle = process.MainWindowHandle;
-            while (handle == IntPtr.Zero)
-            {
-                await Task.Delay(300);
-                handle = process.MainWindowHandle;
-            }
-
-            return handle;
-        }
-
-        public static void RemoveWindowTitlebar(IntPtr hWnd)
-        {
-            long style = WinApi.GetWindowLong(hWnd, WinApi.GWL_STYLE) 
-                       & ~WinApi.WS_CAPTION
-                       & ~WinApi.WS_THICKFRAME;
-
-            WinApi.SetWindowLong(hWnd, WinApi.GWL_STYLE, style);
-        }
-
-        public static void ResizeWindowToFillScreen(IntPtr hWnd)
-        {
-            IntPtr    hMonitor = WinApi.MonitorFromWindow(hWnd, WinApi.MONITOR_DEFAULTTONEAREST);
-            Rectangle bounds   = WinApi.GetMonitorInfo(hMonitor).rcMonitor;
-
-            WinApi.SetWindowPos(hWnd, IntPtr.Zero, bounds.X, bounds.Y, bounds.Width, bounds.Height, WinApi.SWP_FRAMECHANGED);
-        }
 
         public static async Task<Stream> OpenStreamAsync(this HttpContent content, CancellationToken cancellationToken = default)
         {

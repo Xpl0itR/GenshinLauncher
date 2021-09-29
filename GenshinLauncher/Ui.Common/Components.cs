@@ -12,9 +12,11 @@ namespace GenshinLauncher.Ui.Common
         None               = 0x00,
         ButtonLaunch       = 0x01,
         ButtonDownload     = 0x02,
-        ButtonDirectX      = 0x04,
-        ProgressBarBlocks  = 0x08,
-        ProgressBarMarquee = 0x10,
+        ButtonUpdate       = 0x04,
+        ButtonPreload      = 0x08,
+        ProgressBarBlocks  = 0x10,
+        ProgressBarMarquee = 0x20,
+        CheckingForUpdate  = 0x40,
 
         ProgressBar = ProgressBarBlocks | ProgressBarMarquee
     }

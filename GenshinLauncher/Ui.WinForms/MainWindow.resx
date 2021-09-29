@@ -64,6 +64,21 @@
     <value>116, 12</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="_trayMenuItemOpen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="_trayMenuItemOpen.Text" xml:space="preserve">
+    <value>Open main window</value>
+  </data>
+  <data name="_trayMenuSeparator.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 6</value>
+  </data>
+  <data name="_trayMenuItemExit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="_trayMenuItemExit.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <data name="_trayMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>179, 55</value>
   </data>
@@ -97,21 +112,6 @@
   <data name="_trayIcon.Visible" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="_trayMenuItemOpen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="_trayMenuItemOpen.Text" xml:space="preserve">
-    <value>Open main window</value>
-  </data>
-  <data name="_trayMenuSeparator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 6</value>
-  </data>
-  <data name="_trayMenuItemExit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="_trayMenuItemExit.Text" xml:space="preserve">
-    <value>Exit</value>
-  </data>
   <data name="_buttonAccept.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 20pt</value>
   </data>
@@ -138,7 +138,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_buttonAccept.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="_radioButtonGlobalVersion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -168,7 +168,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_radioButtonGlobalVersion.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="_radioButtonChinaVersion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -198,7 +198,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_radioButtonChinaVersion.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="_progressBarDownload.Location" type="System.Drawing.Point, System.Drawing">
     <value>50, 650</value>
@@ -219,7 +219,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_progressBarDownload.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="_labelProgressBarText.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -249,7 +249,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_labelProgressBarText.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="_labelProgressBarTitle.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -279,7 +279,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_labelProgressBarTitle.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_buttonStopDownload.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -310,7 +310,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_buttonStopDownload.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="_buttonInstallDirectX.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -340,7 +340,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_buttonInstallDirectX.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="_buttonSettings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -370,6 +370,69 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_buttonSettings.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="_labelCheckingForUpdates.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_labelCheckingForUpdates.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 11pt, style=Bold</value>
+  </data>
+  <data name="_labelCheckingForUpdates.Location" type="System.Drawing.Point, System.Drawing">
+    <value>916, 693</value>
+  </data>
+  <data name="_labelCheckingForUpdates.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 20</value>
+  </data>
+  <data name="_labelCheckingForUpdates.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="_labelCheckingForUpdates.Text" xml:space="preserve">
+    <value>Checking for Updates...</value>
+  </data>
+  <data name="_labelCheckingForUpdates.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;_labelCheckingForUpdates.Name" xml:space="preserve">
+    <value>_labelCheckingForUpdates</value>
+  </data>
+  <data name="&gt;&gt;_labelCheckingForUpdates.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_labelCheckingForUpdates.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_labelCheckingForUpdates.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="_buttonDownloadPreload.Location" type="System.Drawing.Point, System.Drawing">
+    <value>916, 578</value>
+  </data>
+  <data name="_buttonDownloadPreload.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="_buttonDownloadPreload.Size" type="System.Drawing.Size, System.Drawing">
+    <value>238, 41</value>
+  </data>
+  <data name="_buttonDownloadPreload.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="_buttonDownloadPreload.Text" xml:space="preserve">
+    <value>Download Preload</value>
+  </data>
+  <data name="_buttonDownloadPreload.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;_buttonDownloadPreload.Name" xml:space="preserve">
+    <value>_buttonDownloadPreload</value>
+  </data>
+  <data name="&gt;&gt;_buttonDownloadPreload.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_buttonDownloadPreload.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_buttonDownloadPreload.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

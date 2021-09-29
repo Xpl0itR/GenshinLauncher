@@ -5,7 +5,6 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using DarkUI.Forms;
 using GenshinLauncher.Ui.Common;
@@ -25,6 +24,12 @@ namespace GenshinLauncher.Ui.WinForms
         {
             add    => _buttonAccept.Click += value;
             remove => _buttonAccept.Click -= value;
+        }
+
+        public event EventHandler ButtonDownloadPreloadClick
+        {
+            add    => _buttonDownloadPreload.Click += value;
+            remove => _buttonDownloadPreload.Click -= value;
         }
 
         public event EventHandler ButtonSettingsClick
@@ -77,8 +82,6 @@ namespace GenshinLauncher.Ui.WinForms
             {
                 _components = value;
 
-                _buttonInstallDirectX.Enabled = _components.HasFlag(Components.ButtonDirectX);
-
                 if (_components.HasFlag(Components.ButtonLaunch))
                 {
                     _buttonAccept.Text    = "Launch"; //TODO: localize text
@@ -87,6 +90,11 @@ namespace GenshinLauncher.Ui.WinForms
                 else if (_components.HasFlag(Components.ButtonDownload))
                 {
                     _buttonAccept.Text    = "Download"; //TODO: localize text
+                    _buttonAccept.Enabled = true;
+                }
+                else if (_components.HasFlag(Components.ButtonUpdate))
+                {
+                    _buttonAccept.Text    = "Update"; //TODO: localize text
                     _buttonAccept.Enabled = true;
                 }
                 else
@@ -103,6 +111,24 @@ namespace GenshinLauncher.Ui.WinForms
                 {
                     _radioButtonGlobalVersion.Hide();
                     _radioButtonChinaVersion.Hide();
+                }
+
+                if (_components.HasFlag(Components.ButtonPreload))
+                {
+                    _buttonDownloadPreload.Show();
+                }
+                else
+                {
+                    _buttonDownloadPreload.Hide();
+                }
+
+                if (_components.HasFlag(Components.CheckingForUpdate))
+                {
+                    _labelCheckingForUpdates.Show();
+                }
+                else
+                {
+                    _labelCheckingForUpdates.Hide();
                 }
 
                 if ((_components & Components.ProgressBar) == 0)
@@ -126,9 +152,6 @@ namespace GenshinLauncher.Ui.WinForms
             }
         }
 
-        public Rectangle GetCurrentScreenBounds() =>
-            Screen.FromControl(this).Bounds;
-
         // Titlebar events
         private void MainForm_Resize(object sender, EventArgs args)
         {
@@ -140,7 +163,7 @@ namespace GenshinLauncher.Ui.WinForms
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs args)
         {
-            if (args.CloseReason == CloseReason.UserClosing)// && _checkBoxCloseToTray.Checked) TODO: fix
+            if (args.CloseReason == CloseReason.UserClosing && Program.CloseToTray)
             {
                 args.Cancel      = true;
                 this.WindowState = FormWindowState.Minimized;
