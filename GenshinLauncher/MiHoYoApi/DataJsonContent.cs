@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 #nullable disable
 namespace GenshinLauncher.MiHoYoApi
 {
-    public record ContentJson : IDataJson
+    public record DataJsonContent : IDataJson
     {
         [JsonPropertyName("adv")]
         public Adv Adv { get; init; }

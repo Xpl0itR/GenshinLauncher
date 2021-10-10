@@ -32,7 +32,7 @@ namespace GenshinLauncher
         private static string?       _gameRoot;
         private static string?       _entryPoint;
         private static Version?      _gameVersion;
-        private static ResourceJson? _resource;
+        private static DataJsonResource? _resource;
 
         static Program()
         {
@@ -77,22 +77,22 @@ namespace GenshinLauncher
 
             async Task LoadAdditionalContentAsync()
             {
-                ContentJson contentJson = _entryPoint == ExeNameChina
-                    ? await ApiClient.GetContent(false, Language.Chinese)
-                    : await ApiClient.GetContent(true, Language.English); //TODO: load this from CultureInfo
+                DataJsonContent dataJsonContent = _entryPoint == ExeNameChina
+                    ? await ApiClient.GetContentYuanShen()
+                    : await ApiClient.GetContentGenshin(Language.English); //TODO: load this from CultureInfo
 
-                string bgName = Path.GetFileName(contentJson.Adv.Background);
+                string bgName = Path.GetFileName(dataJsonContent.Adv.Background);
                 string bgPath = Path.Combine(BgDirectory, bgName);
 
                 if (!File.Exists(bgPath))
                 {
                     await using Stream bgStream = new FileStream(bgPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, Utils.DefaultFileStreamBufferSize, true);
-                    await ApiClient.Download(contentJson.Adv.Background, bgStream);
+                    await ApiClient.Download(dataJsonContent.Adv.Background, bgStream);
                     Ui.MainWindow.BackgroundImage = Image.FromStream(bgStream);
                 }
 
                 LauncherIni.GameDynamicBgName = bgName;
-                LauncherIni.GameDynamicBgMd5  = contentJson.Adv.BgChecksum;
+                LauncherIni.GameDynamicBgMd5  = dataJsonContent.Adv.BgChecksum;
                 LauncherIni.WriteFile(LauncherIniPath);
 
                 //TODO: implement banner and post viewers into UI
@@ -127,7 +127,9 @@ namespace GenshinLauncher
         {
             Ui.MainWindow.Components |= Components.CheckingForUpdate;
 
-            _resource = await ApiClient.GetResource(_entryPoint! == ExeNameGlobal);
+            _resource = _entryPoint! == ExeNameChina 
+                ? await ApiClient.GetResourceYuanShen() 
+                : await ApiClient.GetResourceGenshin();
 
             if (_gameVersion == null || Version.Parse(_resource.Game.Latest.Version) > _gameVersion)
             {

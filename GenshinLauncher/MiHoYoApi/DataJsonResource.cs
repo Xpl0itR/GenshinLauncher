@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 #nullable disable
 namespace GenshinLauncher.MiHoYoApi
 {
-    public record ResourceJson : IDataJson
+    public record DataJsonResource : IDataJson
     {
         [JsonPropertyName("game")]
         public Game Game { get; init; }
@@ -86,6 +86,9 @@ namespace GenshinLauncher.MiHoYoApi
 
         [JsonPropertyName("language")]
         public string Language { get; init; }
+
+        [JsonPropertyName("segments")]
+        public object[] Segments { get; init; }
     }
 
     public record Plugin
