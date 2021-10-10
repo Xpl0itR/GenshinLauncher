@@ -23,6 +23,6 @@ namespace GenshinLauncher.Ui.Common
         int    NumericWindowWidthValue      { get; set; }
         string TextBoxGameDirText           { get; set; }
 
-        void ShowDialog(IMainWindow parent);
+        void Close();
     }
 }

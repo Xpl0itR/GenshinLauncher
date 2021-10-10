@@ -96,9 +96,6 @@ namespace GenshinLauncher.Ui.WinForms
             }
         }
 
-        public void ShowDialog(IMainWindow parent) =>
-            base.ShowDialog((Form)parent);
-
         private void ButtonClose_Click(object sender, EventArgs args) =>
             this.Close();
         
@@ -118,7 +115,18 @@ namespace GenshinLauncher.Ui.WinForms
             }
         }
 
-        private void TextBoxInstallDir_Validating(object sender, CancelEventArgs args)
+        private void TextBoxInstallDir_Validated(object sender, EventArgs args)
+        {
+            _errorProvider.SetError(_textBoxInstallDir, null);
+        }
+
+        private void TextBoxInstallDir_Validating(object sender, CancelEventArgs args) =>
+            ValidatePath(args);
+
+        private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs args) =>
+            ValidatePath(args);
+
+        private void ValidatePath(CancelEventArgs args)
         {
             if (Utils.IsFolderPathValid(_textBoxInstallDir.Text))
             {
@@ -127,11 +135,6 @@ namespace GenshinLauncher.Ui.WinForms
 
             args.Cancel = true;
             _errorProvider.SetError(_textBoxInstallDir, "Invalid characters in path"); //TODO: localize text
-        }
-
-        private void TextBoxInstallDir_Validated(object sender, EventArgs args)
-        {
-            _errorProvider.SetError(_textBoxInstallDir, null);
         }
     }
 }

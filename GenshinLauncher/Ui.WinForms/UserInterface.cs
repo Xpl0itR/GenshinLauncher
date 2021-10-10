@@ -12,20 +12,32 @@ namespace GenshinLauncher.Ui.WinForms
 {
     public class UserInterface : IUserInterface
     {
+        public IMainWindow MainWindow => _mainWindow;
+
+        private readonly MainWindow _mainWindow;
+
         public UserInterface()
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            _mainWindow = new MainWindow();
         }
 
-        public void RunMainWindow(IMainWindow mainWindow) =>
-            Application.Run((Form)mainWindow);
+        public ISettingsWindow NewSettingsWindow() =>
+            new SettingsWindow();
 
-        public void ShowErrorDialog(string title, string message, object? owner)
+        public void RunMainWindow() =>
+            Application.Run(_mainWindow);
+
+        public void RunSettingsWindow(ISettingsWindow settingsWindow) =>
+            ((Form)settingsWindow).ShowDialog(_mainWindow);
+
+        public void ShowErrorDialog(string title, string message)
         {
             using DarkMessageBox darkMessageBox = new DarkMessageBox(message, title, DarkMessageBoxIcon.Error, DarkDialogButton.Ok);
-            darkMessageBox.ShowDialog(owner as IWin32Window);
+            darkMessageBox.ShowDialog(_mainWindow);
         }
 
         public void Exit() =>

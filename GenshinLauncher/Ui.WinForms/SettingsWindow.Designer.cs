@@ -315,8 +315,10 @@
             this.Controls.Add(this._groupBoxInstallPath);
             this.Controls.Add(this._groupBoxLauncherSettings);
             this.Controls.Add(this._groupBoxSettings);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "SettingsWindow";
             this.Text = "Settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this._groupBoxSettings.ResumeLayout(false);
             this._groupBoxSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._numericMonitorIndex)).EndInit();

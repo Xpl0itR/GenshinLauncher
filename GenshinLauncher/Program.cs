@@ -8,6 +8,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using GenshinLauncher.FileParsers;
 using GenshinLauncher.MiHoYoApi;
@@ -21,11 +22,12 @@ namespace GenshinLauncher
         private const string ExeNameChina  = "YuanShen.exe";
 
         private static readonly IUserInterface  Ui;
-        private static readonly IMainWindow     MainWindow;
         private static readonly MiHoYoApiClient ApiClient;
-        private static readonly string          BgDirectory;
+        private static readonly LauncherIni     LauncherIni;
         private static readonly string          LauncherIniPath;
+        private static readonly string          BgDirectory;
 
+        private static bool          _borderlessMode;
         private static bool          _exitOnLaunch;
         private static string?       _gameRoot;
         private static string?       _entryPoint;
@@ -35,10 +37,10 @@ namespace GenshinLauncher
         static Program()
         {
             Ui              = new Ui.WinForms.UserInterface();
-            MainWindow      = new Ui.WinForms.MainWindow();
             ApiClient       = new MiHoYoApiClient();
             BgDirectory     = Path.Combine(AppContext.BaseDirectory, "bg");
             LauncherIniPath = Path.Combine(AppContext.BaseDirectory, "config.ini");
+            LauncherIni     = new LauncherIni(File.Exists(LauncherIniPath) ? LauncherIniPath : null);
         }
 
         public static bool CloseToTray { get; private set; }
@@ -46,31 +48,34 @@ namespace GenshinLauncher
         [STAThread]
         public static void Main()
         {
-            MainWindow.ButtonAcceptClick += ButtonAccept_Click;
+            Ui.MainWindow.ButtonAcceptClick   += ButtonAccept_Click;
+            Ui.MainWindow.ButtonSettingsClick += ButtonSettings_Click;
 
-            LauncherIni launcherIni;
             if (File.Exists(LauncherIniPath))
             {
-                launcherIni   = new LauncherIni(LauncherIniPath);
-                CloseToTray   = NullableStringEquals(launcherIni.ExitType, "1") ?? false;
-                _exitOnLaunch = ToBoolean(launcherIni.ExitOnLaunch)             ?? false;
-                _gameRoot     = launcherIni.GameInstallPath;
-                _entryPoint   = launcherIni.GameStartName;
+                _gameRoot       = LauncherIni.GameInstallPath;
+                _entryPoint     = LauncherIni.GameStartName;
+                _borderlessMode = ToBoolean(LauncherIni.BorderlessMode) ?? false;
+                _exitOnLaunch   = ToBoolean(LauncherIni.ExitOnLaunch)   ?? false;
+                CloseToTray     = LauncherIni.ExitType == "1";
 
-                string backgroundPath = Path.Join(BgDirectory, launcherIni.GameDynamicBgName);
-                if (File.Exists(backgroundPath))
+                if (string.IsNullOrWhiteSpace(_gameRoot))
                 {
-                    MainWindow.BackgroundImage = Image.FromFile(backgroundPath);
+                    OpenSettingsWindow();
+                }
+                else
+                {
+                    GameRootUpdated();
                 }
 
-                GameRootUpdated();
-            }
-            else
-            {
-                launcherIni = new LauncherIni();
+                string backgroundPath = Path.Join(BgDirectory, LauncherIni.GameDynamicBgName);
+                if (File.Exists(backgroundPath))
+                {
+                    Ui.MainWindow.BackgroundImage = Image.FromFile(backgroundPath);
+                }
             }
 
-            async void LoadAdditionalContentAsync()
+            async Task LoadAdditionalContentAsync()
             {
                 ContentJson contentJson = _entryPoint == ExeNameChina
                     ? await ApiClient.GetContent(false, Language.Chinese)
@@ -83,18 +88,18 @@ namespace GenshinLauncher
                 {
                     await using Stream bgStream = new FileStream(bgPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, Utils.DefaultFileStreamBufferSize, true);
                     await ApiClient.Download(contentJson.Adv.Background, bgStream);
-                    MainWindow.BackgroundImage = Image.FromStream(bgStream);
+                    Ui.MainWindow.BackgroundImage = Image.FromStream(bgStream);
                 }
 
-                launcherIni.GameDynamicBgName = bgName;
-                launcherIni.GameDynamicBgMd5  = contentJson.Adv.BgChecksum;
-                launcherIni.WriteFile(LauncherIniPath);
+                LauncherIni.GameDynamicBgName = bgName;
+                LauncherIni.GameDynamicBgMd5  = contentJson.Adv.BgChecksum;
+                LauncherIni.WriteFile(LauncherIniPath);
 
                 //TODO: implement banner and post viewers into UI
             }
-            LoadAdditionalContentAsync();
+            _ = LoadAdditionalContentAsync();
 
-            Ui.RunMainWindow(MainWindow);
+            Ui.RunMainWindow();
         }
 
         private static void GameRootUpdated()
@@ -107,34 +112,58 @@ namespace GenshinLauncher
 
                 if (gameIni.GameVersion != null)
                 {
-                    MainWindow.Components = MainWindow.Components & ~Components.ButtonDownload & ~Components.ButtonUpdate & ~Components.ButtonPreload | Components.ButtonLaunch;
-                    _gameVersion          = Version.Parse(gameIni.GameVersion);
+                    Ui.MainWindow.Components = Ui.MainWindow.Components & ~Components.ButtonDownload & ~Components.ButtonUpdate & ~Components.ButtonPreload | Components.ButtonLaunch;
+                    _gameVersion             = Version.Parse(gameIni.GameVersion);
 
-                    CheckForUpdates().ContinueWith(t => { if (t.Exception != null) throw t.Exception; });
+                    _ = CheckForUpdates(); //TODO: fixme. when this method throws the exception doesn't leave the GameRootUpdated method
                     return;
                 }
             }
 
-            MainWindow.Components = MainWindow.Components & ~Components.ButtonLaunch & ~Components.ButtonUpdate & ~Components.ButtonPreload | Components.ButtonDownload;
+            Ui.MainWindow.Components = Ui.MainWindow.Components & ~Components.ButtonLaunch & ~Components.ButtonUpdate & ~Components.ButtonPreload | Components.ButtonDownload;
         }
 
         private static async Task CheckForUpdates()
         {
-            MainWindow.Components |= Components.CheckingForUpdate;
+            Ui.MainWindow.Components |= Components.CheckingForUpdate;
 
             _resource = await ApiClient.GetResource(_entryPoint! == ExeNameGlobal);
 
             if (_gameVersion == null || Version.Parse(_resource.Game.Latest.Version) > _gameVersion)
             {
-                MainWindow.Components = MainWindow.Components & ~Components.ButtonLaunch | Components.ButtonUpdate;
+                Ui.MainWindow.Components = Ui.MainWindow.Components & ~Components.ButtonLaunch | Components.ButtonUpdate;
             }
 
             if (_resource.PreDownloadGame != null)
             {
-                MainWindow.Components |= Components.ButtonPreload;
+                Ui.MainWindow.Components |= Components.ButtonPreload;
             }
 
-            MainWindow.Components &= ~Components.CheckingForUpdate;
+            Ui.MainWindow.Components &= ~Components.CheckingForUpdate;
+        }
+
+        private static async Task Launch()
+        {
+            if (Process.GetProcesses().Any(process => process.ProcessName == Path.GetFileNameWithoutExtension(_entryPoint!)))
+            {
+                Ui.ShowErrorDialog("GenshinLauncher", "Another instance of Genshin Impact is already running"); //TODO: localize
+                return;
+            }
+
+            Process process = Process.Start(Path.Join(_gameRoot, _entryPoint));
+
+            if (_borderlessMode)
+            {
+                IntPtr hWnd = await process.GetMainWindowHandle();
+
+                RemoveWindowTitlebar(hWnd);
+                ResizeWindowToFillScreen(hWnd);
+            }
+
+            if (_exitOnLaunch)
+            {
+                Ui.Exit();
+            }
         }
 
         private static async Task<IntPtr> GetMainWindowHandle(this Process process)
@@ -166,30 +195,101 @@ namespace GenshinLauncher
             WinApi.SetWindowPos(hWnd, IntPtr.Zero, bounds.X, bounds.Y, bounds.Width, bounds.Height, WinApi.SWP_FRAMECHANGED);
         }
 
-        private static bool? NullableStringEquals(string? value, string equals) =>
-            value == null ? null : value == equals;
+        private static void OpenSettingsWindow()
+        {
+            ISettingsWindow settingsWindow = Ui.NewSettingsWindow();
+
+            using (GenshinRegistry registry = new GenshinRegistry(false, _entryPoint != ExeNameChina))
+            {
+                settingsWindow.CheckBoxCloseToTrayChecked  = CloseToTray;
+                settingsWindow.CheckBoxExitOnLaunchChecked = _exitOnLaunch;
+                settingsWindow.TextBoxGameDirText          = _gameRoot             ?? string.Empty;
+                settingsWindow.NumericMonitorIndexValue    = registry.MonitorIndex ?? 0;
+                settingsWindow.NumericMonitorIndexMaximum  = WinApi.GetSystemMetrics(WinApi.SM_CMONITORS) - 1;
+
+                if (_borderlessMode)
+                {
+                    settingsWindow.RadioButtonBorderlessChecked = true;
+                }
+                else if (registry.FullscreenMode ?? true)
+                {
+                    settingsWindow.RadioButtonFullscreenChecked = true;
+                }
+                else
+                {
+                    settingsWindow.RadioButtonWindowedChecked = true;
+                }
+
+                if (registry.ResolutionHeight != null)
+                {
+                    settingsWindow.NumericWindowHeightValue = (int)registry.ResolutionHeight;
+                }
+
+                if (registry.ResolutionWidth != null)
+                {
+                    settingsWindow.NumericWindowWidthValue = (int)registry.ResolutionWidth;
+                }
+            }
+
+            settingsWindow.ButtonSaveClick += (_, _) =>
+            {
+                if (_gameRoot != settingsWindow.TextBoxGameDirText)
+                {
+                    _gameRoot = settingsWindow.TextBoxGameDirText;
+                    GameRootUpdated();
+                }
+
+                using (GenshinRegistry registry = new GenshinRegistry(true, _entryPoint != ExeNameChina))
+                {
+                    registry.ResolutionHeight = settingsWindow.NumericWindowHeightValue;
+                    registry.ResolutionWidth  = settingsWindow.NumericWindowWidthValue;
+                    registry.MonitorIndex     = settingsWindow.NumericMonitorIndexValue;
+
+                    if (settingsWindow.RadioButtonBorderlessChecked)
+                    {
+                        _borderlessMode         = true;
+                        registry.FullscreenMode = false;
+                    }
+                    else
+                    {
+                        _borderlessMode         = false;
+                        registry.FullscreenMode = settingsWindow.RadioButtonFullscreenChecked;
+                    }
+                }
+
+                LauncherIni.GameInstallPath = _gameRoot;
+                LauncherIni.BorderlessMode  = _borderlessMode ? "true" : "false";
+                // ReSharper disable AssignmentInConditionalExpression
+                LauncherIni.ExitType     = (CloseToTray   = settingsWindow.CheckBoxCloseToTrayChecked)  ? "1"    : "2";
+                LauncherIni.ExitOnLaunch = (_exitOnLaunch = settingsWindow.CheckBoxExitOnLaunchChecked) ? "true" : "false";
+                // ReSharper restore AssignmentInConditionalExpression
+                LauncherIni.WriteFile(LauncherIniPath);
+
+                settingsWindow.Close();
+            };
+
+            Ui.RunSettingsWindow(settingsWindow);
+        }
 
         private static bool? ToBoolean(string? value) =>
             (value as IConvertible)?.ToBoolean(null);
 
+        private static void ButtonSettings_Click(object? sender, EventArgs args) =>
+            OpenSettingsWindow();
+
         private static void ButtonAccept_Click(object? sender, EventArgs args)
         {
-            if (MainWindow.Components.HasFlag(Components.ButtonLaunch))
+            if (Ui.MainWindow.Components.HasFlag(Components.ButtonLaunch))
             {
-                //TODO: implement this
-
-                if (_exitOnLaunch)
-                {
-                    Ui.Exit();
-                }
+                _ = Launch();
             }
-            else if (MainWindow.Components.HasFlag(Components.ButtonDownload))
+            else if (Ui.MainWindow.Components.HasFlag(Components.ButtonDownload))
             {
-                //TODO: implement this
+                throw new NotImplementedException();
             }
-            else if (MainWindow.Components.HasFlag(Components.ButtonUpdate))
+            else if (Ui.MainWindow.Components.HasFlag(Components.ButtonUpdate))
             {
-                //TODO: implement this
+                throw new NotImplementedException();
             }
         }
     }

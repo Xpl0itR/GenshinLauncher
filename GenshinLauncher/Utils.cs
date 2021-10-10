@@ -109,6 +109,11 @@ namespace GenshinLauncher
 
         public static bool IsFolderPathValid(string path)
         {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return false;
+            }
+
             try
             {
                 _ = new DirectoryInfo(path).Attributes;
