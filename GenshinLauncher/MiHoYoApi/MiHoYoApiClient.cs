@@ -72,17 +72,8 @@ namespace GenshinLauncher.MiHoYoApi
             };
         }
 
-        public MiHoYoApiClient() : this(new HttpClient
-        {
-            DefaultRequestHeaders =
-            {
-                // ReSharper disable once StringLiteralTypo
-                { "User-Agent", "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.12.5 Chrome/69.0.3497.128 Safari/537.36" }
-            }
-        }) { }
-
         public async Task Download(string url, Stream outStream, RangeHeaderValue? range = null, HashAlgorithm? hashAlgorithm = null, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
-        {
+        { //TODO: move this to dedicated downloading class
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Range = range;
 

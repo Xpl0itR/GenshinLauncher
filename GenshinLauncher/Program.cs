@@ -7,19 +7,21 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using GenshinLauncher.FileParsers;
 using GenshinLauncher.MiHoYoApi;
+using GenshinLauncher.MiHoYoRegistry;
 using GenshinLauncher.Ui.Common;
 
 namespace GenshinLauncher
 {
     public static class Program
     {
-        private const string ExeNameGlobal = "GenshinImpact.exe";
-        private const string ExeNameChina  = "YuanShen.exe";
+        private const string ExeNameChina = "YuanShen.exe";
 
         private static readonly IUserInterface  Ui;
         private static readonly MiHoYoApiClient ApiClient;
@@ -27,20 +29,27 @@ namespace GenshinLauncher
         private static readonly string          LauncherIniPath;
         private static readonly string          BgDirectory;
 
-        private static bool          _borderlessMode;
-        private static bool          _exitOnLaunch;
-        private static string?       _gameRoot;
-        private static string?       _entryPoint;
-        private static Version?      _gameVersion;
+        private static bool              _borderlessMode;
+        private static bool              _exitOnLaunch;
+        private static string?           _gameRoot;
+        private static string?           _entryPoint;
+        private static Version?          _gameVersion;
         private static DataJsonResource? _resource;
 
         static Program()
         {
             Ui              = new Ui.WinForms.UserInterface();
-            ApiClient       = new MiHoYoApiClient();
             BgDirectory     = Path.Combine(AppContext.BaseDirectory, "bg");
             LauncherIniPath = Path.Combine(AppContext.BaseDirectory, "config.ini");
             LauncherIni     = new LauncherIni(File.Exists(LauncherIniPath) ? LauncherIniPath : null);
+            ApiClient       = new MiHoYoApiClient(new HttpClient
+            {
+                DefaultRequestHeaders =
+                {
+                    // ReSharper disable once StringLiteralTypo
+                    { "User-Agent", "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.12.5 Chrome/69.0.3497.128 Safari/537.36" }
+                }
+            });
         }
 
         public static bool CloseToTray { get; private set; }
@@ -79,7 +88,7 @@ namespace GenshinLauncher
             {
                 DataJsonContent dataJsonContent = _entryPoint == ExeNameChina
                     ? await ApiClient.GetContentYuanShen()
-                    : await ApiClient.GetContentGenshin(Language.English); //TODO: load this from CultureInfo
+                    : await ApiClient.GetContentGenshin(Language.FromCulture(CultureInfo.CurrentUICulture));
 
                 string bgName = Path.GetFileName(dataJsonContent.Adv.Background);
                 string bgPath = Path.Combine(BgDirectory, bgName);
@@ -97,7 +106,7 @@ namespace GenshinLauncher
 
                 //TODO: implement banner and post viewers into UI
             }
-            _ = LoadAdditionalContentAsync();
+            LoadAdditionalContentAsync().ContinueWith(t => { if (t.Exception != null) throw t.Exception; });
 
             Ui.RunMainWindow();
         }
@@ -112,10 +121,10 @@ namespace GenshinLauncher
 
                 if (gameIni.GameVersion != null)
                 {
-                    Ui.MainWindow.Components = Ui.MainWindow.Components & ~Components.ButtonDownload & ~Components.ButtonUpdate & ~Components.ButtonPreload | Components.ButtonLaunch;
+                    Ui.MainWindow.Components = Ui.MainWindow.Components & ~Components.ButtonDownload & ~Components.ButtonUpdate | Components.ButtonLaunch;
                     _gameVersion             = Version.Parse(gameIni.GameVersion);
 
-                    _ = CheckForUpdates(); //TODO: fixme. when this method throws the exception doesn't leave the GameRootUpdated method
+                    CheckForUpdates().ContinueWith(t => { if (t.Exception != null) throw t.Exception; });
                     return;
                 }
             }
@@ -127,8 +136,8 @@ namespace GenshinLauncher
         {
             Ui.MainWindow.Components |= Components.CheckingForUpdate;
 
-            _resource = _entryPoint! == ExeNameChina 
-                ? await ApiClient.GetResourceYuanShen() 
+            _resource = _entryPoint == ExeNameChina
+                ? await ApiClient.GetResourceYuanShen()
                 : await ApiClient.GetResourceGenshin();
 
             if (_gameVersion == null || Version.Parse(_resource.Game.Latest.Version) > _gameVersion)
@@ -283,7 +292,7 @@ namespace GenshinLauncher
         {
             if (Ui.MainWindow.Components.HasFlag(Components.ButtonLaunch))
             {
-                _ = Launch();
+                Launch().ContinueWith(t => { if (t.Exception != null) throw t.Exception; });
             }
             else if (Ui.MainWindow.Components.HasFlag(Components.ButtonDownload))
             {

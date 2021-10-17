@@ -8,79 +8,79 @@ namespace GenshinLauncher.FileParsers
 {
     public class LauncherIni : Ini
     {
-        private const string LauncherSectionName        = "launcher";
-        private const string CpsKeyName                 = "cps";
-        private const string ChannelKeyName             = "channel";
-        private const string SubChannelKeyName          = "sub_channel";
-        private const string GameInstallPathKeyName     = "game_install_path";
-        private const string GameDynamicBgNameKeyName   = "game_dynamic_bg_name";
-        private const string GameDynamicBgMd5KeyName    = "game_dynamic_bg_md5";
-        private const string GameStartNameKeyName       = "game_start_name";
-        private const string IsFirstExitKeyName         = "is_first_exit";
-        private const string ExitTypeKeyName            = "exit_type";
-        private const string SpeedLimitEnabledKeyName   = "speed_limit_enabled";
+        private const string SectionNameLauncher        = "launcher";
+        private const string KeyNameCps                 = "cps";
+        private const string KeyNameChannel             = "channel";
+        private const string KeyNameSubChannel          = "sub_channel";
+        private const string KeyNameGameInstallPath     = "game_install_path";
+        private const string KeyNameGameDynamicBgName   = "game_dynamic_bg_name";
+        private const string KeyNameGameDynamicBgMd5    = "game_dynamic_bg_md5";
+        private const string KeyNameGameStartName       = "game_start_name";
+        private const string KeyNameIsFirstExit         = "is_first_exit";
+        private const string KeyNameExitType            = "exit_type";
+        private const string KeyNameSpeedLimitEnabled   = "speed_limit_enabled";
 
-        private const string GenshinLauncherSectionName = "GenshinLauncher";
-        private const string BorderlessModeKeyName      = "borderless_mode";
-        private const string ExitOnLaunchKeyName        = "exit_on_launch";
+        private const string SectionNameGenshinLauncher = "GenshinLauncher"; //TODO: rename after program name is finalized
+        private const string KeyNameBorderlessMode      = "borderless_mode";
+        private const string KeyNameExitOnLaunch        = "exit_on_launch";
 
-        private IniParser.Model.KeyDataCollection Launcher        => this.Data[LauncherSectionName];
-        private IniParser.Model.KeyDataCollection GenshinLauncher => this.Data[GenshinLauncherSectionName]; //TODO: rename after program name is finalized
+        private IniParser.Model.KeyDataCollection Launcher        => this.Data[SectionNameLauncher];
+        private IniParser.Model.KeyDataCollection GenshinLauncher => this.Data[SectionNameGenshinLauncher];
 
         public LauncherIni(string? path = null) : base(path) { }
 
         public string? Channel
         {
-            get => Launcher[ChannelKeyName];
-            set => Launcher[ChannelKeyName] = value;
+            get => Launcher[KeyNameChannel];
+            set => Launcher[KeyNameChannel] = value;
         }
 
         public string? SubChannel
         {
-            get => Launcher[SubChannelKeyName];
-            set => Launcher[SubChannelKeyName] = value;
+            get => Launcher[KeyNameSubChannel];
+            set => Launcher[KeyNameSubChannel] = value;
         }
 
         public string? GameInstallPath
         {
-            get => Launcher[GameInstallPathKeyName];
-            set => Launcher[GameInstallPathKeyName] = value;
+            get => Launcher[KeyNameGameInstallPath];
+            set => Launcher[KeyNameGameInstallPath] = value;
         }
 
         public string? GameDynamicBgName
         {
-            get => Launcher[GameDynamicBgNameKeyName];
-            set => Launcher[GameDynamicBgNameKeyName] = value;
+            get => Launcher[KeyNameGameDynamicBgName];
+            set => Launcher[KeyNameGameDynamicBgName] = value;
         }
 
         public string? GameDynamicBgMd5
         {
-            get => Launcher[GameDynamicBgMd5KeyName];
-            set => Launcher[GameDynamicBgMd5KeyName] = value;
+            get => Launcher[KeyNameGameDynamicBgMd5];
+            set => Launcher[KeyNameGameDynamicBgMd5] = value;
         }
 
         public string? GameStartName
         {
-            get => Launcher[GameStartNameKeyName];
-            set => Launcher[GameStartNameKeyName] = value;
+            get => Launcher[KeyNameGameStartName];
+            set => Launcher[KeyNameGameStartName] = value;
         }
 
         public string? ExitType
         {
-            get => Launcher[ExitTypeKeyName];
-            set => Launcher[ExitTypeKeyName] = value;
+            get => Launcher[KeyNameExitType];
+            set => Launcher[KeyNameExitType] = value;
         }
 
         public string? BorderlessMode
         {
-            get => GenshinLauncher[BorderlessModeKeyName];
-            set => GenshinLauncher[BorderlessModeKeyName] = value;
+            get => GenshinLauncher[KeyNameBorderlessMode];
+            set => GenshinLauncher[KeyNameBorderlessMode] = value;
         }
 
         public string? ExitOnLaunch
         {
-            get => GenshinLauncher[ExitOnLaunchKeyName];
-            set => GenshinLauncher[ExitOnLaunchKeyName] = value;
+            get => GenshinLauncher[KeyNameExitOnLaunch];
+            set => GenshinLauncher[KeyNameExitOnLaunch] = value;
         }
     }
 }

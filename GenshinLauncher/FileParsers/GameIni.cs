@@ -8,33 +8,33 @@ namespace GenshinLauncher.FileParsers
 {
     public class GameIni : Ini
     {
-        private const string GeneralSectionName = "General";
-        private const string ChannelKeyName     = "channel";
-        private const string CpsKeyName         = "cps";
-        private const string GameVersionKeyName = "game_version";
-        private const string SubChannelKeyName  = "sub_channel";
-        private const string SdkVersionKeyName  = "sdk_version";
+        private const string SectionNameGeneral = "General";
+        private const string KeyNameChannel     = "channel";
+        private const string KeyNameCps         = "cps";
+        private const string KeyNameGameVersion = "game_version";
+        private const string KeyNameSubChannel  = "sub_channel";
+        private const string KeyNameSdkVersion  = "sdk_version";
 
-        private IniParser.Model.KeyDataCollection General => this.Data[GeneralSectionName];
+        private IniParser.Model.KeyDataCollection General => this.Data[SectionNameGeneral];
 
         public GameIni(string? path = null) : base(path) { }
 
         public string? Channel
         {
-            get => General[ChannelKeyName];
-            set => General[ChannelKeyName] = value;
+            get => General[KeyNameChannel];
+            set => General[KeyNameChannel] = value;
         }
 
         public string? GameVersion
         {
-            get => General[GameVersionKeyName];
-            set => General[GameVersionKeyName] = value;
+            get => General[KeyNameGameVersion];
+            set => General[KeyNameGameVersion] = value;
         }
 
         public string? SubChannel
         {
-            get => General[SubChannelKeyName];
-            set => General[SubChannelKeyName] = value;
+            get => General[KeyNameSubChannel];
+            set => General[KeyNameSubChannel] = value;
         }
     }
 }
