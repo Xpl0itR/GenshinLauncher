@@ -84,47 +84,101 @@ namespace GenshinLauncher.MiHoYoApi
             await contentStream.CopyToAsync(outStream, hashAlgorithm, progress, cancellationToken);
         }
 
-        public Task<DataJsonContent> GetContentBengHuai() =>
-            GetDataJson<DataJsonContent>(UrlContentBengHuai, ContentObject(LauncherIdBengHuai, Language.Chinese));
+        public Task<DataJsonContent> GetContent(MiHoYoGameName gameName, Language language)
+        {
+            string url;
+            object obj;
 
-        public Task<DataJsonContent> GetContentYuanShen() =>
-            GetDataJson<DataJsonContent>(UrlContentYuanShen, ContentObject(LauncherIdYuanShen, Language.Chinese));
+            if (gameName == MiHoYoGameName.BengHuai)
+            {
+                url = UrlContentBengHuai;
+                obj = new { launcher_id = LauncherIdBengHuai, language = Language.Chinese, filter_adv = "false" };
+            }
+            else if (gameName == MiHoYoGameName.Genshin)
+            {
+                url = UrlContentGenshin;
+                obj = new { launcher_id = LauncherIdGenshin, language = language.ToString(), filter_adv = "false" };
+            }
+            else if (gameName == MiHoYoGameName.HonkaiKr)
+            {
+                url = UrlContentHonkai;
+                obj = new { launcher_id = LauncherIdHonkaiKr, language = language.ToString(), filter_adv = "false" };
+            }
+            else if (gameName == MiHoYoGameName.HonkaiNaEu)
+            {
+                url = UrlContentHonkai;
+                obj = new { launcher_id = LauncherIdHonkaiNaEu, language = language.ToString(), filter_adv = "false" };
+            }
+            else if (gameName == MiHoYoGameName.HonkaiSea)
+            {
+                url = UrlContentHonkai;
+                obj = new { launcher_id = LauncherIdHonkaiSea, language = language.ToString(), filter_adv = "false" };
+            }
+            else if (gameName == MiHoYoGameName.HonkaiTwHkMo)
+            {
+                url = UrlContentHonkai;
+                obj = new { launcher_id = LauncherIdHonkaiTwHkMo, language = language.ToString(), filter_adv = "false" };
+            }
+            else if (gameName == MiHoYoGameName.YuanShen)
+            {
+                url = UrlContentYuanShen;
+                obj = new { launcher_id = LauncherIdYuanShen, language = Language.Chinese, filter_adv = "false" };
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(gameName);
+            }
 
-        public Task<DataJsonContent> GetContentHonkaiTwHkMo(Language language) =>
-            GetDataJson<DataJsonContent>(UrlContentHonkai, ContentObject(LauncherIdHonkaiTwHkMo, language));
+            return GetDataJson<DataJsonContent>(url, obj);
+        }
 
-        public Task<DataJsonContent> GetContentHonkaiSea(Language language) =>
-            GetDataJson<DataJsonContent>(UrlContentHonkai, ContentObject(LauncherIdHonkaiSea, language));
+        public Task<DataJsonResource> GetResource(MiHoYoGameName gameName)
+        {
+            string url;
+            object obj;
 
-        public Task<DataJsonContent> GetContentHonkaiNaEu(Language language) =>
-            GetDataJson<DataJsonContent>(UrlContentHonkai, ContentObject(LauncherIdHonkaiNaEu, language));
+            if (gameName == MiHoYoGameName.BengHuai)
+            {
+                url = UrlResourceBengHuai;
+                obj = new { key = ApiKeyBengHuai, launcher_id = LauncherIdBengHuai, channel_id = ChannelId, sub_channel_id = SubChannelIdBengHuai };
+            }
+            else if (gameName == MiHoYoGameName.Genshin)
+            {
+                url = UrlResourceGenshin;
+                obj = new { key = ApiKeyGenshin, launcher_id = LauncherIdGenshin, channel_id = ChannelId, sub_channel_id = SubChannelIdGenshin };
+            }
+            else if (gameName == MiHoYoGameName.HonkaiKr)
+            {
+                url = UrlResourceHonkai;
+                obj = new { key = ApiKeyHonkaiKr, launcher_id = LauncherIdHonkaiKr };
+            }
+            else if (gameName == MiHoYoGameName.HonkaiNaEu)
+            {
+                url = UrlResourceHonkai;
+                obj = new { key = ApiKeyHonkaiNaEu, launcher_id = LauncherIdHonkaiNaEu };
+            }
+            else if (gameName == MiHoYoGameName.HonkaiSea)
+            {
+                url = UrlResourceHonkai;
+                obj = new { key = ApiKeyHonkaiSea, launcher_id = LauncherIdHonkaiSea };
+            }
+            else if (gameName == MiHoYoGameName.HonkaiTwHkMo)
+            {
+                url = UrlResourceHonkai;
+                obj = new { key = ApiKeyHonkaiTwHkMo, launcher_id = LauncherIdHonkaiTwHkMo };
+            }
+            else if (gameName == MiHoYoGameName.YuanShen)
+            {
+                url = UrlResourceYuanShen;
+                obj = new { key = ApiKeyYuanShen, launcher_id = LauncherIdYuanShen, channel_id = ChannelId, sub_channel_id = SubChannelIdYuanShen };
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(gameName);
+            }
 
-        public Task<DataJsonContent> GetContentHonkaiKr(Language language) =>
-            GetDataJson<DataJsonContent>(UrlContentHonkai, ContentObject(LauncherIdHonkaiKr, language));
-
-        public Task<DataJsonContent> GetContentGenshin(Language language) =>
-            GetDataJson<DataJsonContent>(UrlContentGenshin, ContentObject(LauncherIdGenshin, language));
-
-        public Task<DataJsonResource> GetResourceHonkaiTwHkMo() =>
-            GetDataJson<DataJsonResource>(UrlResourceHonkai, ResourceObject(ApiKeyHonkaiTwHkMo, LauncherIdHonkaiTwHkMo));
-
-        public Task<DataJsonResource> GetResourceHonkaiSea() =>
-            GetDataJson<DataJsonResource>(UrlResourceHonkai, ResourceObject(ApiKeyHonkaiSea, LauncherIdHonkaiSea));
-
-        public Task<DataJsonResource> GetResourceHonkaiNaEu() =>
-            GetDataJson<DataJsonResource>(UrlResourceHonkai, ResourceObject(ApiKeyHonkaiNaEu, LauncherIdHonkaiNaEu));
-
-        public Task<DataJsonResource> GetResourceHonkaiKr() =>
-            GetDataJson<DataJsonResource>(UrlResourceHonkai, ResourceObject(ApiKeyHonkaiKr, LauncherIdHonkaiKr));
-
-        public Task<DataJsonResource> GetResourceBengHuai() =>
-            GetDataJson<DataJsonResource>(UrlResourceBengHuai, ResourceObject(ApiKeyBengHuai, LauncherIdBengHuai, ChannelId, SubChannelIdBengHuai));
-
-        public Task<DataJsonResource> GetResourceGenshin() =>
-            GetDataJson<DataJsonResource>(UrlResourceGenshin, ResourceObject(ApiKeyGenshin, LauncherIdGenshin, ChannelId, SubChannelIdGenshin));
-
-        public Task<DataJsonResource> GetResourceYuanShen() =>
-            GetDataJson<DataJsonResource>(UrlResourceYuanShen, ResourceObject(ApiKeyYuanShen, LauncherIdYuanShen, ChannelId, SubChannelIdYuanShen));
+            return GetDataJson<DataJsonResource>(url, obj);
+        }
 
         private async Task<T> GetDataJson<T>(string url, object obj) where T : IDataJson
         {
@@ -137,21 +191,6 @@ namespace GenshinLauncher.MiHoYoApi
 
             return responseJson.Data;
         }
-
-        private static object ContentObject(int launcherId, Language language) => new
-        {
-            launcher_id = launcherId,
-            language    = language.ToString(),
-            filter_adv  = "false"
-        };
-
-        public static object ResourceObject(string apiKey, int launcherId, int? channelId = null, int? subChannelId = null) => new
-        {
-            key            = apiKey,
-            launcher_id    = launcherId,
-            channel_id     = channelId,
-            sub_channel_id = subChannelId
-        };
 
         public void Dispose()
         {

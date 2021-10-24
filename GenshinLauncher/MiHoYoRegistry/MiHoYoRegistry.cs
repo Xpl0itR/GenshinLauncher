@@ -11,8 +11,6 @@ namespace GenshinLauncher.MiHoYoRegistry
 {
     public abstract class MiHoYoRegistry : IDisposable
     {
-        private const string MiHoYoKeyName = "Software\\miHoYo\\";
-
         private const string KeyNameFullscreenMode   = "Screenmanager Is Fullscreen mode_h3981298716";
         private const string KeyNameResolutionHeight = "Screenmanager Resolution Height_h2627697771";
         private const string KeyNameResolutionWidth  = "Screenmanager Resolution Width_h182942802";
@@ -20,10 +18,11 @@ namespace GenshinLauncher.MiHoYoRegistry
 
         protected readonly RegistryKey RegistryKey;
 
-        protected MiHoYoRegistry(string subKeyName, bool writable)
+        protected MiHoYoRegistry(MiHoYoGameName miHoYoGameName, bool writable)
         {
-            RegistryKey = Registry.CurrentUser.OpenSubKey(MiHoYoKeyName   + subKeyName, writable)
-                       ?? Registry.CurrentUser.CreateSubKey(MiHoYoKeyName + subKeyName, writable);
+            string keyName = $"Software\\miHoYo\\{miHoYoGameName}";
+            RegistryKey    = Registry.CurrentUser.OpenSubKey(keyName, writable)
+                          ?? Registry.CurrentUser.CreateSubKey(keyName, writable);
         }
 
         public bool? FullscreenMode

@@ -4,6 +4,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+using System;
 using System.Text;
 using Microsoft.Win32;
 
@@ -11,17 +12,12 @@ namespace GenshinLauncher.MiHoYoRegistry
 {
     public class HonkaiRegistry : MiHoYoRegistry
     {
-        private const string KeyNameBengHuai     = "崩坏3";
-        private const string KeyNameHonkaiTwHkMo = "崩壞3";
-        private const string KeyNameHonkaiSea    = "Honkai Impact 3";
-        private const string KeyNameHonkaiNaEu   = "Honkai Impact 3rd";
-        private const string KeyNameHonkaiKr     = "붕괴3rd";
-
         private const string KeyNameGraphicsSetting = "GENERAL_DATA_V2_PersonalGraphicsSetting_h906361411";
         private const string KeyNameScreenSetting   = "GENERAL_DATA_V2_ScreenSettingData_h1916288658";
         private const string KeyNameGameVersion     = "GENERAL_DATA_V2_ResourceDownloadVersion_h1528433916";
 
-        public HonkaiRegistry(bool writable) : base(KeyNameHonkaiNaEu, writable) { } //TODO: support other versions
+        public HonkaiRegistry(MiHoYoGameName miHoYoGameName, bool writable)
+            : base(ValidateGameName(miHoYoGameName), writable) { }
 
         //TODO: deserialize JSON strings into objects
         public string? GraphicsSetting
@@ -57,6 +53,20 @@ namespace GenshinLauncher.MiHoYoRegistry
             {
                 this.RegistryKey.SetValue(name, Encoding.UTF8.GetBytes(value), RegistryValueKind.Binary);
             }
+        }
+
+        private static MiHoYoGameName ValidateGameName(MiHoYoGameName miHoYoGameName)
+        {
+            if (miHoYoGameName != MiHoYoGameName.BengHuai   &&
+                miHoYoGameName != MiHoYoGameName.HonkaiKr   &&
+                miHoYoGameName != MiHoYoGameName.HonkaiNaEu &&
+                miHoYoGameName != MiHoYoGameName.HonkaiSea  &&
+                miHoYoGameName != MiHoYoGameName.HonkaiTwHkMo)
+            {
+                throw new ArgumentOutOfRangeException(miHoYoGameName);
+            }
+
+            return miHoYoGameName;
         }
     }
 }

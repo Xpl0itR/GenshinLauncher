@@ -19,6 +19,8 @@ namespace GenshinLauncher.MiHoYoApi
 
         public override string ToString() => _code;
 
+        public static implicit operator string(Language language) => language._code;
+
         public static Language Chinese    => new Language("zh-cn");
         public static Language English    => new Language("en-us");
         public static Language French     => new Language("fr-fr");
