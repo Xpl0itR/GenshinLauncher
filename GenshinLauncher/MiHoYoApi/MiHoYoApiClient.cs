@@ -84,7 +84,7 @@ namespace GenshinLauncher.MiHoYoApi
             await contentStream.CopyToAsync(outStream, hashAlgorithm, progress, cancellationToken);
         }
 
-        public Task<DataJsonContent> GetContent(MiHoYoGameName gameName, Language language)
+        public Task<DataJsonContent> GetContent(MiHoYoGameName gameName, Language language, CancellationToken cancellationToken = default)
         {
             string url;
             object obj;
@@ -129,10 +129,10 @@ namespace GenshinLauncher.MiHoYoApi
                 throw new ArgumentOutOfRangeException(gameName);
             }
 
-            return GetDataJson<DataJsonContent>(url, obj);
+            return GetDataJson<DataJsonContent>(url, obj, cancellationToken);
         }
 
-        public Task<DataJsonResource> GetResource(MiHoYoGameName gameName)
+        public Task<DataJsonResource> GetResource(MiHoYoGameName gameName, CancellationToken cancellationToken = default)
         {
             string url;
             object obj;
@@ -177,16 +177,16 @@ namespace GenshinLauncher.MiHoYoApi
                 throw new ArgumentOutOfRangeException(gameName);
             }
 
-            return GetDataJson<DataJsonResource>(url, obj);
+            return GetDataJson<DataJsonResource>(url, obj, cancellationToken);
         }
 
-        private async Task<T> GetDataJson<T>(string url, object obj) where T : IDataJson
+        private async Task<T> GetDataJson<T>(string url, object obj, CancellationToken cancellationToken = default) where T : IDataJson
         {
             JsonContent         content  = JsonContent.Create(obj, options: _jsonSerializerOptions);
-            HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+            HttpResponseMessage response = await _httpClient.PostAsync(url, content, cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            ResponseJson<T>? responseJson = await response.Content.ReadFromJsonAsync<ResponseJson<T>>();
+            ResponseJson<T>? responseJson = await response.Content.ReadFromJsonAsync<ResponseJson<T>>(_jsonSerializerOptions, cancellationToken);
             responseJson!.EnsureSuccessStatusCode();
 
             return responseJson.Data;

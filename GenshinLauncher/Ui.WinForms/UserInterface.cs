@@ -4,6 +4,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+using System;
 using System.Windows.Forms;
 using DarkUI.Forms;
 using GenshinLauncher.Ui.Common;
@@ -38,6 +39,17 @@ namespace GenshinLauncher.Ui.WinForms
         {
             using DarkMessageBox darkMessageBox = new DarkMessageBox(message, title, DarkMessageBoxIcon.Error, DarkDialogButton.Ok);
             darkMessageBox.ShowDialog(_mainWindow);
+        }
+
+        public void ShowThreadExceptionDialog(Exception exception)
+        {
+            using ThreadExceptionDialog threadExceptionDialog = new ThreadExceptionDialog(exception);
+
+            if (threadExceptionDialog.ShowDialog() == DialogResult.Abort)
+            {
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
 
         public void Exit() =>

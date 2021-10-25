@@ -6,6 +6,7 @@
 
 using System;
 using System.Text;
+using System.Text.Json;
 using Microsoft.Win32;
 
 namespace GenshinLauncher.MiHoYoRegistry
@@ -16,57 +17,55 @@ namespace GenshinLauncher.MiHoYoRegistry
         private const string KeyNameScreenSetting   = "GENERAL_DATA_V2_ScreenSettingData_h1916288658";
         private const string KeyNameGameVersion     = "GENERAL_DATA_V2_ResourceDownloadVersion_h1528433916";
 
-        public HonkaiRegistry(MiHoYoGameName miHoYoGameName, bool writable)
-            : base(ValidateGameName(miHoYoGameName), writable) { }
+        public HonkaiRegistry(MiHoYoGameName miHoYoGameName, bool writable) : base(miHoYoGameName, writable) { }
 
-        //TODO: deserialize JSON strings into objects
-        public string? GraphicsSetting
+        public bool TryGetGraphicsSetting(out JsonSettingGraphics graphicsSetting) =>
+            TryGetFromBinary(KeyNameGraphicsSetting, out graphicsSetting);
+        public void SetGraphicsSetting(JsonSettingGraphics graphicsSetting) =>
+            SetBinaryFromJson(KeyNameGraphicsSetting, graphicsSetting);
+
+        public bool TryGetScreenSetting(out JsonSettingScreen screenSetting) =>
+            TryGetFromBinary(KeyNameScreenSetting, out screenSetting);
+        public void SetScreenSetting(JsonSettingScreen screenSetting) =>
+            SetBinaryFromJson(KeyNameScreenSetting, screenSetting);
+
+        public bool TryGetGameVersion(out string gameVersion) =>
+            TryGetFromBinary(KeyNameGameVersion, out gameVersion);
+        public void SetGameVersion(string gameVersion) =>
+            SetBinaryFromString(KeyNameGameVersion, gameVersion);
+
+        protected bool TryGetFromBinary<T>(string name, out T value)
         {
-            get => GetStringFromBinary(KeyNameGraphicsSetting);
-            set => SetBinaryFromString(KeyNameGraphicsSetting, value);
-        }
-
-        public string? ScreenSetting
-        {
-            get => GetStringFromBinary(KeyNameScreenSetting);
-            set => SetBinaryFromString(KeyNameScreenSetting, value);
-        }
-
-        public string? GameVersion
-        {
-            get => GetStringFromBinary(KeyNameGameVersion);
-            set => SetBinaryFromString(KeyNameGameVersion, value);
-        }
-
-        private string? GetStringFromBinary(string name) =>
-            this.RegistryKey.GetValue(name) is byte[] bytes 
-                ? Encoding.UTF8.GetString(bytes) // TODO: test if .TrimEnd('\0') is necessary for deserializing JSON
-                : null;
-
-        private void SetBinaryFromString(string name, string? value)
-        {
-            if (value == null)
+            if (this.RegistryKey.GetValue(name) is byte[] bytes)
             {
-                this.RegistryKey.DeleteValue(name, false);
-            }
-            else
-            {
-                this.RegistryKey.SetValue(name, Encoding.UTF8.GetBytes(value), RegistryValueKind.Binary);
-            }
-        }
+                ReadOnlySpan<byte> span = new ReadOnlySpan<byte>(bytes, 0, bytes.Length - 1); // Remove null separator
 
-        private static MiHoYoGameName ValidateGameName(MiHoYoGameName miHoYoGameName)
-        {
-            if (miHoYoGameName != MiHoYoGameName.BengHuai   &&
-                miHoYoGameName != MiHoYoGameName.HonkaiKr   &&
-                miHoYoGameName != MiHoYoGameName.HonkaiNaEu &&
-                miHoYoGameName != MiHoYoGameName.HonkaiSea  &&
-                miHoYoGameName != MiHoYoGameName.HonkaiTwHkMo)
-            {
-                throw new ArgumentOutOfRangeException(miHoYoGameName);
+                if (typeof(T) == typeof(string))
+                {
+                    value = (T)(object)Encoding.UTF8.GetString(span);
+                }
+                else
+                {
+                    value = JsonSerializer.Deserialize<T>(span)!;
+                }
+                return true;
             }
 
-            return miHoYoGameName;
+            value = default;
+            return false;
+        }
+
+        protected void SetBinaryFromJson<T>(string name, T json) =>
+            SetBinaryFromString(name, JsonSerializer.Serialize(json));
+
+        protected void SetBinaryFromString(string name, string str)
+        {
+            if (str[^1] != '\0')
+            {
+                str += '\0';
+            }
+
+            this.RegistryKey.SetValue(name, Encoding.UTF8.GetBytes(str), RegistryValueKind.Binary);
         }
     }
 }

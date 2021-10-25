@@ -7,7 +7,6 @@
 using System.Net.Http;
 using System.Text.Json.Serialization;
 
-#nullable disable
 namespace GenshinLauncher.MiHoYoApi
 {
     public interface IDataJson {}
@@ -23,6 +22,12 @@ namespace GenshinLauncher.MiHoYoApi
 
         [JsonPropertyName("data")]
         public T Data { get; init; }
+
+        [JsonConstructor]
+        public ResponseJson(int statusCode, string statusMessage, T data)
+        {
+            (StatusCode, StatusMessage, Data) = (statusCode, statusMessage, data);
+        }
 
         public void EnsureSuccessStatusCode()
         {

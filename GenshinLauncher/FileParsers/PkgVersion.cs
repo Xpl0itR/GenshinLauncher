@@ -18,14 +18,13 @@ namespace GenshinLauncher.FileParsers
             string? entryString;
             while ((entryString = reader.ReadLine()) != null)
             {
-                PkgVersionEntry entry = JsonSerializer.Deserialize<PkgVersionEntry>(entryString)!;
+                PkgVersionEntry entry = JsonSerializer.Deserialize<PkgVersionEntry>(entryString);
                 this.Add(entry);
             }
         }
     }
 
-#nullable disable
-    public record PkgVersionEntry
+    public readonly record struct PkgVersionEntry
     {
         [JsonPropertyName("remoteName")]
         public string RemoteName { get; init; }
@@ -36,5 +35,4 @@ namespace GenshinLauncher.FileParsers
         [JsonPropertyName("fileSize")]
         public int FileSize { get; init; }
     }
-#nullable restore
 }

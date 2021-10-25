@@ -11,9 +11,15 @@ namespace GenshinLauncher.Ui.Common
         IMainWindow MainWindow { get; }
 
         ISettingsWindow NewSettingsWindow();
-        void            RunMainWindow();
-        void            RunSettingsWindow(ISettingsWindow settingsWindow);
-        void            ShowErrorDialog(string title, string message);
-        void            Exit();
+
+        void RunMainWindow();
+
+        void RunSettingsWindow(ISettingsWindow settingsWindow);
+
+        void ShowErrorDialog(string title, string message);
+
+        void ShowThreadExceptionDialog(System.Exception exception);
+
+        void Exit();
     }
 }

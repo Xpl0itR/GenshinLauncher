@@ -25,51 +25,65 @@ namespace GenshinLauncher.MiHoYoRegistry
                           ?? Registry.CurrentUser.CreateSubKey(keyName, writable);
         }
 
-        public bool? FullscreenMode
+        public static MiHoYoRegistry New(MiHoYoGameName miHoYoGameName, bool writable)
         {
-            get => GetBoolean(KeyNameFullscreenMode);
-            set => SetDWord(KeyNameFullscreenMode, value);
-        }
-
-        public int? MonitorIndex
-        {
-            get => GetInt32(KeyNameMonitorIndex);
-            set => SetDWord(KeyNameMonitorIndex, value);
-        }
-
-        public int? ResolutionHeight
-        {
-            get => GetInt32(KeyNameResolutionHeight);
-            set => SetDWord(KeyNameResolutionHeight, value);
-        }
-
-        public int? ResolutionWidth
-        {
-            get => GetInt32(KeyNameResolutionWidth);
-            set => SetDWord(KeyNameResolutionWidth, value);
-        }
-
-        protected bool? GetBoolean(string name) =>
-            (RegistryKey.GetValue(name) as IConvertible)?.ToBoolean(null);
-
-        protected int? GetInt32(string name) =>
-            (RegistryKey.GetValue(name) as IConvertible)?.ToInt32(null);
-
-        protected void SetDWord(string name, object? value)
-        {
-            if (value == null)
+            if (miHoYoGameName == MiHoYoGameName.Genshin || miHoYoGameName == MiHoYoGameName.YuanShen)
             {
-                RegistryKey.DeleteValue(name, false);
+                return new GenshinRegistry(miHoYoGameName, writable);
             }
-            else
+
+            if (miHoYoGameName == MiHoYoGameName.BengHuai   ||
+                miHoYoGameName == MiHoYoGameName.HonkaiKr   ||
+                miHoYoGameName == MiHoYoGameName.HonkaiNaEu ||
+                miHoYoGameName == MiHoYoGameName.HonkaiSea  ||
+                miHoYoGameName == MiHoYoGameName.HonkaiTwHkMo)
             {
-                RegistryKey.SetValue(name, value, RegistryValueKind.DWord);
+                return new HonkaiRegistry(miHoYoGameName, writable);
             }
+
+            throw new ArgumentOutOfRangeException(miHoYoGameName);
         }
+
+        public bool TryGetFullscreenMode(out bool fullscreenMode) =>
+            TryGet(KeyNameFullscreenMode, out fullscreenMode);
+        public void SetFullscreenMode(bool fullscreenMode) =>
+            SetDWord(KeyNameFullscreenMode, fullscreenMode);
+
+        public bool TryGetMonitorIndex(out int index) =>
+            TryGet(KeyNameMonitorIndex, out index);
+        public void SetMonitorIndex(int index) =>
+            SetDWord(KeyNameMonitorIndex, index);
+
+        public bool TryGetResolutionHeight(out int height) =>
+            TryGet(KeyNameResolutionHeight, out height);
+        public void SetResolutionHeight(int height) =>
+            SetDWord(KeyNameResolutionHeight, height);
+
+        public bool TryGetResolutionWidth(out int width) =>
+            TryGet(KeyNameResolutionWidth, out width);
+        public void SetResolutionWidth(int width) =>
+            SetDWord(KeyNameResolutionWidth, width);
 
         public void Dispose()
         {
             RegistryKey.Dispose();
         }
+
+        protected bool TryGet<T>(string name, out T value)
+        {
+            object? obj = RegistryKey.GetValue(name);
+
+            if (obj == null)
+            {
+                value = default;
+                return false;
+            }
+
+            value = obj is T val ? val : (T)Convert.ChangeType(obj, typeof(T));
+            return true;
+        }
+
+        protected void SetDWord(string name, object value) =>
+            RegistryKey.SetValue(name, value, RegistryValueKind.DWord);
     }
 }
