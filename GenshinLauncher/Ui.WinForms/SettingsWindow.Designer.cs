@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             this._groupBoxSettings = new DarkUI.Controls.DarkGroupBox();
             this._labelWindowWidth = new DarkUI.Controls.DarkLabel();
             this._labelWindowMode = new DarkUI.Controls.DarkLabel();
@@ -74,208 +75,132 @@
             this._groupBoxSettings.Controls.Add(this._radioButtonWindowed);
             this._groupBoxSettings.Controls.Add(this._buttonUseScreenResolution);
             this._groupBoxSettings.Controls.Add(this._radioButtonFullscreen);
-            this._groupBoxSettings.Location = new System.Drawing.Point(12, 12);
+            resources.ApplyResources(this._groupBoxSettings, "_groupBoxSettings");
             this._groupBoxSettings.Name = "_groupBoxSettings";
-            this._groupBoxSettings.Size = new System.Drawing.Size(255, 198);
-            this._groupBoxSettings.TabIndex = 19;
             this._groupBoxSettings.TabStop = false;
-            this._groupBoxSettings.Text = "Extended Settings";
             // 
             // _labelWindowWidth
             // 
-            this._labelWindowWidth.AutoSize = true;
+            resources.ApplyResources(this._labelWindowWidth, "_labelWindowWidth");
             this._labelWindowWidth.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._labelWindowWidth.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._labelWindowWidth.Location = new System.Drawing.Point(6, 27);
             this._labelWindowWidth.Name = "_labelWindowWidth";
-            this._labelWindowWidth.Size = new System.Drawing.Size(86, 15);
-            this._labelWindowWidth.TabIndex = 7;
-            this._labelWindowWidth.Text = "Window Width";
             // 
             // _labelWindowMode
             // 
-            this._labelWindowMode.AutoSize = true;
+            resources.ApplyResources(this._labelWindowMode, "_labelWindowMode");
             this._labelWindowMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._labelWindowMode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._labelWindowMode.Location = new System.Drawing.Point(6, 121);
             this._labelWindowMode.Name = "_labelWindowMode";
-            this._labelWindowMode.Size = new System.Drawing.Size(85, 15);
-            this._labelWindowMode.TabIndex = 6;
-            this._labelWindowMode.Text = "Window Mode";
             // 
             // _labelMonitorIndex
             // 
-            this._labelMonitorIndex.AutoSize = true;
+            resources.ApplyResources(this._labelMonitorIndex, "_labelMonitorIndex");
             this._labelMonitorIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._labelMonitorIndex.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._labelMonitorIndex.Location = new System.Drawing.Point(6, 86);
             this._labelMonitorIndex.Name = "_labelMonitorIndex";
-            this._labelMonitorIndex.Size = new System.Drawing.Size(50, 15);
-            this._labelMonitorIndex.TabIndex = 17;
-            this._labelMonitorIndex.Text = "Monitor";
             // 
             // _labelWindowHeight
             // 
-            this._labelWindowHeight.AutoSize = true;
+            resources.ApplyResources(this._labelWindowHeight, "_labelWindowHeight");
             this._labelWindowHeight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._labelWindowHeight.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._labelWindowHeight.Location = new System.Drawing.Point(6, 56);
             this._labelWindowHeight.Name = "_labelWindowHeight";
-            this._labelWindowHeight.Size = new System.Drawing.Size(90, 15);
-            this._labelWindowHeight.TabIndex = 8;
-            this._labelWindowHeight.Text = "Window Height";
             // 
             // _numericMonitorIndex
             // 
-            this._numericMonitorIndex.Location = new System.Drawing.Point(62, 83);
+            resources.ApplyResources(this._numericMonitorIndex, "_numericMonitorIndex");
             this._numericMonitorIndex.Maximum = new decimal(new int[] {
             0,
             0,
             0,
             0});
             this._numericMonitorIndex.Name = "_numericMonitorIndex";
-            this._numericMonitorIndex.Size = new System.Drawing.Size(37, 23);
-            this._numericMonitorIndex.TabIndex = 16;
             // 
             // _numericWindowWidth
             // 
-            this._numericWindowWidth.Location = new System.Drawing.Point(102, 24);
+            resources.ApplyResources(this._numericWindowWidth, "_numericWindowWidth");
             this._numericWindowWidth.Maximum = new decimal(new int[] {
             99999,
             0,
             0,
             0});
             this._numericWindowWidth.Name = "_numericWindowWidth";
-            this._numericWindowWidth.Size = new System.Drawing.Size(143, 23);
-            this._numericWindowWidth.TabIndex = 9;
             // 
             // _radioButtonBorderless
             // 
-            this._radioButtonBorderless.AutoSize = true;
-            this._radioButtonBorderless.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._radioButtonBorderless.Location = new System.Drawing.Point(102, 166);
+            resources.ApplyResources(this._radioButtonBorderless, "_radioButtonBorderless");
             this._radioButtonBorderless.Name = "_radioButtonBorderless";
-            this._radioButtonBorderless.Size = new System.Drawing.Size(139, 19);
-            this._radioButtonBorderless.TabIndex = 15;
             this._radioButtonBorderless.TabStop = true;
-            this._radioButtonBorderless.Text = "Borderless Windowed";
             // 
             // _numericWindowHeight
             // 
-            this._numericWindowHeight.Location = new System.Drawing.Point(102, 54);
+            resources.ApplyResources(this._numericWindowHeight, "_numericWindowHeight");
             this._numericWindowHeight.Maximum = new decimal(new int[] {
             99999,
             0,
             0,
             0});
             this._numericWindowHeight.Name = "_numericWindowHeight";
-            this._numericWindowHeight.Size = new System.Drawing.Size(143, 23);
-            this._numericWindowHeight.TabIndex = 10;
             // 
             // _radioButtonWindowed
             // 
-            this._radioButtonWindowed.AutoSize = true;
-            this._radioButtonWindowed.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._radioButtonWindowed.Location = new System.Drawing.Point(102, 143);
+            resources.ApplyResources(this._radioButtonWindowed, "_radioButtonWindowed");
             this._radioButtonWindowed.Name = "_radioButtonWindowed";
-            this._radioButtonWindowed.Size = new System.Drawing.Size(82, 19);
-            this._radioButtonWindowed.TabIndex = 14;
             this._radioButtonWindowed.TabStop = true;
-            this._radioButtonWindowed.Text = "Windowed";
             // 
             // _buttonUseScreenResolution
             // 
-            this._buttonUseScreenResolution.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._buttonUseScreenResolution.Location = new System.Drawing.Point(102, 83);
+            resources.ApplyResources(this._buttonUseScreenResolution, "_buttonUseScreenResolution");
             this._buttonUseScreenResolution.Name = "_buttonUseScreenResolution";
-            this._buttonUseScreenResolution.Padding = new System.Windows.Forms.Padding(5);
-            this._buttonUseScreenResolution.Size = new System.Drawing.Size(143, 23);
-            this._buttonUseScreenResolution.TabIndex = 12;
-            this._buttonUseScreenResolution.Text = "Use screen resolution";
             this._buttonUseScreenResolution.Click += new System.EventHandler(this.ButtonUseScreenResolution_Click);
             // 
             // _radioButtonFullscreen
             // 
-            this._radioButtonFullscreen.AutoSize = true;
-            this._radioButtonFullscreen.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._radioButtonFullscreen.Location = new System.Drawing.Point(102, 120);
+            resources.ApplyResources(this._radioButtonFullscreen, "_radioButtonFullscreen");
             this._radioButtonFullscreen.Name = "_radioButtonFullscreen";
-            this._radioButtonFullscreen.Size = new System.Drawing.Size(129, 19);
-            this._radioButtonFullscreen.TabIndex = 13;
             this._radioButtonFullscreen.TabStop = true;
-            this._radioButtonFullscreen.Text = "Exclusive Fullscreen";
             // 
             // _buttonInstallDirectory
             // 
             this._buttonInstallDirectory.CausesValidation = false;
-            this._buttonInstallDirectory.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this._buttonInstallDirectory.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._buttonInstallDirectory.Location = new System.Drawing.Point(9, 50);
+            resources.ApplyResources(this._buttonInstallDirectory, "_buttonInstallDirectory");
             this._buttonInstallDirectory.Name = "_buttonInstallDirectory";
-            this._buttonInstallDirectory.Padding = new System.Windows.Forms.Padding(5);
-            this._buttonInstallDirectory.Size = new System.Drawing.Size(161, 26);
-            this._buttonInstallDirectory.TabIndex = 22;
-            this._buttonInstallDirectory.Text = "Change install path";
             this._buttonInstallDirectory.Click += new System.EventHandler(this.ButtonInstallDir_Click);
             // 
             // _textBoxInstallDir
             // 
             this._textBoxInstallDir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
             this._textBoxInstallDir.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this._textBoxInstallDir.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            resources.ApplyResources(this._textBoxInstallDir, "_textBoxInstallDir");
             this._textBoxInstallDir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._textBoxInstallDir.Location = new System.Drawing.Point(9, 19);
             this._textBoxInstallDir.Name = "_textBoxInstallDir";
-            this._textBoxInstallDir.Size = new System.Drawing.Size(501, 25);
-            this._textBoxInstallDir.TabIndex = 21;
             this._textBoxInstallDir.Validating += new System.ComponentModel.CancelEventHandler(this.TextBoxInstallDir_Validating);
             this._textBoxInstallDir.Validated += new System.EventHandler(this.TextBoxInstallDir_Validated);
             // 
             // _checkBoxCloseToTray
             // 
-            this._checkBoxCloseToTray.AutoSize = true;
-            this._checkBoxCloseToTray.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._checkBoxCloseToTray.Location = new System.Drawing.Point(8, 18);
+            resources.ApplyResources(this._checkBoxCloseToTray, "_checkBoxCloseToTray");
             this._checkBoxCloseToTray.Name = "_checkBoxCloseToTray";
-            this._checkBoxCloseToTray.Padding = new System.Windows.Forms.Padding(0, 3, 11, 0);
-            this._checkBoxCloseToTray.Size = new System.Drawing.Size(104, 22);
-            this._checkBoxCloseToTray.TabIndex = 23;
-            this._checkBoxCloseToTray.Text = "Close to Tray";
             // 
             // _checkBoxExitOnLaunch
             // 
-            this._checkBoxExitOnLaunch.AutoSize = true;
-            this._checkBoxExitOnLaunch.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._checkBoxExitOnLaunch.Location = new System.Drawing.Point(8, 40);
+            resources.ApplyResources(this._checkBoxExitOnLaunch, "_checkBoxExitOnLaunch");
             this._checkBoxExitOnLaunch.Name = "_checkBoxExitOnLaunch";
-            this._checkBoxExitOnLaunch.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this._checkBoxExitOnLaunch.Size = new System.Drawing.Size(104, 22);
-            this._checkBoxExitOnLaunch.TabIndex = 24;
-            this._checkBoxExitOnLaunch.Text = "Exit on Launch";
             // 
             // _groupBoxLauncherSettings
             // 
             this._groupBoxLauncherSettings.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this._groupBoxLauncherSettings.Controls.Add(this._checkBoxCloseToTray);
             this._groupBoxLauncherSettings.Controls.Add(this._checkBoxExitOnLaunch);
-            this._groupBoxLauncherSettings.Location = new System.Drawing.Point(273, 13);
+            resources.ApplyResources(this._groupBoxLauncherSettings, "_groupBoxLauncherSettings");
             this._groupBoxLauncherSettings.Name = "_groupBoxLauncherSettings";
-            this._groupBoxLauncherSettings.Size = new System.Drawing.Size(255, 197);
-            this._groupBoxLauncherSettings.TabIndex = 18;
             this._groupBoxLauncherSettings.TabStop = false;
-            this._groupBoxLauncherSettings.Text = "Launcher Settings";
             // 
             // _groupBoxInstallPath
             // 
             this._groupBoxInstallPath.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this._groupBoxInstallPath.Controls.Add(this._textBoxInstallDir);
             this._groupBoxInstallPath.Controls.Add(this._buttonInstallDirectory);
-            this._groupBoxInstallPath.Location = new System.Drawing.Point(12, 216);
+            resources.ApplyResources(this._groupBoxInstallPath, "_groupBoxInstallPath");
             this._groupBoxInstallPath.Name = "_groupBoxInstallPath";
-            this._groupBoxInstallPath.Size = new System.Drawing.Size(516, 87);
-            this._groupBoxInstallPath.TabIndex = 19;
             this._groupBoxInstallPath.TabStop = false;
-            this._groupBoxInstallPath.Text = "Game Install Path";
             // 
             // _errorProvider
             // 
@@ -284,40 +209,30 @@
             // 
             // _buttonClose
             // 
-            this._buttonClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this._buttonClose.Location = new System.Drawing.Point(427, 315);
+            resources.ApplyResources(this._buttonClose, "_buttonClose");
             this._buttonClose.Name = "_buttonClose";
-            this._buttonClose.Padding = new System.Windows.Forms.Padding(5);
-            this._buttonClose.Size = new System.Drawing.Size(101, 29);
-            this._buttonClose.TabIndex = 20;
-            this._buttonClose.Text = "Close";
             this._buttonClose.Click += new System.EventHandler(this.ButtonClose_Click);
             // 
             // _buttonSave
             // 
-            this._buttonSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this._buttonSave.Location = new System.Drawing.Point(320, 315);
+            resources.ApplyResources(this._buttonSave, "_buttonSave");
             this._buttonSave.Name = "_buttonSave";
-            this._buttonSave.Padding = new System.Windows.Forms.Padding(5);
-            this._buttonSave.Size = new System.Drawing.Size(101, 29);
-            this._buttonSave.TabIndex = 21;
-            this._buttonSave.Text = "Save";
             // 
             // SettingsWindow
             // 
             this.AcceptButton = this._buttonSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this._buttonClose;
-            this.ClientSize = new System.Drawing.Size(541, 356);
             this.Controls.Add(this._buttonSave);
             this.Controls.Add(this._buttonClose);
             this.Controls.Add(this._groupBoxInstallPath);
             this.Controls.Add(this._groupBoxLauncherSettings);
             this.Controls.Add(this._groupBoxSettings);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "SettingsWindow";
-            this.Text = "Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this._groupBoxSettings.ResumeLayout(false);
             this._groupBoxSettings.PerformLayout();

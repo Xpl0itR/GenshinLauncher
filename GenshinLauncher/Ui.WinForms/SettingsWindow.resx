@@ -57,13 +57,608 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="_labelWindowWidth.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="_labelWindowWidth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="_labelWindowWidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 27</value>
+  </data>
+  <data name="_labelWindowWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>86, 15</value>
+  </data>
+  <data name="_labelWindowWidth.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="_labelWindowWidth.Text" xml:space="preserve">
+    <value>Window Width</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowWidth.Name" xml:space="preserve">
+    <value>_labelWindowWidth</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowWidth.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowWidth.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowWidth.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="_labelWindowMode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_labelWindowMode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_labelWindowMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 121</value>
+  </data>
+  <data name="_labelWindowMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 15</value>
+  </data>
+  <data name="_labelWindowMode.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="_labelWindowMode.Text" xml:space="preserve">
+    <value>Window Mode</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowMode.Name" xml:space="preserve">
+    <value>_labelWindowMode</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowMode.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowMode.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowMode.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="_labelMonitorIndex.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_labelMonitorIndex.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_labelMonitorIndex.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 86</value>
+  </data>
+  <data name="_labelMonitorIndex.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 15</value>
+  </data>
+  <data name="_labelMonitorIndex.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="_labelMonitorIndex.Text" xml:space="preserve">
+    <value>Monitor</value>
+  </data>
+  <data name="&gt;&gt;_labelMonitorIndex.Name" xml:space="preserve">
+    <value>_labelMonitorIndex</value>
+  </data>
+  <data name="&gt;&gt;_labelMonitorIndex.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_labelMonitorIndex.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_labelMonitorIndex.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="_labelWindowHeight.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_labelWindowHeight.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_labelWindowHeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 56</value>
+  </data>
+  <data name="_labelWindowHeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 15</value>
+  </data>
+  <data name="_labelWindowHeight.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="_labelWindowHeight.Text" xml:space="preserve">
+    <value>Window Height</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowHeight.Name" xml:space="preserve">
+    <value>_labelWindowHeight</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowHeight.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowHeight.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_labelWindowHeight.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="_numericMonitorIndex.Location" type="System.Drawing.Point, System.Drawing">
+    <value>62, 83</value>
+  </data>
+  <data name="_numericMonitorIndex.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 23</value>
+  </data>
+  <data name="_numericMonitorIndex.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;_numericMonitorIndex.Name" xml:space="preserve">
+    <value>_numericMonitorIndex</value>
+  </data>
+  <data name="&gt;&gt;_numericMonitorIndex.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkNumericUpDown, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_numericMonitorIndex.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_numericMonitorIndex.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="_numericWindowWidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>102, 24</value>
+  </data>
+  <data name="_numericWindowWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 23</value>
+  </data>
+  <data name="_numericWindowWidth.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowWidth.Name" xml:space="preserve">
+    <value>_numericWindowWidth</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowWidth.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkNumericUpDown, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowWidth.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowWidth.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="_radioButtonBorderless.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_radioButtonBorderless.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_radioButtonBorderless.Location" type="System.Drawing.Point, System.Drawing">
+    <value>102, 166</value>
+  </data>
+  <data name="_radioButtonBorderless.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 19</value>
+  </data>
+  <data name="_radioButtonBorderless.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="_radioButtonBorderless.Text" xml:space="preserve">
+    <value>Borderless Windowed</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonBorderless.Name" xml:space="preserve">
+    <value>_radioButtonBorderless</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonBorderless.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkRadioButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonBorderless.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonBorderless.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="_numericWindowHeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>102, 54</value>
+  </data>
+  <data name="_numericWindowHeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 23</value>
+  </data>
+  <data name="_numericWindowHeight.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowHeight.Name" xml:space="preserve">
+    <value>_numericWindowHeight</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowHeight.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkNumericUpDown, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowHeight.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_numericWindowHeight.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="_radioButtonWindowed.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_radioButtonWindowed.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_radioButtonWindowed.Location" type="System.Drawing.Point, System.Drawing">
+    <value>102, 143</value>
+  </data>
+  <data name="_radioButtonWindowed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 19</value>
+  </data>
+  <data name="_radioButtonWindowed.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="_radioButtonWindowed.Text" xml:space="preserve">
+    <value>Windowed</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonWindowed.Name" xml:space="preserve">
+    <value>_radioButtonWindowed</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonWindowed.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkRadioButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonWindowed.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonWindowed.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="_buttonUseScreenResolution.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_buttonUseScreenResolution.Location" type="System.Drawing.Point, System.Drawing">
+    <value>102, 83</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="_buttonUseScreenResolution.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="_buttonUseScreenResolution.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 23</value>
+  </data>
+  <data name="_buttonUseScreenResolution.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="_buttonUseScreenResolution.Text" xml:space="preserve">
+    <value>Use screen resolution</value>
+  </data>
+  <data name="&gt;&gt;_buttonUseScreenResolution.Name" xml:space="preserve">
+    <value>_buttonUseScreenResolution</value>
+  </data>
+  <data name="&gt;&gt;_buttonUseScreenResolution.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_buttonUseScreenResolution.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_buttonUseScreenResolution.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="_radioButtonFullscreen.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_radioButtonFullscreen.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_radioButtonFullscreen.Location" type="System.Drawing.Point, System.Drawing">
+    <value>102, 120</value>
+  </data>
+  <data name="_radioButtonFullscreen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 19</value>
+  </data>
+  <data name="_radioButtonFullscreen.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="_radioButtonFullscreen.Text" xml:space="preserve">
+    <value>Exclusive Fullscreen</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonFullscreen.Name" xml:space="preserve">
+    <value>_radioButtonFullscreen</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonFullscreen.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkRadioButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonFullscreen.Parent" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_radioButtonFullscreen.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="_groupBoxSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="_groupBoxSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>255, 198</value>
+  </data>
+  <data name="_groupBoxSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="_groupBoxSettings.Text" xml:space="preserve">
+    <value>Extended Settings</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxSettings.Name" xml:space="preserve">
+    <value>_groupBoxSettings</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxSettings.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkGroupBox, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxSettings.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxSettings.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="_buttonInstallDirectory.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="_buttonInstallDirectory.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_buttonInstallDirectory.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 50</value>
+  </data>
+  <data name="_buttonInstallDirectory.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="_buttonInstallDirectory.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 26</value>
+  </data>
+  <data name="_buttonInstallDirectory.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="_buttonInstallDirectory.Text" xml:space="preserve">
+    <value>Change install path</value>
+  </data>
+  <data name="&gt;&gt;_buttonInstallDirectory.Name" xml:space="preserve">
+    <value>_buttonInstallDirectory</value>
+  </data>
+  <data name="&gt;&gt;_buttonInstallDirectory.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_buttonInstallDirectory.Parent" xml:space="preserve">
+    <value>_groupBoxInstallPath</value>
+  </data>
+  <data name="&gt;&gt;_buttonInstallDirectory.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="_textBoxInstallDir.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9.75pt</value>
+  </data>
+  <data name="_textBoxInstallDir.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 19</value>
+  </data>
+  <data name="_textBoxInstallDir.Size" type="System.Drawing.Size, System.Drawing">
+    <value>501, 25</value>
+  </data>
+  <data name="_textBoxInstallDir.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;_textBoxInstallDir.Name" xml:space="preserve">
+    <value>_textBoxInstallDir</value>
+  </data>
+  <data name="&gt;&gt;_textBoxInstallDir.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkTextBox, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_textBoxInstallDir.Parent" xml:space="preserve">
+    <value>_groupBoxInstallPath</value>
+  </data>
+  <data name="&gt;&gt;_textBoxInstallDir.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="_checkBoxCloseToTray.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_checkBoxCloseToTray.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_checkBoxCloseToTray.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 18</value>
+  </data>
+  <data name="_checkBoxCloseToTray.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 11, 0</value>
+  </data>
+  <data name="_checkBoxCloseToTray.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 22</value>
+  </data>
+  <data name="_checkBoxCloseToTray.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="_checkBoxCloseToTray.Text" xml:space="preserve">
+    <value>Close to Tray</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxCloseToTray.Name" xml:space="preserve">
+    <value>_checkBoxCloseToTray</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxCloseToTray.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkCheckBox, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxCloseToTray.Parent" xml:space="preserve">
+    <value>_groupBoxLauncherSettings</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxCloseToTray.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 40</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 22</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="_checkBoxExitOnLaunch.Text" xml:space="preserve">
+    <value>Exit on Launch</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxExitOnLaunch.Name" xml:space="preserve">
+    <value>_checkBoxExitOnLaunch</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxExitOnLaunch.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkCheckBox, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxExitOnLaunch.Parent" xml:space="preserve">
+    <value>_groupBoxLauncherSettings</value>
+  </data>
+  <data name="&gt;&gt;_checkBoxExitOnLaunch.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="_groupBoxLauncherSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>273, 13</value>
+  </data>
+  <data name="_groupBoxLauncherSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>255, 197</value>
+  </data>
+  <data name="_groupBoxLauncherSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="_groupBoxLauncherSettings.Text" xml:space="preserve">
+    <value>Launcher Settings</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxLauncherSettings.Name" xml:space="preserve">
+    <value>_groupBoxLauncherSettings</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxLauncherSettings.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkGroupBox, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxLauncherSettings.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxLauncherSettings.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="_groupBoxInstallPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 216</value>
+  </data>
+  <data name="_groupBoxInstallPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>516, 87</value>
+  </data>
+  <data name="_groupBoxInstallPath.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="_groupBoxInstallPath.Text" xml:space="preserve">
+    <value>Game Install Path</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxInstallPath.Name" xml:space="preserve">
+    <value>_groupBoxInstallPath</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxInstallPath.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkGroupBox, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxInstallPath.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_groupBoxInstallPath.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <metadata name="_folderBrowser.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>14, 13</value>
   </metadata>
   <metadata name="_errorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>146, 13</value>
   </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>54</value>
   </metadata>
+  <data name="_buttonSave.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10pt</value>
+  </data>
+  <data name="_buttonSave.Location" type="System.Drawing.Point, System.Drawing">
+    <value>320, 315</value>
+  </data>
+  <data name="_buttonSave.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="_buttonSave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 29</value>
+  </data>
+  <data name="_buttonSave.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="_buttonSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="&gt;&gt;_buttonSave.Name" xml:space="preserve">
+    <value>_buttonSave</value>
+  </data>
+  <data name="&gt;&gt;_buttonSave.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_buttonSave.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_buttonSave.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>7, 15</value>
+  </data>
+  <data name="_buttonClose.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10pt</value>
+  </data>
+  <data name="_buttonClose.Location" type="System.Drawing.Point, System.Drawing">
+    <value>427, 315</value>
+  </data>
+  <data name="_buttonClose.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="_buttonClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 29</value>
+  </data>
+  <data name="_buttonClose.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="_buttonClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="&gt;&gt;_buttonClose.Name" xml:space="preserve">
+    <value>_buttonClose</value>
+  </data>
+  <data name="&gt;&gt;_buttonClose.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_buttonClose.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_buttonClose.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>541, 356</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterParent</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="&gt;&gt;_folderBrowser.Name" xml:space="preserve">
+    <value>_folderBrowser</value>
+  </data>
+  <data name="&gt;&gt;_folderBrowser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;_errorProvider.Name" xml:space="preserve">
+    <value>_errorProvider</value>
+  </data>
+  <data name="&gt;&gt;_errorProvider.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ErrorProvider, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>SettingsWindow</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>DarkUI.Forms.DarkForm, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
 </root>

@@ -58,20 +58,23 @@ namespace GenshinLauncher
         [STAThread]
         public static void Main()
         {
-            Ui.MainWindow.ButtonAcceptClick   += ButtonAccept_Click;
-            Ui.MainWindow.ButtonSettingsClick += ButtonSettings_Click;
+            Ui.MainWindow.ButtonAcceptClick          += ButtonAccept_Click;
+            Ui.MainWindow.ButtonDownloadPreloadClick += ButtonDownloadPreload_Click;
+            Ui.MainWindow.ButtonSettingsClick        += ButtonSettings_Click;
+            Ui.MainWindow.ButtonStopDownloadClick    += ButtonStopDownload_Click;
+            Ui.MainWindow.ButtonInstallDirectXClick  += ButtonInstallDirectX_Click;
 
             _borderlessMode = ToBoolean(LauncherIni.BorderlessMode) ?? false;
             _exitOnLaunch   = ToBoolean(LauncherIni.ExitOnLaunch)   ?? false;
             _gameRoot       = LauncherIni.GameInstallPath           ?? string.Empty;
             CloseToTray     = LauncherIni.ExitType == "1";
 
-            ReloadGame();
+            ReloadGame(true);
 
             Ui.RunMainWindow();
         }
 
-        private static void ReloadGame()
+        private static void ReloadGame(bool isFirstLoad)
         {
             if (string.IsNullOrWhiteSpace(_gameRoot))
             {
@@ -89,9 +92,13 @@ namespace GenshinLauncher
                 return;
             }
 
-            _gameVersion              = Version.Parse(gameIni.GameVersion);
-            _gameName                 = MiHoYoGameNameFromAppInfo(Path.Join(gameDataPath, "app.info"));
-            LauncherIni.GameStartName = $"{Path.GetFileName(gameDataPath)[..^5]}.exe";
+            _gameVersion = Version.Parse(gameIni.GameVersion);
+            _gameName    = MiHoYoGameNameFromAppInfo(Path.Join(gameDataPath, "app.info"));
+
+            if (!isFirstLoad)
+            {
+                LauncherIni.GameStartName = $"{Path.GetFileName(gameDataPath)[..^5]}.exe";
+            }
 
             Ui.MainWindow.Components = Ui.MainWindow.Components & ~Components.ButtonDownload & ~Components.ButtonUpdate & ~Components.ButtonPreload | Components.ButtonLaunch;
             string backgroundPath    = Path.Join(BgDirectory, LauncherIni.GameDynamicBgName);
@@ -216,7 +223,7 @@ namespace GenshinLauncher
                 if (_gameRoot != settingsWindow.TextBoxGameDirText)
                 {
                     _gameRoot = settingsWindow.TextBoxGameDirText;
-                    ReloadGame();
+                    ReloadGame(false);
                 }
 
                 if (_gameName.HasValue)
@@ -373,5 +380,14 @@ namespace GenshinLauncher
                 throw new NotImplementedException();
             }
         }
+
+        private static void ButtonDownloadPreload_Click(object? sender, EventArgs args) =>
+            throw new NotImplementedException();
+
+        private static void ButtonStopDownload_Click(object? sender, EventArgs args) =>
+            throw new NotImplementedException();
+
+        private static void ButtonInstallDirectX_Click(object? sender, EventArgs args) =>
+            throw new NotImplementedException();
     }
 }
