@@ -14,14 +14,15 @@ namespace GenshinLauncher.Ui.Common
         event EventHandler ButtonAcceptClick;
         event EventHandler ButtonDownloadPreloadClick;
         event EventHandler ButtonSettingsClick;
-        event EventHandler ButtonStopDownloadClick;
+        event EventHandler ButtonStopClick;
         event EventHandler ButtonInstallDirectXClick;
 
-        Components Components                        { get; set; }
-        Image      BackgroundImage                   { get; set; }
-        bool       RadioButtonGlobalVersionChecked   { get; set; }
-        int        ProgressBarDownloadValue          { get; set; }
-        string     LabelProgressBarDownloadTitleText { get; set; }
-        string     LabelProgressBarDownloadText      { get; set; }
+        Components Components                      { get; set; }
+        Image      BackgroundImage                 { get; set; }
+        bool       RadioButtonGlobalVersionChecked { get; set; }
+        int        ProgressBarValue                { get; set; }
+        string     LabelProgressBarTextLeft        { get; set; }
+        string     LabelProgressBarTextRight       { get; set; }
+        string     LabelProgressBarTextBottom      { get; set; }
     }
 }

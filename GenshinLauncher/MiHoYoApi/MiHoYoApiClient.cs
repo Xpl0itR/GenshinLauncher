@@ -7,9 +7,7 @@
 using System;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -72,16 +70,13 @@ namespace GenshinLauncher.MiHoYoApi
             };
         }
 
-        public async Task Download(string url, Stream outStream, RangeHeaderValue? range = null, HashAlgorithm? hashAlgorithm = null, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
+        public async Task<Stream> GetDownloadStream(string url, CancellationToken cancellationToken = default)
         { //TODO: move this to dedicated downloading class
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Range = range;
-
-            HttpResponseMessage response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            HttpResponseMessage response = await _httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            await using Stream contentStream = await response.Content.OpenStreamAsync(cancellationToken);
-            await contentStream.CopyToAsync(outStream, hashAlgorithm, progress, cancellationToken);
+            Stream contentStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+            return new LengthStream(contentStream, response.Content.Headers.ContentLength);
         }
 
         public Task<DataJsonContent> GetContent(MiHoYoGameName gameName, Language language, CancellationToken cancellationToken = default)

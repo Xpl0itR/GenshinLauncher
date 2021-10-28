@@ -374,7 +374,7 @@
     <value>19</value>
   </data>
   <data name="_groupBoxSettings.Text" xml:space="preserve">
-    <value>Extended Settings</value>
+    <value>Extended Game Settings</value>
   </data>
   <data name="&gt;&gt;_groupBoxSettings.Name" xml:space="preserve">
     <value>_groupBoxSettings</value>
@@ -639,9 +639,6 @@
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Settings</value>
   </data>
   <data name="&gt;&gt;_folderBrowser.Name" xml:space="preserve">
     <value>_folderBrowser</value>

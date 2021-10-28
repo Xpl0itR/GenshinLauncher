@@ -42,14 +42,15 @@ namespace GenshinLauncher.Ui.WinForms
             this._buttonAccept = new DarkUI.Controls.DarkButton();
             this._radioButtonGlobalVersion = new DarkUI.Controls.DarkRadioButton();
             this._radioButtonChinaVersion = new DarkUI.Controls.DarkRadioButton();
-            this._progressBarDownload = new System.Windows.Forms.ProgressBar();
-            this._labelProgressBarText = new DarkUI.Controls.DarkLabel();
-            this._labelProgressBarTitle = new DarkUI.Controls.DarkLabel();
-            this._buttonStopDownload = new DarkUI.Controls.DarkButton();
+            this._progressBar = new System.Windows.Forms.ProgressBar();
+            this._labelProgressBarTextBottom = new DarkUI.Controls.DarkLabel();
+            this._labelProgressBarTextLeft = new DarkUI.Controls.DarkLabel();
+            this._buttonStop = new DarkUI.Controls.DarkButton();
             this._buttonInstallDirectX = new DarkUI.Controls.DarkButton();
             this._buttonSettings = new DarkUI.Controls.DarkButton();
             this._labelCheckingForUpdates = new DarkUI.Controls.DarkLabel();
             this._buttonDownloadPreload = new DarkUI.Controls.DarkButton();
+            this._labelProgressBarTextRight = new DarkUI.Controls.DarkLabel();
             this._trayMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,29 +112,29 @@ namespace GenshinLauncher.Ui.WinForms
             resources.ApplyResources(this._radioButtonChinaVersion, "_radioButtonChinaVersion");
             this._radioButtonChinaVersion.Name = "_radioButtonChinaVersion";
             // 
-            // _progressBarDownload
+            // _progressBar
             // 
-            resources.ApplyResources(this._progressBarDownload, "_progressBarDownload");
-            this._progressBarDownload.MarqueeAnimationSpeed = 1;
-            this._progressBarDownload.Maximum = 2147483647;
-            this._progressBarDownload.Name = "_progressBarDownload";
+            resources.ApplyResources(this._progressBar, "_progressBar");
+            this._progressBar.MarqueeAnimationSpeed = 1;
+            this._progressBar.Maximum = 2147483647;
+            this._progressBar.Name = "_progressBar";
             // 
-            // _labelProgressBarText
+            // _labelProgressBarTextBottom
             // 
-            resources.ApplyResources(this._labelProgressBarText, "_labelProgressBarText");
-            this._labelProgressBarText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._labelProgressBarText.Name = "_labelProgressBarText";
+            resources.ApplyResources(this._labelProgressBarTextBottom, "_labelProgressBarTextBottom");
+            this._labelProgressBarTextBottom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this._labelProgressBarTextBottom.Name = "_labelProgressBarTextBottom";
             // 
-            // _labelProgressBarTitle
+            // _labelProgressBarTextLeft
             // 
-            resources.ApplyResources(this._labelProgressBarTitle, "_labelProgressBarTitle");
-            this._labelProgressBarTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._labelProgressBarTitle.Name = "_labelProgressBarTitle";
+            resources.ApplyResources(this._labelProgressBarTextLeft, "_labelProgressBarTextLeft");
+            this._labelProgressBarTextLeft.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this._labelProgressBarTextLeft.Name = "_labelProgressBarTextLeft";
             // 
-            // _buttonStopDownload
+            // _buttonStop
             // 
-            resources.ApplyResources(this._buttonStopDownload, "_buttonStopDownload");
-            this._buttonStopDownload.Name = "_buttonStopDownload";
+            resources.ApplyResources(this._buttonStop, "_buttonStop");
+            this._buttonStop.Name = "_buttonStop";
             // 
             // _buttonInstallDirectX
             // 
@@ -156,19 +157,27 @@ namespace GenshinLauncher.Ui.WinForms
             resources.ApplyResources(this._buttonDownloadPreload, "_buttonDownloadPreload");
             this._buttonDownloadPreload.Name = "_buttonDownloadPreload";
             // 
+            // _labelProgressBarTextRight
+            // 
+            this._labelProgressBarTextRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this._labelProgressBarTextRight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            resources.ApplyResources(this._labelProgressBarTextRight, "_labelProgressBarTextRight");
+            this._labelProgressBarTextRight.Name = "_labelProgressBarTextRight";
+            // 
             // MainWindow
             // 
             this.AcceptButton = this._buttonAccept;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.Controls.Add(this._labelProgressBarTextRight);
             this.Controls.Add(this._buttonDownloadPreload);
             this.Controls.Add(this._labelCheckingForUpdates);
             this.Controls.Add(this._buttonSettings);
             this.Controls.Add(this._buttonInstallDirectX);
-            this.Controls.Add(this._buttonStopDownload);
-            this.Controls.Add(this._labelProgressBarTitle);
-            this.Controls.Add(this._labelProgressBarText);
-            this.Controls.Add(this._progressBarDownload);
+            this.Controls.Add(this._buttonStop);
+            this.Controls.Add(this._labelProgressBarTextLeft);
+            this.Controls.Add(this._labelProgressBarTextBottom);
+            this.Controls.Add(this._progressBar);
             this.Controls.Add(this._radioButtonChinaVersion);
             this.Controls.Add(this._radioButtonGlobalVersion);
             this.Controls.Add(this._buttonAccept);
@@ -193,13 +202,14 @@ namespace GenshinLauncher.Ui.WinForms
         private ToolStripSeparator _trayMenuSeparator;
         private DarkRadioButton _radioButtonChinaVersion;
         private DarkRadioButton _radioButtonGlobalVersion;
-        private ProgressBar _progressBarDownload;
-        private DarkLabel _labelProgressBarText;
-        private DarkLabel _labelProgressBarTitle;
-        private DarkButton _buttonStopDownload;
+        private ProgressBar _progressBar;
+        private DarkLabel _labelProgressBarTextBottom;
+        private DarkLabel _labelProgressBarTextLeft;
+        private DarkButton _buttonStop;
         private DarkButton _buttonInstallDirectX;
         private DarkButton _buttonSettings;
         private DarkLabel _labelCheckingForUpdates;
         private DarkButton _buttonDownloadPreload;
+        private DarkLabel _labelProgressBarTextRight;
     }
 }

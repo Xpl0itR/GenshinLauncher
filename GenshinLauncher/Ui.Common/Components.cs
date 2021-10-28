@@ -17,6 +17,7 @@ namespace GenshinLauncher.Ui.Common
         ProgressBarBlocks  = 0x10,
         ProgressBarMarquee = 0x20,
         CheckingForUpdate  = 0x40,
+        DisableDownloading = 0x80,
 
         ProgressBar = ProgressBarBlocks | ProgressBarMarquee
     }

@@ -22,23 +22,23 @@ namespace GenshinLauncher.MiHoYoRegistry
         public bool TryGetGraphicsSetting(out JsonSettingGraphics graphicsSetting) =>
             TryGetFromBinary(KeyNameGraphicsSetting, out graphicsSetting);
         public void SetGraphicsSetting(JsonSettingGraphics graphicsSetting) =>
-            SetBinaryFromJson(KeyNameGraphicsSetting, graphicsSetting);
+            SetAsBinary(KeyNameGraphicsSetting, graphicsSetting);
 
         public bool TryGetScreenSetting(out JsonSettingScreen screenSetting) =>
             TryGetFromBinary(KeyNameScreenSetting, out screenSetting);
         public void SetScreenSetting(JsonSettingScreen screenSetting) =>
-            SetBinaryFromJson(KeyNameScreenSetting, screenSetting);
+            SetAsBinary(KeyNameScreenSetting, screenSetting);
 
         public bool TryGetGameVersion(out string gameVersion) =>
             TryGetFromBinary(KeyNameGameVersion, out gameVersion);
         public void SetGameVersion(string gameVersion) =>
-            SetBinaryFromString(KeyNameGameVersion, gameVersion);
+            SetAsBinary(KeyNameGameVersion, gameVersion);
 
         protected bool TryGetFromBinary<T>(string name, out T value)
         {
             if (this.RegistryKey.GetValue(name) is byte[] bytes)
             {
-                ReadOnlySpan<byte> span = new ReadOnlySpan<byte>(bytes, 0, bytes.Length - 1); // Remove null separator
+                ReadOnlySpan<byte> span = new ReadOnlySpan<byte>(bytes, 0, bytes.Length - 1); // Removes null separator
 
                 if (typeof(T) == typeof(string))
                 {
@@ -55,11 +55,13 @@ namespace GenshinLauncher.MiHoYoRegistry
             return false;
         }
 
-        protected void SetBinaryFromJson<T>(string name, T json) =>
-            SetBinaryFromString(name, JsonSerializer.Serialize(json));
-
-        protected void SetBinaryFromString(string name, string str)
+        protected void SetAsBinary<T>(string name, T value)
         {
+            if (value is not string str)
+            {
+                str = JsonSerializer.Serialize(value);
+            }
+
             if (str[^1] != '\0')
             {
                 str += '\0';

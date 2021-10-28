@@ -47,22 +47,22 @@ namespace GenshinLauncher.MiHoYoRegistry
         public bool TryGetFullscreenMode(out bool fullscreenMode) =>
             TryGet(KeyNameFullscreenMode, out fullscreenMode);
         public void SetFullscreenMode(bool fullscreenMode) =>
-            SetDWord(KeyNameFullscreenMode, fullscreenMode);
+            SetAsDWord(KeyNameFullscreenMode, fullscreenMode);
 
         public bool TryGetMonitorIndex(out int index) =>
             TryGet(KeyNameMonitorIndex, out index);
         public void SetMonitorIndex(int index) =>
-            SetDWord(KeyNameMonitorIndex, index);
+            SetAsDWord(KeyNameMonitorIndex, index);
 
         public bool TryGetResolutionHeight(out int height) =>
             TryGet(KeyNameResolutionHeight, out height);
         public void SetResolutionHeight(int height) =>
-            SetDWord(KeyNameResolutionHeight, height);
+            SetAsDWord(KeyNameResolutionHeight, height);
 
         public bool TryGetResolutionWidth(out int width) =>
             TryGet(KeyNameResolutionWidth, out width);
         public void SetResolutionWidth(int width) =>
-            SetDWord(KeyNameResolutionWidth, width);
+            SetAsDWord(KeyNameResolutionWidth, width);
 
         public void Dispose()
         {
@@ -83,7 +83,7 @@ namespace GenshinLauncher.MiHoYoRegistry
             return true;
         }
 
-        protected void SetDWord(string name, object value) =>
+        protected void SetAsDWord(string name, object value) =>
             RegistryKey.SetValue(name, value, RegistryValueKind.DWord);
     }
 }

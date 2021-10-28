@@ -30,6 +30,7 @@ namespace GenshinLauncher
 
         private static CancellationTokenSource? _ctsLoadGameContent;
         private static CancellationTokenSource? _ctsUpdateCheck;
+        private static CancellationTokenSource? _ctsMain;
 
         private static bool            _borderlessMode;
         private static bool            _exitOnLaunch;
@@ -61,7 +62,7 @@ namespace GenshinLauncher
             Ui.MainWindow.ButtonAcceptClick          += ButtonAccept_Click;
             Ui.MainWindow.ButtonDownloadPreloadClick += ButtonDownloadPreload_Click;
             Ui.MainWindow.ButtonSettingsClick        += ButtonSettings_Click;
-            Ui.MainWindow.ButtonStopDownloadClick    += ButtonStopDownload_Click;
+            Ui.MainWindow.ButtonStopClick            += ButtonStopDownload_Click;
             Ui.MainWindow.ButtonInstallDirectXClick  += ButtonInstallDirectX_Click;
 
             _borderlessMode = ToBoolean(LauncherIni.BorderlessMode) ?? false;
@@ -135,7 +136,9 @@ namespace GenshinLauncher
             {
                 Directory.CreateDirectory(BgDirectory);
                 await using Stream bgStream = new FileStream(backgroundPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, Utils.DefaultFileStreamBufferSize, true);
-                await ApiClient.Download(dataJsonContent.Adv.Background, bgStream, cancellationToken: _ctsLoadGameContent.Token);
+                await using Stream dlStream = await ApiClient.GetDownloadStream(dataJsonContent.Adv.Background, _ctsLoadGameContent.Token);
+                await dlStream.CopyToAsync(bgStream, _ctsLoadGameContent.Token);
+
                 Ui.MainWindow.BackgroundImage = Image.FromStream(bgStream);
             }
 
@@ -277,7 +280,7 @@ namespace GenshinLauncher
         {
             if (Process.GetProcesses().Any(process => process.ProcessName == Path.GetFileNameWithoutExtension(LauncherIni.GameStartName)))
             {
-                Ui.ShowErrorDialog("GenshinLauncher", $"Another instance of {_gameName} is already running"); //TODO: localize
+                Ui.ShowErrorDialog("GenshinLauncher", string.Format(LocalizedStrings.AnotherInstanceIsRunning, _gameName)); //TODO: store program name in one const
                 return;
             }
 
@@ -365,6 +368,9 @@ namespace GenshinLauncher
         private static void ButtonSettings_Click(object? sender, EventArgs args) =>
             OpenSettingsWindow();
 
+        private static void ButtonStopDownload_Click(object? sender, EventArgs args) =>
+            _ctsMain?.Cancel();
+
         private static void ButtonAccept_Click(object? sender, EventArgs args)
         {
             if (Ui.MainWindow.Components.HasFlag(Components.ButtonLaunch))
@@ -384,10 +390,16 @@ namespace GenshinLauncher
         private static void ButtonDownloadPreload_Click(object? sender, EventArgs args) =>
             throw new NotImplementedException();
 
-        private static void ButtonStopDownload_Click(object? sender, EventArgs args) =>
+        private static void ButtonInstallDirectX_Click(object? sender, EventArgs args)
+        {
             throw new NotImplementedException();
 
-        private static void ButtonInstallDirectX_Click(object? sender, EventArgs args) =>
-            throw new NotImplementedException();
+            Ui.MainWindow.Components |= Components.DisableDownloading | Components.ProgressBarBlocks;
+
+            using (_ctsMain = new CancellationTokenSource())
+            {
+
+            }
+        }
     }
 }

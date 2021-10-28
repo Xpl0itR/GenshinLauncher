@@ -138,7 +138,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_buttonAccept.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="_radioButtonGlobalVersion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -168,7 +168,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_radioButtonGlobalVersion.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="_radioButtonChinaVersion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -198,119 +198,119 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_radioButtonChinaVersion.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
-  <data name="_progressBarDownload.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_progressBar.Location" type="System.Drawing.Point, System.Drawing">
     <value>50, 650</value>
   </data>
-  <data name="_progressBarDownload.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_progressBar.Size" type="System.Drawing.Size, System.Drawing">
     <value>776, 30</value>
   </data>
-  <data name="_progressBarDownload.TabIndex" type="System.Int32, mscorlib">
+  <data name="_progressBar.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
   </data>
-  <data name="&gt;&gt;_progressBarDownload.Name" xml:space="preserve">
-    <value>_progressBarDownload</value>
+  <data name="&gt;&gt;_progressBar.Name" xml:space="preserve">
+    <value>_progressBar</value>
   </data>
-  <data name="&gt;&gt;_progressBarDownload.Type" xml:space="preserve">
+  <data name="&gt;&gt;_progressBar.Type" xml:space="preserve">
     <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;_progressBarDownload.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_progressBar.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;_progressBarDownload.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="&gt;&gt;_progressBar.ZOrder" xml:space="preserve">
+    <value>9</value>
   </data>
-  <data name="_labelProgressBarText.AutoSize" type="System.Boolean, mscorlib">
+  <data name="_labelProgressBarTextBottom.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="_labelProgressBarText.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="_labelProgressBarTextBottom.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 10pt</value>
   </data>
-  <data name="_labelProgressBarText.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_labelProgressBarTextBottom.Location" type="System.Drawing.Point, System.Drawing">
     <value>50, 684</value>
   </data>
-  <data name="_labelProgressBarText.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_labelProgressBarTextBottom.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 19</value>
   </data>
-  <data name="_labelProgressBarText.TabIndex" type="System.Int32, mscorlib">
+  <data name="_labelProgressBarTextBottom.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
   </data>
-  <data name="_labelProgressBarText.Visible" type="System.Boolean, mscorlib">
+  <data name="_labelProgressBarTextBottom.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;_labelProgressBarText.Name" xml:space="preserve">
-    <value>_labelProgressBarText</value>
+  <data name="&gt;&gt;_labelProgressBarTextBottom.Name" xml:space="preserve">
+    <value>_labelProgressBarTextBottom</value>
   </data>
-  <data name="&gt;&gt;_labelProgressBarText.Type" xml:space="preserve">
+  <data name="&gt;&gt;_labelProgressBarTextBottom.Type" xml:space="preserve">
     <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;_labelProgressBarText.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_labelProgressBarTextBottom.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;_labelProgressBarText.ZOrder" xml:space="preserve">
-    <value>7</value>
+  <data name="&gt;&gt;_labelProgressBarTextBottom.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
-  <data name="_labelProgressBarTitle.AutoSize" type="System.Boolean, mscorlib">
+  <data name="_labelProgressBarTextLeft.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="_labelProgressBarTitle.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="_labelProgressBarTextLeft.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 12.5pt</value>
   </data>
-  <data name="_labelProgressBarTitle.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_labelProgressBarTextLeft.Location" type="System.Drawing.Point, System.Drawing">
     <value>51, 626</value>
   </data>
-  <data name="_labelProgressBarTitle.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_labelProgressBarTextLeft.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 23</value>
   </data>
-  <data name="_labelProgressBarTitle.TabIndex" type="System.Int32, mscorlib">
+  <data name="_labelProgressBarTextLeft.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
   </data>
-  <data name="_labelProgressBarTitle.Visible" type="System.Boolean, mscorlib">
+  <data name="_labelProgressBarTextLeft.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;_labelProgressBarTitle.Name" xml:space="preserve">
-    <value>_labelProgressBarTitle</value>
+  <data name="&gt;&gt;_labelProgressBarTextLeft.Name" xml:space="preserve">
+    <value>_labelProgressBarTextLeft</value>
   </data>
-  <data name="&gt;&gt;_labelProgressBarTitle.Type" xml:space="preserve">
+  <data name="&gt;&gt;_labelProgressBarTextLeft.Type" xml:space="preserve">
     <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;_labelProgressBarTitle.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_labelProgressBarTextLeft.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;_labelProgressBarTitle.ZOrder" xml:space="preserve">
-    <value>6</value>
+  <data name="&gt;&gt;_labelProgressBarTextLeft.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="_buttonStopDownload.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="_buttonStop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="_buttonStopDownload.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="_buttonStop.Location" type="System.Drawing.Point, System.Drawing">
     <value>832, 650</value>
   </data>
-  <data name="_buttonStopDownload.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="_buttonStop.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 5, 5, 5</value>
   </data>
-  <data name="_buttonStopDownload.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="_buttonStop.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 31</value>
   </data>
-  <data name="_buttonStopDownload.TabIndex" type="System.Int32, mscorlib">
+  <data name="_buttonStop.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
   </data>
-  <data name="_buttonStopDownload.Text" xml:space="preserve">
+  <data name="_buttonStop.Text" xml:space="preserve">
     <value>Stop</value>
   </data>
-  <data name="&gt;&gt;_buttonStopDownload.Name" xml:space="preserve">
-    <value>_buttonStopDownload</value>
+  <data name="&gt;&gt;_buttonStop.Name" xml:space="preserve">
+    <value>_buttonStop</value>
   </data>
-  <data name="&gt;&gt;_buttonStopDownload.Type" xml:space="preserve">
+  <data name="&gt;&gt;_buttonStop.Type" xml:space="preserve">
     <value>DarkUI.Controls.DarkButton, DarkUI, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;_buttonStopDownload.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_buttonStop.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;_buttonStopDownload.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="&gt;&gt;_buttonStop.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="_buttonInstallDirectX.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -340,7 +340,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_buttonInstallDirectX.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="_buttonSettings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -370,7 +370,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_buttonSettings.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="_labelCheckingForUpdates.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -403,7 +403,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_labelCheckingForUpdates.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="_buttonDownloadPreload.Location" type="System.Drawing.Point, System.Drawing">
     <value>916, 578</value>
@@ -433,7 +433,31 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;_buttonDownloadPreload.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
+  </data>
+  <data name="_labelProgressBarTextRight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>453, 624</value>
+  </data>
+  <data name="_labelProgressBarTextRight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>377, 23</value>
+  </data>
+  <data name="_labelProgressBarTextRight.TabIndex" type="System.Int32, mscorlib">
+    <value>32</value>
+  </data>
+  <data name="_labelProgressBarTextRight.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;_labelProgressBarTextRight.Name" xml:space="preserve">
+    <value>_labelProgressBarTextRight</value>
+  </data>
+  <data name="&gt;&gt;_labelProgressBarTextRight.Type" xml:space="preserve">
+    <value>DarkUI.Controls.DarkLabel, DarkUI, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;_labelProgressBarTextRight.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;_labelProgressBarTextRight.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -449,9 +473,6 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>1280, 730</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Genshin Impact Launcher</value>
   </data>
   <data name="&gt;&gt;_trayIcon.Name" xml:space="preserve">
     <value>_trayIcon</value>

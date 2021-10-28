@@ -9,8 +9,6 @@ using System.Buffers;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net.Http;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,45 +17,6 @@ namespace GenshinLauncher
     public static class Utils
     {
         public const int DefaultFileStreamBufferSize = 0x1000;
-
-        public static async Task<Stream> OpenStreamAsync(this HttpContent content, CancellationToken cancellationToken = default)
-        {
-            Stream contentStream = await content.ReadAsStreamAsync(cancellationToken);
-            return new LengthStream(contentStream, content.Headers.ContentLength);
-        }
-
-        public static async Task CopyToAsync(this Stream inStream, Stream outStream, HashAlgorithm? hashAlgorithm = null, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
-        {
-            Task HashAndWrite(byte[] buffer, int bytesRead)
-            {
-                hashAlgorithm?.TransformBlock(buffer, 0, bytesRead, null, 0);
-                return outStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
-            }
-
-            await (progress == null
-                ? inStream.IterateAsync(HashAndWrite, cancellationToken)
-                : inStream.IterateAsync(HashAndWrite, progress, cancellationToken));
-
-            hashAlgorithm?.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
-        }
-
-        public static async Task HashStreamAsync(this HashAlgorithm hashAlgorithm, Stream inStream, IProgress<double>? progress = null, CancellationToken cancellationToken = default, bool doFinal = true)
-        {
-            Task Hash(byte[] buffer, int bytesRead)
-            {
-                hashAlgorithm.TransformBlock(buffer, 0, bytesRead, null, 0);
-                return Task.CompletedTask;
-            }
-
-            await (progress == null 
-                ? inStream.IterateAsync(Hash, cancellationToken) 
-                : inStream.IterateAsync(Hash, progress, cancellationToken));
-
-            if (doFinal)
-            {
-                hashAlgorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
-            }
-        }
 
         public static async Task ExtractToDirectory(this ZipArchive zipArchive, string destinationPath, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
         {
@@ -90,16 +49,25 @@ namespace GenshinLauncher
                     await using (Stream outStream   = new FileStream(entryPath, FileMode.Create, FileAccess.Write, FileShare.None, DefaultFileStreamBufferSize, true))
                     await using (Stream entryStream = entry.Open())
                     {
-                        await entryStream.IterateAsync((buffer, bytesRead) =>
+                        byte[] buffer = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
+                        try
                         {
-                            if (progress != null)
+                            int bytesRead;
+                            while ((bytesRead = await entryStream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false)) > 0)
                             {
-                                decompressedLength += bytesRead;
-                                progress.Report(decompressedLength / uncompressedLength);
-                            }
+                                await outStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
 
-                            return outStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
-                        }, cancellationToken);
+                                if (progress != null)
+                                {
+                                    decompressedLength += bytesRead;
+                                    progress.Report(decompressedLength / uncompressedLength);
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            ArrayPool<byte>.Shared.Return(buffer);
+                        }
                     }
 
                     File.SetLastWriteTime(entryPath, entry.LastWriteTime.DateTime);
@@ -122,37 +90,6 @@ namespace GenshinLauncher
             catch (Exception exception) when (exception is ArgumentNullException or IOException)
             {
                 return false;
-            }
-        }
-
-        private static Task IterateAsync(this Stream stream, Func<byte[], int, Task> func, IProgress<double> progress, CancellationToken cancellationToken)
-        {
-            long   totalBytes     = stream.Length;
-            double totalBytesRead = 0;
-
-            return stream.IterateAsync((buffer, bytesRead) =>
-            {
-                totalBytesRead += bytesRead;
-                progress.Report(totalBytesRead / totalBytes);
-
-                return func(buffer, bytesRead);
-            }, cancellationToken);
-        }
-
-        private static async Task IterateAsync(this Stream stream, Func<byte[], int, Task> func, CancellationToken cancellationToken)
-        {
-            byte[] buffer = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
-            try
-            {
-                int bytesRead;
-                while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false)) > 0)
-                {
-                    await func(buffer, bytesRead);
-                }
-            }
-            finally
-            {
-                ArrayPool<byte>.Shared.Return(buffer);
             }
         }
     }

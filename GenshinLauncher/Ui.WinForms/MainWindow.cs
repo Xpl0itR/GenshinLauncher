@@ -18,6 +18,7 @@ namespace GenshinLauncher.Ui.WinForms
         public MainWindow()
         {
             InitializeComponent();
+            base.Text = nameof(GenshinLauncher);
         }
 
         public event EventHandler ButtonAcceptClick
@@ -38,10 +39,10 @@ namespace GenshinLauncher.Ui.WinForms
             remove => _buttonSettings.Click -= value;
         }
 
-        public event EventHandler ButtonStopDownloadClick
+        public event EventHandler ButtonStopClick
         {
-            add    => _buttonStopDownload.Click += value;
-            remove => _buttonStopDownload.Click -= value;
+            add    => _buttonStop.Click += value;
+            remove => _buttonStop.Click -= value;
         }
 
         public event EventHandler ButtonInstallDirectXClick
@@ -56,22 +57,28 @@ namespace GenshinLauncher.Ui.WinForms
             set => _radioButtonGlobalVersion.Checked = value;
         }
 
-        public int ProgressBarDownloadValue
+        public int ProgressBarValue
         {
-            get => _progressBarDownload.Value;
-            set => _progressBarDownload.Value = value;
+            get => _progressBar.Value;
+            set => _progressBar.Value = value;
         }
 
-        public string LabelProgressBarDownloadTitleText
+        public string LabelProgressBarTextLeft
         {
-            get => _labelProgressBarTitle.Text;
-            set => _labelProgressBarTitle.Text = value;
+            get => _labelProgressBarTextLeft.Text;
+            set => _labelProgressBarTextLeft.Text = value;
         }
 
-        public string LabelProgressBarDownloadText
+        public string LabelProgressBarTextRight
         {
-            get => _labelProgressBarText.Text;
-            set => _labelProgressBarText.Text = value;
+            get => _labelProgressBarTextRight.Text;
+            set => _labelProgressBarTextRight.Text = value;
+        }
+
+        public string LabelProgressBarTextBottom
+        {
+            get => _labelProgressBarTextBottom.Text;
+            set => _labelProgressBarTextBottom.Text = value;
         }
 
         public Components Components
@@ -82,20 +89,32 @@ namespace GenshinLauncher.Ui.WinForms
             {
                 _components = value;
 
+                bool downloadingDisabled = _components.HasFlag(Components.DisableDownloading);
+                if (downloadingDisabled)
+                {
+                    _buttonInstallDirectX.Enabled  = false;
+                    _buttonDownloadPreload.Enabled = false;
+                }
+                else
+                {
+                    _buttonInstallDirectX.Enabled  = true;
+                    _buttonDownloadPreload.Enabled = true;
+                }
+
                 if (_components.HasFlag(Components.ButtonLaunch))
                 {
-                    _buttonAccept.Text    = "Launch"; //TODO: localize text
+                    _buttonAccept.Text    = LocalizedStrings.Launch;
                     _buttonAccept.Enabled = true;
                 }
                 else if (_components.HasFlag(Components.ButtonDownload))
                 {
-                    _buttonAccept.Text    = "Download"; //TODO: localize text
-                    _buttonAccept.Enabled = true;
+                    _buttonAccept.Text    = LocalizedStrings.Download;
+                    _buttonAccept.Enabled = !downloadingDisabled;
                 }
                 else if (_components.HasFlag(Components.ButtonUpdate))
                 {
-                    _buttonAccept.Text    = "Update"; //TODO: localize text
-                    _buttonAccept.Enabled = true;
+                    _buttonAccept.Text    = LocalizedStrings.Update;
+                    _buttonAccept.Enabled = !downloadingDisabled;
                 }
                 else
                 {
@@ -133,19 +152,19 @@ namespace GenshinLauncher.Ui.WinForms
 
                 if ((_components & Components.ProgressBar) == 0)
                 {
-                    _progressBarDownload.Hide();
-                    _buttonStopDownload.Hide();
-                    _labelProgressBarTitle.Hide();
-                    _labelProgressBarText.Hide();
+                    _progressBar.Hide();
+                    _buttonStop.Hide();
+                    _labelProgressBarTextLeft.Hide();
+                    _labelProgressBarTextBottom.Hide();
                 }
                 else
                 {
-                    _progressBarDownload.Show();
-                    _buttonStopDownload.Show();
-                    _labelProgressBarTitle.Show();
-                    _labelProgressBarText.Show();
+                    _progressBar.Show();
+                    _buttonStop.Show();
+                    _labelProgressBarTextLeft.Show();
+                    _labelProgressBarTextBottom.Show();
 
-                    _progressBarDownload.Style = _components.HasFlag(Components.ProgressBarMarquee)
+                    _progressBar.Style = _components.HasFlag(Components.ProgressBarMarquee)
                         ? ProgressBarStyle.Marquee
                         : ProgressBarStyle.Blocks;
                 }

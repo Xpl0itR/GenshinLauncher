@@ -18,6 +18,7 @@ namespace GenshinLauncher.Ui.WinForms
         public SettingsWindow()
         {
             InitializeComponent();
+            base.Text = string.Format(LocalizedStrings.SettingsWindowTitle, nameof(GenshinLauncher));
         }
 
         public event EventHandler ButtonSaveClick
@@ -115,10 +116,8 @@ namespace GenshinLauncher.Ui.WinForms
             }
         }
 
-        private void TextBoxInstallDir_Validated(object sender, EventArgs args)
-        {
-            _errorProvider.SetError(_textBoxInstallDir, null);
-        }
+        private void TextBoxInstallDir_Validated(object sender, EventArgs args) =>
+            _errorProvider.SetError(_textBoxInstallDir, string.Empty);
 
         private void TextBoxInstallDir_Validating(object sender, CancelEventArgs args) =>
             ValidatePath(args);
@@ -134,7 +133,7 @@ namespace GenshinLauncher.Ui.WinForms
             }
 
             args.Cancel = true;
-            _errorProvider.SetError(_textBoxInstallDir, "Invalid characters in path"); //TODO: localize text
+            _errorProvider.SetError(_textBoxInstallDir, LocalizedStrings.PathInvalidChars);
         }
     }
 }
