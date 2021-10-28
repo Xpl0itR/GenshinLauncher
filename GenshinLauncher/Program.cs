@@ -318,9 +318,9 @@ namespace GenshinLauncher
                         handle = childProcess.MainWindowHandle;
                         break;
                     }
-                }
 
-                await Task.Delay(500);
+                    await Task.Delay(200);
+                }
             }
 
             if (handle == IntPtr.Zero)

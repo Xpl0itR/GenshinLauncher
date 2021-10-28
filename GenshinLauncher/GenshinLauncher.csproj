@@ -1,19 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <LangVersion>10.0</LangVersion>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <PublishSingleFile>true</PublishSingleFile>
-    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <UseWindowsForms>true</UseWindowsForms>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>0.1.0</Version>
     <Authors>Xpl0itR</Authors>
-    <RepositoryUrl>https://github.com/Xpl0itR/GenshinLauncher</RepositoryUrl>
-    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
+    <OutputType Condition="'$(Configuration)' == 'Debug'">Exe</OutputType>
+    <OutputType Condition="'$(Configuration)' == 'Release'">WinExe</OutputType>
+    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+    <PublishSingleFile>true</PublishSingleFile>
+    <RepositoryUrl>https://github.com/Xpl0itR/GenshinLauncher</RepositoryUrl>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
