@@ -79,6 +79,33 @@ namespace GenshinLauncher.Ui.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading {0:0}% ({1}/{2}).
+        /// </summary>
+        internal static string Downloading {
+            get {
+                return ResourceManager.GetString("Downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting {0:0}% ({1}/{2}).
+        /// </summary>
+        internal static string Extracting {
+            get {
+                return ResourceManager.GetString("Extracting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fetching manifest....
+        /// </summary>
+        internal static string FetchingManifest {
+            get {
+                return ResourceManager.GetString("FetchingManifest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Launch.
         /// </summary>
         internal static string Launch {
@@ -102,6 +129,24 @@ namespace GenshinLauncher.Ui.Common {
         internal static string SettingsWindowTitle {
             get {
                 return ResourceManager.GetString("SettingsWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speed: {0}/s.
+        /// </summary>
+        internal static string Speed {
+            get {
+                return ResourceManager.GetString("Speed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Remaining: {0:hh\:mm\:ss\.f}.
+        /// </summary>
+        internal static string TimeRemaining {
+            get {
+                return ResourceManager.GetString("TimeRemaining", resourceCulture);
             }
         }
         

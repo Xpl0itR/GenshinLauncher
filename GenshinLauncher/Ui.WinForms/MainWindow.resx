@@ -64,21 +64,6 @@
     <value>116, 12</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="_trayMenuItemOpen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="_trayMenuItemOpen.Text" xml:space="preserve">
-    <value>Open main window</value>
-  </data>
-  <data name="_trayMenuSeparator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 6</value>
-  </data>
-  <data name="_trayMenuItemExit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="_trayMenuItemExit.Text" xml:space="preserve">
-    <value>Exit</value>
-  </data>
   <data name="_trayMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>179, 55</value>
   </data>
@@ -111,6 +96,21 @@
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_trayIcon.Visible" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="_trayMenuItemOpen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="_trayMenuItemOpen.Text" xml:space="preserve">
+    <value>Open main window</value>
+  </data>
+  <data name="_trayMenuSeparator.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 6</value>
+  </data>
+  <data name="_trayMenuItemExit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="_trayMenuItemExit.Text" xml:space="preserve">
+    <value>Exit</value>
   </data>
   <data name="_buttonAccept.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 20pt</value>
@@ -228,7 +228,7 @@
     <value>Segoe UI, 10pt</value>
   </data>
   <data name="_labelProgressBarTextBottom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>50, 684</value>
+    <value>45, 684</value>
   </data>
   <data name="_labelProgressBarTextBottom.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 19</value>
@@ -258,7 +258,7 @@
     <value>Segoe UI, 12.5pt</value>
   </data>
   <data name="_labelProgressBarTextLeft.Location" type="System.Drawing.Point, System.Drawing">
-    <value>51, 626</value>
+    <value>45, 624</value>
   </data>
   <data name="_labelProgressBarTextLeft.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 23</value>
@@ -435,8 +435,11 @@
   <data name="&gt;&gt;_buttonDownloadPreload.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="_labelProgressBarTextRight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10pt</value>
+  </data>
   <data name="_labelProgressBarTextRight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>453, 624</value>
+    <value>453, 625</value>
   </data>
   <data name="_labelProgressBarTextRight.Size" type="System.Drawing.Size, System.Drawing">
     <value>377, 23</value>

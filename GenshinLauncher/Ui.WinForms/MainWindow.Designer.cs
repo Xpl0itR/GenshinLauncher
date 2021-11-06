@@ -160,8 +160,8 @@ namespace GenshinLauncher.Ui.WinForms
             // _labelProgressBarTextRight
             // 
             this._labelProgressBarTextRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this._labelProgressBarTextRight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             resources.ApplyResources(this._labelProgressBarTextRight, "_labelProgressBarTextRight");
+            this._labelProgressBarTextRight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this._labelProgressBarTextRight.Name = "_labelProgressBarTextRight";
             // 
             // MainWindow

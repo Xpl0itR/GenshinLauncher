@@ -5,58 +5,51 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using System.Text.Json.Serialization;
+// ReSharper disable UnusedAutoPropertyAccessor.Global, UnusedMember.Global
 
-namespace GenshinLauncher.MiHoYoRegistry
+namespace GenshinLauncher.MiHoYoRegistry;
+
+public readonly record struct JsonSettingScreen
 {
-    public readonly record struct JsonSettingScreen
-    {
-        [JsonPropertyName("width")]
-        public int Width { get; init; }
+    [JsonPropertyName("width")] public int Width { get; init; }
 
-        [JsonPropertyName("height")]
-        public int Height { get; init; }
+    [JsonPropertyName("height")] public int Height { get; init; }
 
-        // ReSharper disable once StringLiteralTypo
-        [JsonPropertyName("isfullScreen")]
-        public bool IsFullscreen { get; init; }
-    }
+    // ReSharper disable once StringLiteralTypo
+    [JsonPropertyName("isfullScreen")] public bool IsFullscreen { get; init; }
+}
 
-    public readonly record struct JsonSettingGraphics
-    {
-        [JsonPropertyName("RecommendGrade")]
-        public string RecommendGrade { get; init; }
+public readonly record struct JsonSettingGraphics
+{
+    [JsonPropertyName("RecommendGrade")] public string RecommendGrade { get; init; }
 
-        [JsonPropertyName("IsUserDefinedGrade")]
-        public bool IsUserDefinedGrade { get; init; }
+    [JsonPropertyName("IsUserDefinedGrade")]
+    public bool IsUserDefinedGrade { get; init; }
 
-        [JsonPropertyName("IsUserDefinedVolatile")]
-        public bool IsUserDefinedVolatile { get; init; }
+    [JsonPropertyName("IsUserDefinedVolatile")]
+    public bool IsUserDefinedVolatile { get; init; }
 
-        [JsonPropertyName("IsEcoMode")]
-        public bool IsEcoMode { get; init; }
+    [JsonPropertyName("IsEcoMode")] public bool IsEcoMode { get; init; }
 
-        [JsonPropertyName("RecommendResolutionX")]
-        public int RecommendResolutionX { get; init; }
+    [JsonPropertyName("RecommendResolutionX")]
+    public int RecommendResolutionX { get; init; }
 
-        [JsonPropertyName("RecommendResolutionY")]
-        public int RecommendResolutionY { get; init; }
+    [JsonPropertyName("RecommendResolutionY")]
+    public int RecommendResolutionY { get; init; }
 
-        [JsonPropertyName("ResolutionQuality")]
-        public string ResolutionQuality { get; init; }
+    [JsonPropertyName("ResolutionQuality")]
+    public string ResolutionQuality { get; init; }
 
-        [JsonPropertyName("TargetFrameRateForInLevel")]
-        public int TargetFrameRateForInLevel { get; init; }
+    [JsonPropertyName("TargetFrameRateForInLevel")]
+    public int TargetFrameRateForInLevel { get; init; }
 
-        [JsonPropertyName("TargetFrameRateForOthers")]
-        public int TargetFrameRateForOthers { get; init; }
+    [JsonPropertyName("TargetFrameRateForOthers")]
+    public int TargetFrameRateForOthers { get; init; }
 
-        [JsonPropertyName("ContrastDelta")]
-        public float ContrastDelta { get; init; }
+    [JsonPropertyName("ContrastDelta")] public float ContrastDelta { get; init; }
 
-        [JsonPropertyName("isBrightnessStandardModeOn")]
-        public bool IsBrightnessStandardModeOn { get; init; }
+    [JsonPropertyName("isBrightnessStandardModeOn")]
+    public bool IsBrightnessStandardModeOn { get; init; }
 
-        [JsonPropertyName("VolatileSetting")]
-        public object VolatileSetting { get; init; }
-    }
+    [JsonPropertyName("VolatileSetting")] public object VolatileSetting { get; init; }
 }

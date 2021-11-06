@@ -4,10 +4,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-namespace GenshinLauncher.MiHoYoRegistry
+namespace GenshinLauncher.MiHoYoRegistry;
+
+public class GenshinRegistry : MiHoYoRegistry
 {
-    public class GenshinRegistry : MiHoYoRegistry
-    { 
-        public GenshinRegistry(MiHoYoGameName miHoYoGameName, bool writable) : base(miHoYoGameName, writable) { }
-    }
+    public GenshinRegistry(MiHoYoGameName miHoYoGameName, bool writable) : base(miHoYoGameName, writable) { }
 }

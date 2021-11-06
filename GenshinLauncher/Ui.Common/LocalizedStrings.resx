@@ -123,6 +123,15 @@
   <data name="Download" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Downloading {0:0}% ({1}/{2})</value>
+  </data>
+  <data name="Extracting" xml:space="preserve">
+    <value>Extracting {0:0}% ({1}/{2})</value>
+  </data>
+  <data name="FetchingManifest" xml:space="preserve">
+    <value>Fetching manifest...</value>
+  </data>
   <data name="Launch" xml:space="preserve">
     <value>Launch</value>
   </data>
@@ -131,6 +140,12 @@
   </data>
   <data name="SettingsWindowTitle" xml:space="preserve">
     <value>{0} - Settings</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Speed: {0}/s</value>
+  </data>
+  <data name="TimeRemaining" xml:space="preserve">
+    <value>Time Remaining: {0:hh\:mm\:ss\.f}</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>

@@ -9,30 +9,26 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace GenshinLauncher.FileParsers
+namespace GenshinLauncher.FileParsers;
+
+public class PkgVersion : List<PkgVersionEntry>
 {
-    public class PkgVersion : List<PkgVersionEntry>
+    public PkgVersion(TextReader reader)
     {
-        public PkgVersion(TextReader reader)
+        string? entryString;
+        while ((entryString = reader.ReadLine()) != null)
         {
-            string? entryString;
-            while ((entryString = reader.ReadLine()) != null)
-            {
-                PkgVersionEntry entry = JsonSerializer.Deserialize<PkgVersionEntry>(entryString);
-                this.Add(entry);
-            }
+            PkgVersionEntry entry = JsonSerializer.Deserialize<PkgVersionEntry>(entryString);
+            this.Add(entry);
         }
     }
+}
 
-    public readonly record struct PkgVersionEntry
-    {
-        [JsonPropertyName("remoteName")]
-        public string RemoteName { get; init; }
+public readonly record struct PkgVersionEntry
+{
+    [JsonPropertyName("remoteName")] public string RemoteName { get; init; }
 
-        [JsonPropertyName("md5")]
-        public string Md5 { get; init; }
+    [JsonPropertyName("md5")] public string Md5 { get; init; }
 
-        [JsonPropertyName("fileSize")]
-        public int FileSize { get; init; }
-    }
+    [JsonPropertyName("fileSize")] public int FileSize { get; init; }
 }

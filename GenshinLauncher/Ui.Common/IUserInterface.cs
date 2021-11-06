@@ -4,22 +4,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-namespace GenshinLauncher.Ui.Common
+using System;
+
+namespace GenshinLauncher.Ui.Common;
+
+public interface IUserInterface
 {
-    public interface IUserInterface
-    {
-        IMainWindow MainWindow { get; }
+    IMainWindow MainWindow { get; }
 
-        ISettingsWindow NewSettingsWindow();
+    ISettingsWindow NewSettingsWindow();
 
-        void RunMainWindow();
+    void RunMainWindow();
 
-        void RunSettingsWindow(ISettingsWindow settingsWindow);
+    void RunSettingsWindow(ISettingsWindow settingsWindow);
 
-        void ShowErrorDialog(string title, string message);
+    void ShowErrorDialog(string title, string message);
 
-        void ShowThreadExceptionDialog(System.Exception exception);
+    void ShowThreadExceptionDialog(Exception exception);
 
-        void Exit();
-    }
+    void Exit();
 }

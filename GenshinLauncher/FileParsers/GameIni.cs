@@ -4,37 +4,39 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-namespace GenshinLauncher.FileParsers
+using IniParser.Model;
+// ReSharper disable UnusedMember.Global, UnusedMember.Local
+
+namespace GenshinLauncher.FileParsers;
+
+public class GameIni : Ini
 {
-    public class GameIni : Ini
+    private const string SectionNameGeneral = "General";
+    private const string KeyNameChannel     = "channel";
+    private const string KeyNameCps         = "cps";
+    private const string KeyNameGameVersion = "game_version";
+    private const string KeyNameSubChannel  = "sub_channel";
+    private const string KeyNameSdkVersion  = "sdk_version";
+
+    public GameIni(string? path = null) : base(path) { }
+
+    private KeyDataCollection SectionGeneral => this.Data[SectionNameGeneral];
+
+    public string? Channel
     {
-        private const string SectionNameGeneral = "General";
-        private const string KeyNameChannel     = "channel";
-        private const string KeyNameCps         = "cps";
-        private const string KeyNameGameVersion = "game_version";
-        private const string KeyNameSubChannel  = "sub_channel";
-        private const string KeyNameSdkVersion  = "sdk_version";
+        get => SectionGeneral[KeyNameChannel];
+        set => SectionGeneral[KeyNameChannel] = value;
+    }
 
-        private IniParser.Model.KeyDataCollection SectionGeneral => this.Data[SectionNameGeneral];
+    public string? GameVersion
+    {
+        get => SectionGeneral[KeyNameGameVersion];
+        set => SectionGeneral[KeyNameGameVersion] = value;
+    }
 
-        public GameIni(string? path = null) : base(path) { }
-
-        public string? Channel
-        {
-            get => SectionGeneral[KeyNameChannel];
-            set => SectionGeneral[KeyNameChannel] = value;
-        }
-
-        public string? GameVersion
-        {
-            get => SectionGeneral[KeyNameGameVersion];
-            set => SectionGeneral[KeyNameGameVersion] = value;
-        }
-
-        public string? SubChannel
-        {
-            get => SectionGeneral[KeyNameSubChannel];
-            set => SectionGeneral[KeyNameSubChannel] = value;
-        }
+    public string? SubChannel
+    {
+        get => SectionGeneral[KeyNameSubChannel];
+        set => SectionGeneral[KeyNameSubChannel] = value;
     }
 }

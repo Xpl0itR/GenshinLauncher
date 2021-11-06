@@ -7,22 +7,21 @@
 using System;
 using System.Drawing;
 
-namespace GenshinLauncher.Ui.Common
-{
-    public interface IMainWindow
-    {
-        event EventHandler ButtonAcceptClick;
-        event EventHandler ButtonDownloadPreloadClick;
-        event EventHandler ButtonSettingsClick;
-        event EventHandler ButtonStopClick;
-        event EventHandler ButtonInstallDirectXClick;
+namespace GenshinLauncher.Ui.Common;
 
-        Components Components                      { get; set; }
-        Image      BackgroundImage                 { get; set; }
-        bool       RadioButtonGlobalVersionChecked { get; set; }
-        int        ProgressBarValue                { get; set; }
-        string     LabelProgressBarTextLeft        { get; set; }
-        string     LabelProgressBarTextRight       { get; set; }
-        string     LabelProgressBarTextBottom      { get; set; }
-    }
+public interface IMainWindow
+{
+    event EventHandler ButtonAcceptClick;
+    event EventHandler ButtonDownloadPreloadClick;
+    event EventHandler ButtonSettingsClick;
+    event EventHandler ButtonStopClick;
+    event EventHandler ButtonInstallDirectXClick;
+
+    Components Components                      { get; set; }
+    Image      BackgroundImage                 { set; }
+    bool       RadioButtonGlobalVersionChecked { get; set; }
+    int        ProgressBarValue                { set; }
+    string     LabelProgressBarTextLeft        { set; }
+    string     LabelProgressBarTextRight       { set; }
+    string     LabelProgressBarTextBottom      { set; }
 }

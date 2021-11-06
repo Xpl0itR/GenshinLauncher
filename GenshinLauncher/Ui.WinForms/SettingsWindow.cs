@@ -11,129 +11,127 @@ using System.Windows.Forms;
 using DarkUI.Forms;
 using GenshinLauncher.Ui.Common;
 
-namespace GenshinLauncher.Ui.WinForms
+namespace GenshinLauncher.Ui.WinForms;
+
+public partial class SettingsWindow : DarkForm, ISettingsWindow
 {
-    public partial class SettingsWindow : DarkForm, ISettingsWindow
+    public SettingsWindow()
     {
-        public SettingsWindow()
-        {
-            InitializeComponent();
-            base.Text = string.Format(LocalizedStrings.SettingsWindowTitle, nameof(GenshinLauncher));
-        }
+        InitializeComponent();
+        base.Text = string.Format(LocalizedStrings.SettingsWindowTitle, nameof(GenshinLauncher));
+    }
 
-        public event EventHandler ButtonSaveClick
-        {
-            add    => _buttonSave.Click += value;
-            remove => _buttonSave.Click -= value;
-        }
+    public event EventHandler ButtonSaveClick
+    {
+        add => _buttonSave.Click += value;
+        remove => _buttonSave.Click -= value;
+    }
 
-        public bool CheckBoxCloseToTrayChecked
-        {
-            get => _checkBoxCloseToTray.Checked;
-            set => _checkBoxCloseToTray.Checked = value;
-        }
+    public bool CheckBoxCloseToTrayChecked
+    {
+        get => _checkBoxCloseToTray.Checked;
+        set => _checkBoxCloseToTray.Checked = value;
+    }
 
-        public bool CheckBoxExitOnLaunchChecked
-        {
-            get => _checkBoxExitOnLaunch.Checked;
-            set => _checkBoxExitOnLaunch.Checked = value;
-        }
+    public bool CheckBoxExitOnLaunchChecked
+    {
+        get => _checkBoxExitOnLaunch.Checked;
+        set => _checkBoxExitOnLaunch.Checked = value;
+    }
 
-        public bool RadioButtonFullscreenChecked
-        {
-            get => _radioButtonFullscreen.Checked;
-            set => _radioButtonFullscreen.Checked = value;
-        }
+    public bool RadioButtonFullscreenChecked
+    {
+        get => _radioButtonFullscreen.Checked;
+        set => _radioButtonFullscreen.Checked = value;
+    }
 
-        public bool RadioButtonBorderlessChecked
-        {
-            get => _radioButtonBorderless.Checked;
-            set => _radioButtonBorderless.Checked = value;
-        }
+    public bool RadioButtonBorderlessChecked
+    {
+        get => _radioButtonBorderless.Checked;
+        set => _radioButtonBorderless.Checked = value;
+    }
 
-        public bool RadioButtonWindowedChecked
-        {
-            get => _radioButtonWindowed.Checked;
-            set => _radioButtonWindowed.Checked = value;
-        }
+    public bool RadioButtonWindowedChecked
+    {
+        get => _radioButtonWindowed.Checked;
+        set => _radioButtonWindowed.Checked = value;
+    }
 
-        public int NumericMonitorIndexMaximum
-        {
-            get => (int)_numericMonitorIndex.Maximum;
-            set => _numericMonitorIndex.Maximum = value;
-        }
+    public int NumericMonitorIndexMaximum
+    {
+        set => _numericMonitorIndex.Maximum = value;
+    }
 
-        public int NumericMonitorIndexValue
-        {
-            get => (int)_numericMonitorIndex.Value;
-            set => _numericMonitorIndex.Value = value;
-        }
+    public int NumericMonitorIndexValue
+    {
+        get => (int)_numericMonitorIndex.Value;
+        set => _numericMonitorIndex.Value = value;
+    }
 
-        public int NumericWindowHeightValue
-        {
-            get => (int)_numericWindowHeight.Value;
-            set => _numericWindowHeight.Value = value;
-        }
+    public int NumericWindowHeightValue
+    {
+        get => (int)_numericWindowHeight.Value;
+        set => _numericWindowHeight.Value = value;
+    }
 
-        public int NumericWindowWidthValue
-        {
-            get => (int)_numericWindowWidth.Value;
-            set => _numericWindowWidth.Value = value;
-        }
+    public int NumericWindowWidthValue
+    {
+        get => (int)_numericWindowWidth.Value;
+        set => _numericWindowWidth.Value = value;
+    }
 
-        public string TextBoxGameDirText
+    public string TextBoxGameDirText
+    {
+        get => _textBoxInstallDir.Text;
+        set
         {
-            get => _textBoxInstallDir.Text;
-            set
+            if (string.IsNullOrWhiteSpace(value))
             {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    _textBoxInstallDir.Select();
-                }
-                else
-                {
-                    _textBoxInstallDir.Text = value;
-                }
+                _textBoxInstallDir.Select();
+            }
+            else
+            {
+                _textBoxInstallDir.Text = value;
             }
         }
+    }
 
-        private void ButtonClose_Click(object sender, EventArgs args) =>
-            this.Close();
-        
-        private void ButtonUseScreenResolution_Click(object sender, EventArgs args)
+    private void ButtonClose_Click(object sender, EventArgs args) =>
+        this.Close();
+
+    private void ButtonUseScreenResolution_Click(object sender, EventArgs args)
+    {
+        Rectangle bounds = Screen.FromControl(this).Bounds;
+
+        _numericWindowWidth.Value  = bounds.Width;
+        _numericWindowHeight.Value = bounds.Height;
+    }
+
+    private void ButtonInstallDir_Click(object sender, EventArgs args)
+    {
+        if (_folderBrowser.ShowDialog() == DialogResult.OK)
         {
-            Rectangle bounds = Screen.FromControl(this).Bounds;
+            _textBoxInstallDir.Text = _folderBrowser.SelectedPath;
+        }
+    }
 
-            _numericWindowWidth.Value  = bounds.Width;
-            _numericWindowHeight.Value = bounds.Height;
+    private void TextBoxInstallDir_Validated(object sender, EventArgs args) =>
+        _errorProvider.SetError(_textBoxInstallDir, string.Empty);
+
+    private void TextBoxInstallDir_Validating(object sender, CancelEventArgs args) =>
+        ValidatePath(args);
+
+    private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs args) =>
+        ValidatePath(args);
+
+    private void ValidatePath(CancelEventArgs args)
+    {
+        if (Utils.IsFolderPathValid(_textBoxInstallDir.Text))
+        {
+            return;
         }
 
-        private void ButtonInstallDir_Click(object sender, EventArgs args)
-        {
-            if (_folderBrowser.ShowDialog() == DialogResult.OK)
-            {
-                _textBoxInstallDir.Text = _folderBrowser.SelectedPath;
-            }
-        }
-
-        private void TextBoxInstallDir_Validated(object sender, EventArgs args) =>
-            _errorProvider.SetError(_textBoxInstallDir, string.Empty);
-
-        private void TextBoxInstallDir_Validating(object sender, CancelEventArgs args) =>
-            ValidatePath(args);
-
-        private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs args) =>
-            ValidatePath(args);
-
-        private void ValidatePath(CancelEventArgs args)
-        {
-            if (Utils.IsFolderPathValid(_textBoxInstallDir.Text))
-            {
-                return;
-            }
-
-            args.Cancel = true;
-            _errorProvider.SetError(_textBoxInstallDir, LocalizedStrings.PathInvalidChars);
-        }
+        args.Cancel = true;
+        _errorProvider.SetError(_textBoxInstallDir, LocalizedStrings.PathInvalidChars);
     }
 }

@@ -9,50 +9,49 @@ using System.Windows.Forms;
 using DarkUI.Forms;
 using GenshinLauncher.Ui.Common;
 
-namespace GenshinLauncher.Ui.WinForms
+namespace GenshinLauncher.Ui.WinForms;
+
+public class UserInterface : IUserInterface
 {
-    public class UserInterface : IUserInterface
+    private readonly MainWindow _mainWindow;
+
+    public UserInterface()
     {
-        public IMainWindow MainWindow => _mainWindow;
+        Application.SetHighDpiMode(HighDpiMode.SystemAware);
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
 
-        private readonly MainWindow _mainWindow;
-
-        public UserInterface()
-        {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            _mainWindow = new MainWindow();
-        }
-
-        public ISettingsWindow NewSettingsWindow() =>
-            new SettingsWindow();
-
-        public void RunMainWindow() =>
-            Application.Run(_mainWindow);
-
-        public void RunSettingsWindow(ISettingsWindow settingsWindow) =>
-            ((Form)settingsWindow).ShowDialog(_mainWindow);
-
-        public void ShowErrorDialog(string title, string message)
-        {
-            using DarkMessageBox darkMessageBox = new DarkMessageBox(message, title, DarkMessageBoxIcon.Error, DarkDialogButton.Ok);
-            darkMessageBox.ShowDialog(_mainWindow);
-        }
-
-        public void ShowThreadExceptionDialog(Exception exception)
-        {
-            using ThreadExceptionDialog threadExceptionDialog = new ThreadExceptionDialog(exception);
-
-            if (threadExceptionDialog.ShowDialog() == DialogResult.Abort)
-            {
-                Application.Exit();
-                Environment.Exit(0);
-            }
-        }
-
-        public void Exit() =>
-            Application.Exit();
+        _mainWindow = new MainWindow();
     }
+
+    public IMainWindow MainWindow => _mainWindow;
+
+    public ISettingsWindow NewSettingsWindow() =>
+        new SettingsWindow();
+
+    public void RunMainWindow() =>
+        Application.Run(_mainWindow);
+
+    public void RunSettingsWindow(ISettingsWindow settingsWindow) =>
+        ((Form)settingsWindow).ShowDialog(_mainWindow);
+
+    public void ShowErrorDialog(string title, string message)
+    {
+        using DarkMessageBox darkMessageBox = new(message, title, DarkMessageBoxIcon.Error, DarkDialogButton.Ok);
+        darkMessageBox.ShowDialog(_mainWindow);
+    }
+
+    public void ShowThreadExceptionDialog(Exception exception)
+    {
+        using ThreadExceptionDialog threadExceptionDialog = new(exception);
+
+        if (threadExceptionDialog.ShowDialog() == DialogResult.Abort)
+        {
+            Application.Exit();
+            Environment.Exit(0);
+        }
+    }
+
+    public void Exit() =>
+        Application.Exit();
 }

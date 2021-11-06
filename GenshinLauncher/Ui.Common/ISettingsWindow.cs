@@ -6,23 +6,22 @@
 
 using System;
 
-namespace GenshinLauncher.Ui.Common
+namespace GenshinLauncher.Ui.Common;
+
+public interface ISettingsWindow
 {
-    public interface ISettingsWindow
-    {
-        event EventHandler ButtonSaveClick;
+    event EventHandler ButtonSaveClick;
 
-        bool   CheckBoxCloseToTrayChecked   { get; set; }
-        bool   CheckBoxExitOnLaunchChecked  { get; set; }
-        bool   RadioButtonFullscreenChecked { get; set; }
-        bool   RadioButtonBorderlessChecked { get; set; }
-        bool   RadioButtonWindowedChecked   { get; set; }
-        int    NumericMonitorIndexMaximum   { get; set; }
-        int    NumericMonitorIndexValue     { get; set; }
-        int    NumericWindowHeightValue     { get; set; }
-        int    NumericWindowWidthValue      { get; set; }
-        string TextBoxGameDirText           { get; set; }
+    bool   CheckBoxCloseToTrayChecked   { get; set; }
+    bool   CheckBoxExitOnLaunchChecked  { get; set; }
+    bool   RadioButtonFullscreenChecked { get; set; }
+    bool   RadioButtonBorderlessChecked { get; set; }
+    bool   RadioButtonWindowedChecked   { get; set; }
+    int    NumericMonitorIndexMaximum   { set; }
+    int    NumericMonitorIndexValue     { get; set; }
+    int    NumericWindowHeightValue     { get; set; }
+    int    NumericWindowWidthValue      { get; set; }
+    string TextBoxGameDirText           { get; set; }
 
-        void Close();
-    }
+    void Close();
 }
