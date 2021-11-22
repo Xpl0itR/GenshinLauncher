@@ -5,10 +5,11 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using System.Text.Json.Serialization;
-// ReSharper disable UnusedAutoPropertyAccessor.Global, ClassNeverInstantiated.Global, UnusedMember.Global
-#nullable disable
 
 namespace GenshinLauncher.MiHoYoCdn;
+
+// ReSharper disable UnusedAutoPropertyAccessor.Global, ClassNeverInstantiated.Global, UnusedMember.Global
+#nullable disable
 
 public record DataJsonContent : IDataJson
 {

@@ -6,12 +6,12 @@
 
 using System.Net.Http;
 using System.Text.Json.Serialization;
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace GenshinLauncher.MiHoYoCdn;
 
 public interface IDataJson { }
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 public record ResponseJson<T> where T : IDataJson
 {
     [JsonConstructor]

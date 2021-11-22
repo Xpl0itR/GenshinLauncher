@@ -37,7 +37,7 @@ public record TransferProgress
     }
 }
 
-public class TransferProgressTracker : IProgress<long> //TODO: refactor, make thread safe
+public class TransferProgressTracker
 {
     public event EventHandler<TransferProgress>? ProgressChanged;
 
@@ -57,7 +57,7 @@ public class TransferProgressTracker : IProgress<long> //TODO: refactor, make th
         _samples      = new Queue<(long, long)>();
     }
 
-    public void Report(long bytesTransferred)
+    public void Update(long bytesTransferred)
     {
         long elapsedTicks = _tickProvider.ElapsedTicks;
         if (_samples.Count >= _numSamples)

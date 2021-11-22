@@ -311,7 +311,7 @@ public static class Program
             DataJsonResource resourceJson = await CdnClient.GetResource(gameName, cancellationToken);
             _cachedResourceJson = new CachedValue<DataJsonResource>(resourceJson, 1800, gameName);
         }
-        
+
         return _cachedResourceJson;
     }
 
@@ -322,6 +322,84 @@ public static class Program
 
         Stream contentStream = await response.Content.ReadAsStreamAsync(cancellationToken);
         return new LengthStream(contentStream, response.Content.Headers.ContentLength);
+    }
+
+    private static async Task CopyAndHashAsync(this Stream inStream, Stream outStream, HashAlgorithm hashAlgorithm, CancellationToken cancellationToken)
+    {
+        TransferProgressTracker progressTracker = new(inStream.Length, 1000);
+        progressTracker.ProgressChanged += Progress_Changed;
+
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
+
+        try
+        {
+            int bytesRead;
+            while ((bytesRead = await inStream.ReadAsync(buffer, cancellationToken)) > 0)
+            {
+                hashAlgorithm.TransformBlock(buffer, 0, bytesRead, null, 0);
+                await outStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
+
+                progressTracker.Update(bytesRead);
+            }
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(buffer);
+            hashAlgorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+        }
+    }
+
+    private static async Task ExtractToDirectory(this ZipArchive zipArchive, string destinationPath, CancellationToken cancellationToken)
+    {
+        TransferProgressTracker progressTracker = new(zipArchive.Entries.Aggregate(0L, (current, entry) => current + entry.Length), 1000);
+        progressTracker.ProgressChanged += Progress_Changed;
+
+        destinationPath = Directory.CreateDirectory(destinationPath).FullName;
+
+        foreach (ZipArchiveEntry entry in zipArchive.Entries)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            string entryPath = Path.GetFullPath(Path.Combine(destinationPath, entry.FullName));
+
+            if (!entryPath.StartsWith(destinationPath, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new IOException("Zip entry path is outside the destination directory");
+            }
+
+            if (entry.Name == string.Empty)
+            {
+                if (entry.Length > 0)
+                {
+                    throw new IOException("Zip entry is supposed to be a folder but contains data");
+                }
+
+                Directory.CreateDirectory(entryPath);
+                continue;
+            }
+
+            await using (Stream outStream   = new FileStream(entryPath, FileMode.Create, FileAccess.Write, FileShare.None, DefaultFileStreamBufferSize, true))
+            await using (Stream entryStream = entry.Open())
+            {
+                byte[] buffer = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
+
+                try
+                {
+                    int bytesRead;
+                    while ((bytesRead = await entryStream.ReadAsync(buffer, cancellationToken)) > 0)
+                    {
+                        await outStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
+                        progressTracker.Update(bytesRead);
+                    }
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(buffer);
+                }
+            }
+
+            File.SetLastWriteTime(entryPath, entry.LastWriteTime.DateTime);
+        }
     }
 
     private static async Task<IntPtr> GetMainWindowHandle(this Process process) //TODO: improve this
@@ -383,6 +461,60 @@ public static class Program
         return MiHoYoGameName.Parse(reader.ReadLine());
     }
 
+    private static async Task<bool> InstallPackage(string installDir, Func<CancellationToken, Task<Package>> getPackage)
+    {
+        Ui.MainWindow.Components                = (Ui.MainWindow.Components & ~Components.ProgressBarBlocks) | Components.ProgressBarMarquee | Components.DisableDownloading;
+        Ui.MainWindow.LabelProgressBarTextLeft1 = LocalizedStrings.FetchingManifest;
+
+        bool successful;
+        _ctsMain = new CancellationTokenSource();
+
+        try
+        {
+            Package package  = await getPackage(_ctsMain.Token);
+            string  fileName = Path.GetFileName(package.Path);
+            string  filePath = Path.Combine(installDir, fileName + "_tmp");
+
+            await using (FileStream fileStream = new(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None, DefaultFileStreamBufferSize, true))
+            await using (Stream downloadStream = await HttpClient.GetDownloadStream(package.Path, _ctsMain.Token))
+            using (MD5 md5Alg = MD5.Create())
+            {
+                Ui.MainWindow.Components                = (Ui.MainWindow.Components & ~Components.ProgressBarMarquee) | Components.ProgressBarBlocks;
+                Ui.MainWindow.LabelProgressBarTextLeft1 = LocalizedStrings.VerbDownloading;
+
+                await downloadStream.CopyAndHashAsync(fileStream, md5Alg, _ctsMain.Token);
+
+                if (!Convert.ToHexString(md5Alg.Hash!).Equals(package.Md5, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    throw new Exception("Hash mismatch!");
+                }
+
+                Ui.MainWindow.LabelProgressBarTextLeft1 = LocalizedStrings.VerbExtracting;
+                using ZipArchive zipArchive = new(fileStream, ZipArchiveMode.Read);
+                await zipArchive.ExtractToDirectory(installDir, _ctsMain.Token);
+            }
+
+            File.Delete(filePath);
+            successful = true;
+        }
+        catch (TaskCanceledException)
+        {
+            successful = false;
+        }
+        finally
+        {
+            _ctsMain.Dispose();
+            Ui.MainWindow.ProgressBarValue           = 0;
+            Ui.MainWindow.LabelProgressBarTextLeft1  = string.Empty;
+            Ui.MainWindow.LabelProgressBarTextLeft2  = string.Empty;
+            Ui.MainWindow.LabelProgressBarTextRight  = string.Empty;
+            Ui.MainWindow.LabelProgressBarTextBottom = string.Empty;
+            Ui.MainWindow.Components                 = Ui.MainWindow.Components & ~Components.DisableDownloading & ~Components.ProgressBar;
+        }
+
+        return successful;
+    }
+
     public static bool IsFolderPathValid(string path)
     {
         if (string.IsNullOrWhiteSpace(path))
@@ -441,138 +573,31 @@ public static class Program
 
     private static async void ButtonInstallDirectX_Click(object? sender, EventArgs args)
     {
-        Ui.MainWindow.Components               = (Ui.MainWindow.Components & ~Components.ProgressBarBlocks) | Components.ProgressBarMarquee | Components.DisableDownloading;
-        Ui.MainWindow.LabelProgressBarTextLeft = LocalizedStrings.FetchingManifest;
+        string basePath = AppContext.BaseDirectory;
+        string exePath  = Path.Combine(basePath, "DXSETUP", "DXSETUP.exe");
+        bool   exists   = File.Exists(exePath);
 
-        // Honkai's manifest doesn't include DirectX
-        MiHoYoGameName gameName = _gameName == MiHoYoGameName.BengHuai || _gameName == MiHoYoGameName.YuanShen
-            ? MiHoYoGameName.YuanShen
-            : MiHoYoGameName.Genshin;
-
-        _ctsMain = new CancellationTokenSource();
-
-        try
+        if (!exists)
         {
-            DataJsonResource resource   = await GetCachedResourceJson(gameName, _ctsMain.Token);
-            Package          directXPkg = resource.Plugin.Plugins.First(package => package.Name == "DXSETUP.zip");
-
-            Ui.MainWindow.Components = (Ui.MainWindow.Components & ~Components.ProgressBarMarquee) | Components.ProgressBarBlocks;
-
-            string fileName = Path.GetFileName(directXPkg.Path);
-            string filePath = Path.Combine(AppContext.BaseDirectory, fileName + "_tmp");
-
-            // TODO: make resumable
-            await using (FileStream fileStream = new(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None, DefaultFileStreamBufferSize, true))
-            await using (Stream downloadStream = await HttpClient.GetDownloadStream(directXPkg.Path, _ctsMain.Token))
-            using (MD5 md5Alg = MD5.Create())
+            exists = await InstallPackage(basePath, async cancellationToken =>
             {
-                byte[] buffer1 = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
-
-                try
-                {
-                    TransferProgressTracker transferProgressTracker = new(downloadStream.Length, 1000);
-                    transferProgressTracker.ProgressChanged += Progress_Changed;
-
-                    int bytesRead;
-
-                    while ((bytesRead = await downloadStream.ReadAsync(buffer1, _ctsMain.Token)) > 0)
-                    {
-                        md5Alg.TransformBlock(buffer1, 0, bytesRead, null, 0);
-                        await fileStream.WriteAsync(buffer1, 0, bytesRead, _ctsMain.Token);
-
-                        transferProgressTracker.Report(bytesRead);
-                    }
-                }
-                finally
-                {
-                    ArrayPool<byte>.Shared.Return(buffer1);
-                    md5Alg.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
-                }
-
-                if (!Convert.ToHexString(md5Alg.Hash!).Equals(directXPkg.Md5, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    throw new Exception("Hash mismatch!");
-                }
-
-                using ZipArchive zipArchive = new(fileStream, ZipArchiveMode.Read);
-
-                double decompressedLength = 0;
-                long   uncompressedLength = zipArchive.Entries.Aggregate(0L, (current, entry) => current + entry.Length);
-                string destinationPath    = AppContext.BaseDirectory; //Directory.CreateDirectory(destinationPath).FullName;
-
-                foreach (ZipArchiveEntry entry in zipArchive.Entries)
-                {
-                    _ctsMain.Token.ThrowIfCancellationRequested();
-
-                    string entryPath = Path.GetFullPath(Path.Combine(destinationPath, entry.FullName));
-
-                    if (!entryPath.StartsWith(destinationPath, StringComparison.OrdinalIgnoreCase))
-                    {
-                        throw new IOException("Zip entry path is outside the destination directory");
-                    }
-
-                    if (entry.Name == string.Empty)
-                    {
-                        if (entry.Length > 0)
-                        {
-                            throw new IOException("Zip entry is supposed to be a folder but contains data");
-                        }
-
-                        Directory.CreateDirectory(entryPath);
-                    }
-                    else
-                    {
-                        await using (Stream outStream = new FileStream(entryPath, FileMode.Create, FileAccess.Write, FileShare.None, DefaultFileStreamBufferSize, true))
-                        await using (Stream entryStream = entry.Open())
-                        {
-                            byte[] buffer2 = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
-
-                            try
-                            {
-                                int bytesRead;
-
-                                while ((bytesRead = await entryStream.ReadAsync(buffer2, _ctsMain.Token)) > 0)
-                                {
-                                    await outStream.WriteAsync(buffer2, 0, bytesRead, _ctsMain.Token);
-
-                                    decompressedLength += bytesRead;
-                                    double decimalPercentage = decompressedLength / uncompressedLength;
-
-                                    Ui.MainWindow.ProgressBarValue         = (int)(decimalPercentage * int.MaxValue);
-                                    Ui.MainWindow.LabelProgressBarTextLeft = string.Format(LocalizedStrings.Extracting, decimalPercentage * 100, $"{decompressedLength}B", $"{uncompressedLength}B");
-                                }
-                            }
-                            finally
-                            {
-                                ArrayPool<byte>.Shared.Return(buffer2);
-                            }
-                        }
-
-                        File.SetLastWriteTime(entryPath, entry.LastWriteTime.DateTime);
-                    }
-                }
-            }
-
-            File.Delete(filePath);
-            Process.Start(Path.Combine(AppContext.BaseDirectory, "DXSETUP", "DXSETUP.exe"));
+                // Honkai's manifest doesn't include DirectX
+                DataJsonResource resource = await GetCachedResourceJson(MiHoYoGameName.Genshin, cancellationToken);
+                return resource.Plugin.Plugins.First(package => package.Name == "DXSETUP.zip");
+            });
         }
-        catch (TaskCanceledException) { }
-        finally
+
+        if (exists)
         {
-            _ctsMain.Dispose();
-            Ui.MainWindow.ProgressBarValue           = 0;
-            Ui.MainWindow.LabelProgressBarTextLeft   = string.Empty;
-            Ui.MainWindow.LabelProgressBarTextRight  = string.Empty;
-            Ui.MainWindow.LabelProgressBarTextBottom = string.Empty;
-            Ui.MainWindow.Components                 = Ui.MainWindow.Components & ~Components.DisableDownloading & ~Components.ProgressBar;
+            Process.Start(exePath);
         }
     }
 
-    private static void Progress_Changed(object? sender, TransferProgress transferProgress)
+    private static void Progress_Changed(object? _, TransferProgress transferProgress)
     {
         Ui.MainWindow.ProgressBarValue           = (int)(transferProgress.FractionCompleted * int.MaxValue);
-        Ui.MainWindow.LabelProgressBarTextLeft   = string.Format(LocalizedStrings.Downloading,   transferProgress.FractionCompleted * 100, transferProgress.TotalBytesTransferredString, transferProgress.TotalBytesString);
-        Ui.MainWindow.LabelProgressBarTextRight  = string.Format(LocalizedStrings.TimeRemaining, transferProgress.EstimatedTimeRemaining);
-        Ui.MainWindow.LabelProgressBarTextBottom = string.Format(LocalizedStrings.Speed,         transferProgress.AverageBytesPerSecondString);
+        Ui.MainWindow.LabelProgressBarTextLeft2  = string.Format(LocalizedStrings.ProgressTemplate, transferProgress.FractionCompleted * 100, transferProgress.TotalBytesTransferredString, transferProgress.TotalBytesString);
+        Ui.MainWindow.LabelProgressBarTextRight  = string.Format(LocalizedStrings.TimeRemaining,    transferProgress.EstimatedTimeRemaining);
+        Ui.MainWindow.LabelProgressBarTextBottom = string.Format(LocalizedStrings.Speed,            transferProgress.AverageBytesPerSecondString);
     }
 }

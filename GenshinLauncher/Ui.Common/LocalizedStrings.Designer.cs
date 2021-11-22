@@ -79,24 +79,6 @@ namespace GenshinLauncher.Ui.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading {0:0}% ({1}/{2}).
-        /// </summary>
-        internal static string Downloading {
-            get {
-                return ResourceManager.GetString("Downloading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Extracting {0:0}% ({1}/{2}).
-        /// </summary>
-        internal static string Extracting {
-            get {
-                return ResourceManager.GetString("Extracting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Fetching manifest....
         /// </summary>
         internal static string FetchingManifest {
@@ -120,6 +102,15 @@ namespace GenshinLauncher.Ui.Common {
         internal static string PathInvalidChars {
             get {
                 return ResourceManager.GetString("PathInvalidChars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:0}% ({1}/{2}).
+        /// </summary>
+        internal static string ProgressTemplate {
+            get {
+                return ResourceManager.GetString("ProgressTemplate", resourceCulture);
             }
         }
         
@@ -156,6 +147,24 @@ namespace GenshinLauncher.Ui.Common {
         internal static string Update {
             get {
                 return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading.
+        /// </summary>
+        internal static string VerbDownloading {
+            get {
+                return ResourceManager.GetString("VerbDownloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting.
+        /// </summary>
+        internal static string VerbExtracting {
+            get {
+                return ResourceManager.GetString("VerbExtracting", resourceCulture);
             }
         }
     }

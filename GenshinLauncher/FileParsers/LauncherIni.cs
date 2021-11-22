@@ -7,8 +7,8 @@
 using IniParser.Model;
 
 namespace GenshinLauncher.FileParsers;
-// ReSharper disable UnusedMember.Global, UnusedMember.Local
 
+// ReSharper disable UnusedMember.Global, UnusedMember.Local
 public class LauncherIni : Ini
 {
     private const string SectionNameLauncher      = "launcher";

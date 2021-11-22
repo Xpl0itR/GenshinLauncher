@@ -62,9 +62,14 @@ public partial class MainWindow : DarkForm, IMainWindow
         set => _progressBar.Value = value;
     }
 
-    public string LabelProgressBarTextLeft
+    public string LabelProgressBarTextLeft1
     {
-        set => _labelProgressBarTextLeft.Text = value;
+        set => _labelProgressBarTextLeft1.Text = value;
+    }
+
+    public string LabelProgressBarTextLeft2
+    {
+        set => _labelProgressBarTextLeft2.Text = value;
     }
 
     public string LabelProgressBarTextRight
@@ -150,14 +155,16 @@ public partial class MainWindow : DarkForm, IMainWindow
             {
                 _progressBar.Hide();
                 _buttonStop.Hide();
-                _labelProgressBarTextLeft.Hide();
+                _labelProgressBarTextLeft1.Hide();
+                _labelProgressBarTextLeft2.Hide();
                 _labelProgressBarTextBottom.Hide();
             }
             else
             {
                 _progressBar.Show();
                 _buttonStop.Show();
-                _labelProgressBarTextLeft.Show();
+                _labelProgressBarTextLeft1.Show();
+                _labelProgressBarTextLeft2.Show();
                 _labelProgressBarTextBottom.Show();
 
                 _progressBar.Style = _components.HasFlag(Components.ProgressBarMarquee)

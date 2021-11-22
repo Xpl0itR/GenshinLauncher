@@ -44,13 +44,14 @@ namespace GenshinLauncher.Ui.WinForms
             this._radioButtonChinaVersion = new DarkUI.Controls.DarkRadioButton();
             this._progressBar = new System.Windows.Forms.ProgressBar();
             this._labelProgressBarTextBottom = new DarkUI.Controls.DarkLabel();
-            this._labelProgressBarTextLeft = new DarkUI.Controls.DarkLabel();
+            this._labelProgressBarTextLeft1 = new DarkUI.Controls.DarkLabel();
             this._buttonStop = new DarkUI.Controls.DarkButton();
             this._buttonInstallDirectX = new DarkUI.Controls.DarkButton();
             this._buttonSettings = new DarkUI.Controls.DarkButton();
             this._labelCheckingForUpdates = new DarkUI.Controls.DarkLabel();
             this._buttonDownloadPreload = new DarkUI.Controls.DarkButton();
             this._labelProgressBarTextRight = new DarkUI.Controls.DarkLabel();
+            this._labelProgressBarTextLeft2 = new DarkUI.Controls.DarkLabel();
             this._trayMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -125,11 +126,11 @@ namespace GenshinLauncher.Ui.WinForms
             this._labelProgressBarTextBottom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this._labelProgressBarTextBottom.Name = "_labelProgressBarTextBottom";
             // 
-            // _labelProgressBarTextLeft
+            // _labelProgressBarTextLeft1
             // 
-            resources.ApplyResources(this._labelProgressBarTextLeft, "_labelProgressBarTextLeft");
-            this._labelProgressBarTextLeft.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this._labelProgressBarTextLeft.Name = "_labelProgressBarTextLeft";
+            resources.ApplyResources(this._labelProgressBarTextLeft1, "_labelProgressBarTextLeft1");
+            this._labelProgressBarTextLeft1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this._labelProgressBarTextLeft1.Name = "_labelProgressBarTextLeft1";
             // 
             // _buttonStop
             // 
@@ -164,18 +165,25 @@ namespace GenshinLauncher.Ui.WinForms
             this._labelProgressBarTextRight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this._labelProgressBarTextRight.Name = "_labelProgressBarTextRight";
             // 
+            // _labelProgressBarTextLeft2
+            // 
+            resources.ApplyResources(this._labelProgressBarTextLeft2, "_labelProgressBarTextLeft2");
+            this._labelProgressBarTextLeft2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this._labelProgressBarTextLeft2.Name = "_labelProgressBarTextLeft2";
+            // 
             // MainWindow
             // 
             this.AcceptButton = this._buttonAccept;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.Controls.Add(this._labelProgressBarTextLeft2);
             this.Controls.Add(this._labelProgressBarTextRight);
             this.Controls.Add(this._buttonDownloadPreload);
             this.Controls.Add(this._labelCheckingForUpdates);
             this.Controls.Add(this._buttonSettings);
             this.Controls.Add(this._buttonInstallDirectX);
             this.Controls.Add(this._buttonStop);
-            this.Controls.Add(this._labelProgressBarTextLeft);
+            this.Controls.Add(this._labelProgressBarTextLeft1);
             this.Controls.Add(this._labelProgressBarTextBottom);
             this.Controls.Add(this._progressBar);
             this.Controls.Add(this._radioButtonChinaVersion);
@@ -204,12 +212,13 @@ namespace GenshinLauncher.Ui.WinForms
         private DarkRadioButton _radioButtonGlobalVersion;
         private ProgressBar _progressBar;
         private DarkLabel _labelProgressBarTextBottom;
-        private DarkLabel _labelProgressBarTextLeft;
+        private DarkLabel _labelProgressBarTextLeft1;
         private DarkButton _buttonStop;
         private DarkButton _buttonInstallDirectX;
         private DarkButton _buttonSettings;
         private DarkLabel _labelCheckingForUpdates;
         private DarkButton _buttonDownloadPreload;
         private DarkLabel _labelProgressBarTextRight;
+        private DarkLabel _labelProgressBarTextLeft2;
     }
 }

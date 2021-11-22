@@ -5,10 +5,10 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using System;
-// ReSharper disable UnusedMember.Global
 
 namespace GenshinLauncher.Ui.Common;
 
+// ReSharper disable UnusedMember.Global
 [Flags]
 public enum Components
 {

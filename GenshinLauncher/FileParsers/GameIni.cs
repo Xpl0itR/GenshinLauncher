@@ -5,10 +5,10 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using IniParser.Model;
-// ReSharper disable UnusedMember.Global, UnusedMember.Local
 
 namespace GenshinLauncher.FileParsers;
 
+// ReSharper disable UnusedMember.Global, UnusedMember.Local
 public class GameIni : Ini
 {
     private const string SectionNameGeneral = "General";

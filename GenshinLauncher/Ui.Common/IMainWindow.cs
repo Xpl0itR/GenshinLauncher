@@ -21,7 +21,8 @@ public interface IMainWindow
     Image      BackgroundImage                 { set; }
     bool       RadioButtonGlobalVersionChecked { get; set; }
     int        ProgressBarValue                { set; }
-    string     LabelProgressBarTextLeft        { set; }
+    string     LabelProgressBarTextLeft1       { set; }
+    string     LabelProgressBarTextLeft2       { set; }
     string     LabelProgressBarTextRight       { set; }
     string     LabelProgressBarTextBottom      { set; }
 }

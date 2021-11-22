@@ -5,10 +5,10 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 using System.Text.Json.Serialization;
-// ReSharper disable UnusedAutoPropertyAccessor.Global, UnusedMember.Global
 
 namespace GenshinLauncher.MiHoYoRegistry;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global, UnusedMember.Global
 public readonly record struct JsonSettingScreen
 {
     [JsonPropertyName("width")] public int Width { get; init; }
