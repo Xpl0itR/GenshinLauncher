@@ -26,6 +26,8 @@ namespace GenshinLauncher;
 
 public static class Program
 {
+    private const int DefaultFileStreamBufferSize = 0x1000;
+
     private static readonly string          BgDirectory;
     private static readonly string          LauncherIniPath;
     private static readonly LauncherIni     LauncherIni;
@@ -33,15 +35,15 @@ public static class Program
     private static readonly HttpClient      HttpClient;
     private static readonly MiHoYoCdnClient CdnClient;
 
-    private static CancellationTokenSource? _ctsLoadGameContent;
-    private static CancellationTokenSource? _ctsUpdateCheck;
-    private static CancellationTokenSource? _ctsMain;
-
-    private static bool            _borderlessMode;
-    private static bool            _exitOnLaunch;
-    private static string?         _gameRoot;
-    private static Version?        _gameVersion;
-    private static MiHoYoGameName? _gameName;
+    private static bool                           _borderlessMode;
+    private static bool                           _exitOnLaunch;
+    private static string?                        _gameRoot;
+    private static Version?                       _gameVersion;
+    private static MiHoYoGameName?                _gameName;
+    private static CancellationTokenSource?       _ctsLoadGameContent;
+    private static CancellationTokenSource?       _ctsUpdateCheck;
+    private static CancellationTokenSource?       _ctsMain;
+    private static CachedValue<DataJsonResource>? _cachedResourceJson;
 
     static Program()
     {
@@ -142,7 +144,7 @@ public static class Program
         else
         {
             Directory.CreateDirectory(BgDirectory);
-            await using Stream bgStream = new FileStream(backgroundPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, Utils.DefaultFileStreamBufferSize, true);
+            await using Stream bgStream = new FileStream(backgroundPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, DefaultFileStreamBufferSize, true);
             await using Stream dlStream = await HttpClient.GetDownloadStream(dataJsonContent.Adv.Background, _ctsLoadGameContent.Token);
             await dlStream.CopyToAsync(bgStream, _ctsLoadGameContent.Token);
 
@@ -168,7 +170,7 @@ public static class Program
 
         try
         {
-            DataJsonResource resource = await CdnClient.GetResource(_gameName!.Value, _ctsUpdateCheck.Token);
+            DataJsonResource resource = await GetCachedResourceJson(_gameName!.Value, _ctsUpdateCheck.Token);
 
             if (Version.Parse(resource.Game.Latest.Version) > _gameVersion)
             {
@@ -267,7 +269,7 @@ public static class Program
             LauncherIni.GameInstallPath = _gameRoot;
             LauncherIni.BorderlessMode  = _borderlessMode ? "true" : "false";
             // ReSharper disable AssignmentInConditionalExpression
-            LauncherIni.ExitType     = (CloseToTray   = settingsWindow.CheckBoxCloseToTrayChecked) ? "1" : "2";
+            LauncherIni.ExitType     = (CloseToTray   = settingsWindow.CheckBoxCloseToTrayChecked)  ? "1" : "2";
             LauncherIni.ExitOnLaunch = (_exitOnLaunch = settingsWindow.CheckBoxExitOnLaunchChecked) ? "true" : "false";
             // ReSharper restore AssignmentInConditionalExpression
             LauncherIni.WriteFile(LauncherIniPath);
@@ -282,7 +284,7 @@ public static class Program
     {
         if (Process.GetProcesses().Any(process => process.ProcessName == Path.GetFileNameWithoutExtension(LauncherIni.GameStartName)))
         {
-            Ui.ShowErrorDialog("GenshinLauncher", string.Format(LocalizedStrings.AnotherInstanceIsRunning, _gameName)); //TODO: store program name in one const
+            Ui.ShowErrorDialog(nameof(GenshinLauncher), string.Format(LocalizedStrings.AnotherInstanceIsRunning, _gameName)); //TODO: store program name in one const
             return;
         }
 
@@ -300,6 +302,17 @@ public static class Program
         {
             Ui.Exit();
         }
+    }
+
+    private static async Task<CachedValue<DataJsonResource>> GetCachedResourceJson(MiHoYoGameName gameName, CancellationToken cancellationToken)
+    {
+        if (_cachedResourceJson == null || _cachedResourceJson.Expired || !(_cachedResourceJson.State?.Equals(gameName) ?? true))
+        {
+            DataJsonResource resourceJson = await CdnClient.GetResource(gameName, cancellationToken);
+            _cachedResourceJson = new CachedValue<DataJsonResource>(resourceJson, 1800, gameName);
+        }
+        
+        return _cachedResourceJson;
     }
 
     private static async Task<Stream> GetDownloadStream(this HttpClient httpClient, string url, CancellationToken cancellationToken = default)
@@ -370,6 +383,24 @@ public static class Program
         return MiHoYoGameName.Parse(reader.ReadLine());
     }
 
+    public static bool IsFolderPathValid(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return false;
+        }
+
+        try
+        {
+            _ = new DirectoryInfo(path).Attributes;
+            return true;
+        }
+        catch (Exception exception) when (exception is ArgumentNullException or IOException)
+        {
+            return false;
+        }
+    }
+
     private static void HandleAsyncExceptions(this Task task) =>
         task.ContinueWith
         (
@@ -422,7 +453,7 @@ public static class Program
 
         try
         {
-            DataJsonResource resource   = await CdnClient.GetResource(gameName, _ctsMain.Token);
+            DataJsonResource resource   = await GetCachedResourceJson(gameName, _ctsMain.Token);
             Package          directXPkg = resource.Plugin.Plugins.First(package => package.Name == "DXSETUP.zip");
 
             Ui.MainWindow.Components = (Ui.MainWindow.Components & ~Components.ProgressBarMarquee) | Components.ProgressBarBlocks;
@@ -431,11 +462,11 @@ public static class Program
             string filePath = Path.Combine(AppContext.BaseDirectory, fileName + "_tmp");
 
             // TODO: make resumable
-            await using (FileStream fileStream = new(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None, Utils.DefaultFileStreamBufferSize, true))
+            await using (FileStream fileStream = new(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None, DefaultFileStreamBufferSize, true))
             await using (Stream downloadStream = await HttpClient.GetDownloadStream(directXPkg.Path, _ctsMain.Token))
             using (MD5 md5Alg = MD5.Create())
             {
-                byte[] buffer1 = ArrayPool<byte>.Shared.Rent(Utils.DefaultFileStreamBufferSize);
+                byte[] buffer1 = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
 
                 try
                 {
@@ -491,10 +522,10 @@ public static class Program
                     }
                     else
                     {
-                        await using (Stream outStream = new FileStream(entryPath, FileMode.Create, FileAccess.Write, FileShare.None, Utils.DefaultFileStreamBufferSize, true))
+                        await using (Stream outStream = new FileStream(entryPath, FileMode.Create, FileAccess.Write, FileShare.None, DefaultFileStreamBufferSize, true))
                         await using (Stream entryStream = entry.Open())
                         {
-                            byte[] buffer2 = ArrayPool<byte>.Shared.Rent(Utils.DefaultFileStreamBufferSize);
+                            byte[] buffer2 = ArrayPool<byte>.Shared.Rent(DefaultFileStreamBufferSize);
 
                             try
                             {

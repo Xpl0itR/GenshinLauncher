@@ -23,7 +23,7 @@ public partial class SettingsWindow : DarkForm, ISettingsWindow
 
     public event EventHandler ButtonSaveClick
     {
-        add => _buttonSave.Click += value;
+        add    => _buttonSave.Click += value;
         remove => _buttonSave.Click -= value;
     }
 
@@ -126,7 +126,7 @@ public partial class SettingsWindow : DarkForm, ISettingsWindow
 
     private void ValidatePath(CancelEventArgs args)
     {
-        if (Utils.IsFolderPathValid(_textBoxInstallDir.Text))
+        if (Program.IsFolderPathValid(_textBoxInstallDir.Text))
         {
             return;
         }
