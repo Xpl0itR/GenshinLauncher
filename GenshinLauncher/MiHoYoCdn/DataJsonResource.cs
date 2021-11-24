@@ -8,80 +8,51 @@ using System.Text.Json.Serialization;
 
 namespace GenshinLauncher.MiHoYoCdn;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Global, ClassNeverInstantiated.Global, UnusedMember.Global
-#nullable disable
-
-public record DataJsonResource : IDataJson
-{
-    [JsonPropertyName("game")] public Game Game { get; init; }
-
-    [JsonPropertyName("plugin")] public Plugin Plugin { get; init; }
-
-    [JsonPropertyName("web_url")] public string WebUrl { get; init; }
-
-    [JsonPropertyName("force_update")] public bool? ForceUpdate { get; init; }
-
-    [JsonPropertyName("pre_download_game")]
-    public PreDownloadGame PreDownloadGame { get; init; }
-
-    [JsonPropertyName("deprecated_packages")]
-    public Package[] DeprecatedPackages { get; init; }
-
-    [JsonPropertyName("sdk")] public object Sdk { get; init; }
-}
+// ReSharper disable ClassNeverInstantiated.Global, NotAccessedPositionalProperty.Global, SuggestBaseTypeForParameterInConstructor
+public record DataJsonResource
+(
+    [property: JsonPropertyName("game")]                Game            Game,
+    [property: JsonPropertyName("plugin")]              Plugin          Plugin,
+    [property: JsonPropertyName("web_url")]             string          WebUrl,
+    [property: JsonPropertyName("force_update")]        bool?           ForceUpdate,
+    [property: JsonPropertyName("pre_download_game")]   PreDownloadGame PreDownloadGame,
+    [property: JsonPropertyName("deprecated_packages")] Package[]       DeprecatedPackages,
+    [property: JsonPropertyName("sdk")]                 object          Sdk
+);
 
 public record Game
-{
-    [JsonPropertyName("latest")] public Package Latest { get; init; }
-
-    [JsonPropertyName("history")] public Package[] History { get; init; }
-
-    [JsonPropertyName("diffs")] public Package[] Diffs { get; init; }
-
-    [JsonPropertyName("version")] public string Version { get; init; }
-
-    [JsonPropertyName("stat")] public string Stat { get; init; }
-
-    [JsonPropertyName("msg")] public string Msg { get; init; }
-}
+(
+    [property: JsonPropertyName("latest")]  Package   Latest,
+    [property: JsonPropertyName("history")] Package[] History,
+    [property: JsonPropertyName("diffs")]   Package[] Diffs,
+    [property: JsonPropertyName("version")] string    Version,
+    [property: JsonPropertyName("stat")]    string    Stat,
+    [property: JsonPropertyName("msg")]     string    Msg
+);
 
 public record Package
-{
-    [JsonPropertyName("name")] public string Name { get; init; }
-
-    [JsonPropertyName("version")] public string Version { get; init; }
-
-    [JsonPropertyName("path")] public string Path { get; init; }
-
-    [JsonPropertyName("size")] public string Size { get; init; }
-
-    [JsonPropertyName("md5")] public string Md5 { get; init; }
-
-    [JsonPropertyName("entry")] public string Entry { get; init; }
-
-    [JsonPropertyName("is_recommended_update")]
-    public bool? IsRecommendedUpdate { get; init; }
-
-    [JsonPropertyName("voice_packs")] public Package[] VoicePacks { get; init; }
-
-    [JsonPropertyName("decompressed_path")]
-    public string DecompressedPath { get; init; }
-
-    [JsonPropertyName("language")] public string Language { get; init; }
-
-    [JsonPropertyName("segments")] public object[] Segments { get; init; }
-}
+(
+    [property: JsonPropertyName("name")]                  string    Name,
+    [property: JsonPropertyName("version")]               string    Version,
+    [property: JsonPropertyName("path")]                  string    Path,
+    [property: JsonPropertyName("size")]                  string    Size,
+    [property: JsonPropertyName("md5")]                   string    Md5,
+    [property: JsonPropertyName("entry")]                 string    Entry,
+    [property: JsonPropertyName("is_recommended_update")] bool?     IsRecommendedUpdate,
+    [property: JsonPropertyName("voice_packs")]           Package[] VoicePacks,
+    [property: JsonPropertyName("decompressed_path")]     string    DecompressedPath,
+    [property: JsonPropertyName("language")]              string    Language,
+    [property: JsonPropertyName("segments")]              object[]  Segments
+);
 
 public record Plugin
-{
-    [JsonPropertyName("plugins")] public Package[] Plugins { get; init; }
-
-    [JsonPropertyName("version")] public string Version { get; init; }
-}
+(
+    [property: JsonPropertyName("plugins")] Package[] Plugins,
+    [property: JsonPropertyName("version")] string    Version
+);
 
 public record PreDownloadGame
-{
-    [JsonPropertyName("latest")] public Package Latest { get; init; }
-
-    [JsonPropertyName("diffs")] public Package[] Diffs { get; init; }
-}
+(
+    [property: JsonPropertyName("latest")] Package   Latest,
+    [property: JsonPropertyName("diffs")]  Package[] Diffs
+);

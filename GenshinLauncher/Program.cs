@@ -99,6 +99,8 @@ public static class Program
         if (string.IsNullOrWhiteSpace(gameDataPath) || !File.Exists(gameIniPath) || (gameIni = new GameIni(gameIniPath)).GameVersion == null)
         {
             Ui.MainWindow.Components = (Ui.MainWindow.Components & ~Components.ButtonLaunch & ~Components.ButtonUpdate & ~Components.ButtonPreload) | Components.ButtonDownload;
+            _gameVersion             = null;
+            _gameName                = null;
             return;
         }
 

@@ -18,7 +18,7 @@ public abstract class Ini
     protected Ini(string? path = null)
     {
         Parser = new FileIniDataParser();
-        Data = path == null
+        Data   = path == null
             ? new IniData()
             : Parser.ReadFile(path, Encoding.UTF8);
     }

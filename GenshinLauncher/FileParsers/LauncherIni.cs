@@ -8,13 +8,13 @@ using IniParser.Model;
 
 namespace GenshinLauncher.FileParsers;
 
-// ReSharper disable UnusedMember.Global, UnusedMember.Local
+// ReSharper disable UnusedMember.Global
 public class LauncherIni : Ini
 {
     private const string SectionNameLauncher      = "launcher";
-    private const string KeyNameCps               = "cps";
     private const string KeyNameChannel           = "channel";
     private const string KeyNameSubChannel        = "sub_channel";
+    private const string KeyNameCps               = "cps";
     private const string KeyNameGameInstallPath   = "game_install_path";
     private const string KeyNameGameDynamicBgName = "game_dynamic_bg_name";
     private const string KeyNameGameDynamicBgMd5  = "game_dynamic_bg_md5";
@@ -34,6 +34,12 @@ public class LauncherIni : Ini
     {
         get => SectionLauncher[KeyNameChannel];
         set => SectionLauncher[KeyNameChannel] = value;
+    }
+
+    public string? Cps
+    {
+        get => SectionLauncher[KeyNameCps];
+        set => SectionLauncher[KeyNameCps] = value;
     }
 
     public string? SubChannel
@@ -66,10 +72,22 @@ public class LauncherIni : Ini
         set => SectionLauncher[KeyNameGameStartName] = value;
     }
 
+    public string? IsFirstExit
+    {
+        get => SectionLauncher[KeyNameIsFirstExit];
+        set => SectionLauncher[KeyNameIsFirstExit] = value;
+    }
+
     public string? ExitType
     {
         get => SectionLauncher[KeyNameExitType];
         set => SectionLauncher[KeyNameExitType] = value;
+    }
+
+    public string? SpeedLimitEnabled
+    {
+        get => SectionLauncher[KeyNameSpeedLimitEnabled];
+        set => SectionLauncher[KeyNameSpeedLimitEnabled] = value;
     }
 
     public string? BorderlessMode

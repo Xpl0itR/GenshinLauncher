@@ -8,105 +8,73 @@ using System.Text.Json.Serialization;
 
 namespace GenshinLauncher.MiHoYoCdn;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Global, ClassNeverInstantiated.Global, UnusedMember.Global
-#nullable disable
-
-public record DataJsonContent : IDataJson
-{
-    [JsonPropertyName("adv")] public Adv Adv { get; init; }
-
-    [JsonPropertyName("banner")] public Banner[] Banner { get; init; }
-
-    [JsonPropertyName("icon")] public Icon[] Icon { get; init; }
-
-    [JsonPropertyName("post")] public Post[] Post { get; init; }
-
-    [JsonPropertyName("qq")] public object[] Qq { get; init; }
-
-    [JsonPropertyName("more")] public More More { get; init; }
-
-    [JsonPropertyName("links")] public Links Links { get; init; }
-}
+// ReSharper disable ClassNeverInstantiated.Global, NotAccessedPositionalProperty.Global, SuggestBaseTypeForParameterInConstructor
+public record DataJsonContent
+(
+    [property: JsonPropertyName("adv")]    Adv      Adv,
+    [property: JsonPropertyName("banner")] Banner[] Banner,
+    [property: JsonPropertyName("icon")]   Icon[]   Icon,
+    [property: JsonPropertyName("post")]   Post[]   Post,
+    [property: JsonPropertyName("qq")]     object[] Qq,
+    [property: JsonPropertyName("more")]   More     More,
+    [property: JsonPropertyName("links")]  Links    Links
+);
 
 public record Adv
-{
-    [JsonPropertyName("background")] public string Background { get; init; }
-
-    [JsonPropertyName("icon")] public string Icon { get; init; }
-
-    [JsonPropertyName("url")] public string Url { get; init; }
-
-    [JsonPropertyName("version")] public string Version { get; init; }
-
-    [JsonPropertyName("bg_checksum")] public string BgChecksum { get; init; }
-}
+(
+    [property: JsonPropertyName("background")]  string Background,
+    [property: JsonPropertyName("icon")]        string Icon,
+    [property: JsonPropertyName("url")]         string Url,
+    [property: JsonPropertyName("version")]     string Version,
+    [property: JsonPropertyName("bg_checksum")] string BgChecksum
+);
 
 public record Banner
-{
-    [JsonPropertyName("banner_id")] public string BannerId { get; init; }
-
-    [JsonPropertyName("name")] public string Name { get; init; }
-
-    [JsonPropertyName("img")] public string Img { get; init; }
-
-    [JsonPropertyName("url")] public string Url { get; init; }
-
-    [JsonPropertyName("order")] public string Order { get; init; }
-}
+(
+    [property: JsonPropertyName("banner_id")] string BannerId,
+    [property: JsonPropertyName("name")]      string Name,
+    [property: JsonPropertyName("img")]       string Img,
+    [property: JsonPropertyName("url")]       string Url,
+    [property: JsonPropertyName("order")]     string Order
+);
 
 public record Icon
-{
-    [JsonPropertyName("icon_id")] public string IconId { get; init; }
-
-    [JsonPropertyName("img")] public string Img { get; init; }
-
-    [JsonPropertyName("tittle")] public string Tittle { get; init; }
-
-    [JsonPropertyName("url")] public string Url { get; init; }
-
-    [JsonPropertyName("qr_img")] public string QrImg { get; init; }
-
-    [JsonPropertyName("qr_desc")] public string QrDesc { get; init; }
-
-    [JsonPropertyName("img_hover")] public string ImgHover { get; init; }
-
-    [JsonPropertyName("other_links")] public OtherLink[] OtherLinks { get; init; }
-}
+(
+    [property: JsonPropertyName("icon_id")]     string      IconId,
+    [property: JsonPropertyName("img")]         string      Img,
+    [property: JsonPropertyName("tittle")]      string      Title,
+    [property: JsonPropertyName("url")]         string      Url,
+    [property: JsonPropertyName("qr_img")]      string      QrImg,
+    [property: JsonPropertyName("qr_desc")]     string      QrDesc,
+    [property: JsonPropertyName("img_hover")]   string      ImgHover,
+    [property: JsonPropertyName("other_links")] OtherLink[] OtherLinks
+);
 
 public record OtherLink
-{
-    [JsonPropertyName("title")] public string Title { get; init; }
-
-    [JsonPropertyName("url")] public string Url { get; init; }
-}
+(
+    [property: JsonPropertyName("title")] string Title,
+    [property: JsonPropertyName("url")]   string Url
+);
 
 public record Links
-{
-    [JsonPropertyName("faq")] public string Faq { get; init; }
-
-    [JsonPropertyName("version")] public string Version { get; init; }
-}
+(
+    [property: JsonPropertyName("faq")]     string Faq,
+    [property: JsonPropertyName("version")] string Version
+);
 
 public record More
-{
-    [JsonPropertyName("activity_link")] public string ActivityLink { get; init; }
-
-    [JsonPropertyName("announce_link")] public string AnnounceLink { get; init; }
-
-    [JsonPropertyName("info_link")] public string InfoLink { get; init; }
-}
+(
+    [property: JsonPropertyName("activity_link")] string ActivityLink,
+    [property: JsonPropertyName("announce_link")] string AnnounceLink,
+    [property: JsonPropertyName("info_link")]     string InfoLink
+);
 
 public record Post
-{
-    [JsonPropertyName("post_id")] public string PostId { get; init; }
-
-    [JsonPropertyName("type")] public string Type { get; init; }
-
-    [JsonPropertyName("tittle")] public string Tittle { get; init; }
-
-    [JsonPropertyName("url")] public string Url { get; init; }
-
-    [JsonPropertyName("show_time")] public string ShowTime { get; init; }
-
-    [JsonPropertyName("order")] public string Order { get; init; }
-}
+(
+    [property: JsonPropertyName("post_id")]   string PostId,
+    [property: JsonPropertyName("type")]      string Type,
+    [property: JsonPropertyName("tittle")]    string Title,
+    [property: JsonPropertyName("url")]       string Url,
+    [property: JsonPropertyName("show_time")] string ShowTime,
+    [property: JsonPropertyName("order")]     string Order
+);

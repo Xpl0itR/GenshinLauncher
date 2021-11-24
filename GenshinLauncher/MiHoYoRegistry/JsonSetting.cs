@@ -8,48 +8,26 @@ using System.Text.Json.Serialization;
 
 namespace GenshinLauncher.MiHoYoRegistry;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Global, UnusedMember.Global
-public readonly record struct JsonSettingScreen
-{
-    [JsonPropertyName("width")] public int Width { get; init; }
+// ReSharper disable ClassNeverInstantiated.Global, NotAccessedPositionalProperty.Global
+public record JsonSettingScreen
+(   // ReSharper disable once StringLiteralTypo
+    [property: JsonPropertyName("isfullScreen")] bool IsFullscreen,
+    [property: JsonPropertyName("width")]        int  Width,
+    [property: JsonPropertyName("height")]       int  Height
+);
 
-    [JsonPropertyName("height")] public int Height { get; init; }
-
-    // ReSharper disable once StringLiteralTypo
-    [JsonPropertyName("isfullScreen")] public bool IsFullscreen { get; init; }
-}
-
-public readonly record struct JsonSettingGraphics
-{
-    [JsonPropertyName("RecommendGrade")] public string RecommendGrade { get; init; }
-
-    [JsonPropertyName("IsUserDefinedGrade")]
-    public bool IsUserDefinedGrade { get; init; }
-
-    [JsonPropertyName("IsUserDefinedVolatile")]
-    public bool IsUserDefinedVolatile { get; init; }
-
-    [JsonPropertyName("IsEcoMode")] public bool IsEcoMode { get; init; }
-
-    [JsonPropertyName("RecommendResolutionX")]
-    public int RecommendResolutionX { get; init; }
-
-    [JsonPropertyName("RecommendResolutionY")]
-    public int RecommendResolutionY { get; init; }
-
-    [JsonPropertyName("ResolutionQuality")]
-    public string ResolutionQuality { get; init; }
-
-    [JsonPropertyName("TargetFrameRateForInLevel")]
-    public int TargetFrameRateForInLevel { get; init; }
-
-    [JsonPropertyName("TargetFrameRateForOthers")]
-    public int TargetFrameRateForOthers { get; init; }
-
-    [JsonPropertyName("ContrastDelta")] public float ContrastDelta { get; init; }
-
-    [JsonPropertyName("isBrightnessStandardModeOn")]
-    public bool IsBrightnessStandardModeOn { get; init; }
-
-    [JsonPropertyName("VolatileSetting")] public object VolatileSetting { get; init; }
-}
+public record JsonSettingGraphics
+(
+    [property: JsonPropertyName("RecommendGrade")]             string RecommendGrade,
+    [property: JsonPropertyName("IsUserDefinedGrade")]         bool   IsUserDefinedGrade,
+    [property: JsonPropertyName("IsUserDefinedVolatile")]      bool   IsUserDefinedVolatile,
+    [property: JsonPropertyName("IsEcoMode")]                  bool   IsEcoMode,
+    [property: JsonPropertyName("RecommendResolutionX")]       int    RecommendResolutionX,
+    [property: JsonPropertyName("RecommendResolutionY")]       int    RecommendResolutionY,
+    [property: JsonPropertyName("ResolutionQuality")]          string ResolutionQuality,
+    [property: JsonPropertyName("TargetFrameRateForInLevel")]  int    TargetFrameRateForInLevel,
+    [property: JsonPropertyName("TargetFrameRateForOthers")]   int    TargetFrameRateForOthers,
+    [property: JsonPropertyName("ContrastDelta")]              float  ContrastDelta,
+    [property: JsonPropertyName("isBrightnessStandardModeOn")] bool   IsBrightnessStandardModeOn,
+    [property: JsonPropertyName("VolatileSetting")]            object VolatileSetting
+);

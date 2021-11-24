@@ -18,17 +18,15 @@ public class PkgVersion : List<PkgVersionEntry>
         string? entryString;
         while ((entryString = reader.ReadLine()) != null)
         {
-            PkgVersionEntry entry = JsonSerializer.Deserialize<PkgVersionEntry>(entryString);
-            this.Add(entry);
+            PkgVersionEntry? entry = JsonSerializer.Deserialize<PkgVersionEntry>(entryString);
+            this.Add(entry!);
         }
     }
 }
 
-public readonly record struct PkgVersionEntry
-{
-    [JsonPropertyName("remoteName")] public string RemoteName { get; init; }
-
-    [JsonPropertyName("md5")] public string Md5 { get; init; }
-
-    [JsonPropertyName("fileSize")] public int FileSize { get; init; }
-}
+public record PkgVersionEntry
+(
+    [property: JsonPropertyName("remoteName")] string RemoteName,
+    [property: JsonPropertyName("md5")]        string Md5,
+    [property: JsonPropertyName("fileSize")]   int    FileSize
+);

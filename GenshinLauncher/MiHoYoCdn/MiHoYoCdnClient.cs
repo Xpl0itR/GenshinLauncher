@@ -184,7 +184,7 @@ public class MiHoYoCdnClient : IDisposable
         return GetDataJson<DataJsonResource>(url, obj, cancellationToken);
     }
 
-    private async Task<T> GetDataJson<T>(string url, object obj, CancellationToken cancellationToken = default) where T : IDataJson
+    private async Task<T> GetDataJson<T>(string url, object obj, CancellationToken cancellationToken = default)
     {
         JsonContent         content  = JsonContent.Create(obj, options: _jsonSerializerOptions);
         HttpResponseMessage response = await _httpClient.PostAsync(url, content, cancellationToken);

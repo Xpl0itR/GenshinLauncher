@@ -8,6 +8,7 @@ using System;
 
 namespace GenshinLauncher;
 
+// ReSharper disable UnusedMember.Global
 public readonly struct MiHoYoGameName
 {
     private const string NameBengHuai     = "崩坏3";

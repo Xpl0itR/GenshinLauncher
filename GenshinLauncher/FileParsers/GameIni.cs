@@ -8,7 +8,7 @@ using IniParser.Model;
 
 namespace GenshinLauncher.FileParsers;
 
-// ReSharper disable UnusedMember.Global, UnusedMember.Local
+// ReSharper disable UnusedMember.Global
 public class GameIni : Ini
 {
     private const string SectionNameGeneral = "General";
@@ -28,6 +28,12 @@ public class GameIni : Ini
         set => SectionGeneral[KeyNameChannel] = value;
     }
 
+    public string? Cps
+    {
+        get => SectionGeneral[KeyNameCps];
+        set => SectionGeneral[KeyNameCps] = value;
+    }
+
     public string? GameVersion
     {
         get => SectionGeneral[KeyNameGameVersion];
@@ -38,5 +44,11 @@ public class GameIni : Ini
     {
         get => SectionGeneral[KeyNameSubChannel];
         set => SectionGeneral[KeyNameSubChannel] = value;
+    }
+
+    public string? SdkVersion
+    {
+        get => SectionGeneral[KeyNameSdkVersion];
+        set => SectionGeneral[KeyNameSdkVersion] = value;
     }
 }

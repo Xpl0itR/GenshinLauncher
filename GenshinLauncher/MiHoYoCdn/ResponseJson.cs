@@ -9,20 +9,14 @@ using System.Text.Json.Serialization;
 
 namespace GenshinLauncher.MiHoYoCdn;
 
-public interface IDataJson { }
-
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-public record ResponseJson<T> where T : IDataJson
+// ReSharper disable once ClassNeverInstantiated.Global
+public record ResponseJson<T>
+( // ReSharper disable once StringLiteralTypo
+    [property: JsonPropertyName("retcode")] int    StatusCode,
+    [property: JsonPropertyName("message")] string StatusMessage,
+    [property: JsonPropertyName("data")]    T      Data
+)
 {
-    [JsonConstructor]
-    public ResponseJson(int statusCode, string statusMessage, T data) =>
-        (StatusCode, StatusMessage, Data) = (statusCode, statusMessage, data);
-
-    // ReSharper disable once StringLiteralTypo
-    [JsonPropertyName("retcode")] public int    StatusCode    { get; init; }
-    [JsonPropertyName("message")] public string StatusMessage { get; init; }
-    [JsonPropertyName("data")]    public T      Data          { get; init; }
-
     public void EnsureSuccessStatusCode()
     {
         if (StatusCode != 0)
