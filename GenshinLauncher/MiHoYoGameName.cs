@@ -8,8 +8,7 @@ using System;
 
 namespace GenshinLauncher;
 
-// ReSharper disable UnusedMember.Global
-public readonly struct MiHoYoGameName
+public class MiHoYoGameName
 {
     private const string NameBengHuai     = "崩坏3";
     private const string NameGenshin      = "Genshin Impact";
@@ -19,6 +18,14 @@ public readonly struct MiHoYoGameName
     private const string NameHonkaiTwHkMo = "崩壞3";
     private const string NameYuanShen     = "原神";
 
+    private static MiHoYoGameName? _nameBengHuai;
+    private static MiHoYoGameName? _nameGenshin;
+    private static MiHoYoGameName? _nameHonkaiKr;
+    private static MiHoYoGameName? _nameHonkaiNaEu;
+    private static MiHoYoGameName? _nameHonkaiSea;
+    private static MiHoYoGameName? _nameHonkaiTwHkMo;
+    private static MiHoYoGameName? _nameYuanShen;
+
     private readonly string _name;
 
     private MiHoYoGameName(string name) =>
@@ -27,22 +34,22 @@ public readonly struct MiHoYoGameName
     public override string ToString() =>
         _name;
 
+    public static  MiHoYoGameName  BengHuai     => _nameBengHuai     ??= new MiHoYoGameName(NameBengHuai);
+    public static  MiHoYoGameName  Genshin      => _nameGenshin      ??= new MiHoYoGameName(NameGenshin);
+    public static  MiHoYoGameName  HonkaiKr     => _nameHonkaiKr     ??= new MiHoYoGameName(NameHonkaiKr);
+    public static  MiHoYoGameName  HonkaiNaEu   => _nameHonkaiNaEu   ??= new MiHoYoGameName(NameHonkaiNaEu);
+    public static  MiHoYoGameName  HonkaiSea    => _nameHonkaiSea    ??= new MiHoYoGameName(NameHonkaiSea);
+    public static  MiHoYoGameName  HonkaiTwHkMo => _nameHonkaiTwHkMo ??= new MiHoYoGameName(NameHonkaiTwHkMo);
+    public static  MiHoYoGameName  YuanShen     => _nameYuanShen     ??= new MiHoYoGameName(NameYuanShen);
+
     public static implicit operator string(MiHoYoGameName miHoYoGameName) =>
         miHoYoGameName._name;
-
-    public static MiHoYoGameName BengHuai     = new(NameBengHuai);
-    public static MiHoYoGameName Genshin      = new(NameGenshin);
-    public static MiHoYoGameName HonkaiKr     = new(NameHonkaiKr);
-    public static MiHoYoGameName HonkaiNaEu   = new(NameHonkaiNaEu);
-    public static MiHoYoGameName HonkaiSea    = new(NameHonkaiSea);
-    public static MiHoYoGameName HonkaiTwHkMo = new(NameHonkaiTwHkMo);
-    public static MiHoYoGameName YuanShen     = new(NameYuanShen);
 
     public static MiHoYoGameName Parse(string? name) =>
         ParseInternal(name) ?? throw new ArgumentException();
 
     public static bool TryParse(string? name, out MiHoYoGameName? miHoYoGameName) =>
-        (miHoYoGameName = ParseInternal(name)).HasValue;
+        (miHoYoGameName = ParseInternal(name)) != null;
 
     private static MiHoYoGameName? ParseInternal(string? name) =>
         name switch

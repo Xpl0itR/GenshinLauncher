@@ -83,7 +83,13 @@ public class MiHoYoCdnClient : IDisposable
         else if (gameName == MiHoYoGameName.Genshin)
         {
             url = UrlContentGenshin;
-            obj = new { launcher_id = LauncherIdGenshin, language = language.ToString(), filter_adv = "false" };
+            obj = new
+            {
+                key         = ApiKeyGenshin,
+                launcher_id = LauncherIdGenshin,
+                language    = language.ToString(),
+                filter_adv  = "false"
+            };
         }
         else if (gameName == MiHoYoGameName.HonkaiKr)
         {
@@ -108,7 +114,13 @@ public class MiHoYoCdnClient : IDisposable
         else if (gameName == MiHoYoGameName.YuanShen)
         {
             url = UrlContentYuanShen;
-            obj = new { launcher_id = LauncherIdYuanShen, language = Language.Chinese, filter_adv = "false" };
+            obj = new
+            {
+                key         = ApiKeyYuanShen,
+                launcher_id = LauncherIdYuanShen,
+                language    = Language.Chinese,
+                filter_adv  = "false"
+            };
         }
         else
         {

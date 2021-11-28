@@ -131,7 +131,7 @@ public static class Program
         _ctsLoadGameContent?.Dispose();
         _ctsLoadGameContent = new CancellationTokenSource();
 
-        DataJsonContent dataJsonContent = await CdnClient.GetContent(_gameName!.Value, Language.FromCulture(CultureInfo.CurrentUICulture), _ctsLoadGameContent.Token);
+        DataJsonContent dataJsonContent = await CdnClient.GetContent(_gameName!, Language.FromCulture(CultureInfo.CurrentUICulture), _ctsLoadGameContent.Token);
 
         string backgroundName = Path.GetFileName(dataJsonContent.Adv.Background);
         string backgroundPath = Path.Combine(BgDirectory, backgroundName);
@@ -172,7 +172,7 @@ public static class Program
 
         try
         {
-            DataJsonResource resource = await GetCachedResourceJson(_gameName!.Value, _ctsUpdateCheck.Token);
+            DataJsonResource resource = await GetCachedResourceJson(_gameName!, _ctsUpdateCheck.Token);
 
             if (Version.Parse(resource.Game.Latest.Version) > _gameVersion)
             {
@@ -199,9 +199,9 @@ public static class Program
         settingsWindow.TextBoxGameDirText          = _gameRoot ?? string.Empty;
         settingsWindow.NumericMonitorIndexMaximum  = WinApi.GetSystemMetrics(WinApi.SM_CMONITORS) - 1;
 
-        if (_gameName.HasValue)
+        if (_gameName != null)
         {
-            using MiHoYoRegistry.MiHoYoRegistry registry = MiHoYoRegistry.MiHoYoRegistry.New(_gameName.Value, false);
+            using MiHoYoRegistry.MiHoYoRegistry registry = MiHoYoRegistry.MiHoYoRegistry.New(_gameName, false);
 
             if (_borderlessMode)
             {
@@ -240,9 +240,9 @@ public static class Program
                 ReloadGame(false);
             }
 
-            if (_gameName.HasValue)
+            if (_gameName != null)
             {
-                using MiHoYoRegistry.MiHoYoRegistry registry = MiHoYoRegistry.MiHoYoRegistry.New(_gameName.Value, true);
+                using MiHoYoRegistry.MiHoYoRegistry registry = MiHoYoRegistry.MiHoYoRegistry.New(_gameName, true);
 
                 registry.SetResolutionHeight(settingsWindow.NumericWindowHeightValue);
                 registry.SetResolutionWidth(settingsWindow.NumericWindowWidthValue);

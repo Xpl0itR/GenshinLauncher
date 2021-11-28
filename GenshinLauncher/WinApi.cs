@@ -28,9 +28,9 @@ public static class WinApi
     public class MONITORINFO
     {
         public int       cbSize = Marshal.SizeOf(typeof(MONITORINFO));
-        public int       dwFlags;
         public Rectangle rcMonitor;
-        public Rectangle rcWork;
+        public Rectangle rcWork; // The work area is the portion of the screen not obscured by the system task bar or by application desktop tool bars
+        public int       dwFlags;
     }
     // ReSharper restore InconsistentNaming, IdentifierTypo, UnassignedField.Global, UnusedMember.Global
 
