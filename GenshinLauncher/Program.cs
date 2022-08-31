@@ -21,6 +21,10 @@ using GenshinLauncher.MiHoYoCdn;
 using GenshinLauncher.MiHoYoRegistry;
 using GenshinLauncher.Ui.Common;
 using GenshinLauncher.Ui.WinForms;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.Graphics.Gdi;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace GenshinLauncher;
 
@@ -197,7 +201,7 @@ public static class Program
         settingsWindow.CheckBoxCloseToTrayChecked  = CloseToTray;
         settingsWindow.CheckBoxExitOnLaunchChecked = _exitOnLaunch;
         settingsWindow.TextBoxGameDirText          = _gameRoot ?? string.Empty;
-        settingsWindow.NumericMonitorIndexMaximum  = WinApi.GetSystemMetrics(WinApi.SM_CMONITORS) - 1;
+        settingsWindow.NumericMonitorIndexMaximum  = PInvoke.GetSystemMetrics(SYSTEM_METRICS_INDEX.SM_CMONITORS) - 1;
 
         if (_gameName != null)
         {
@@ -294,7 +298,7 @@ public static class Program
 
         if (_borderlessMode)
         {
-            IntPtr hWnd = await process.GetMainWindowHandle();
+            HWND hWnd = (HWND)await process.GetMainWindowHandle();
 
             RemoveWindowTitlebar(hWnd);
             ResizeWindowToFillScreen(hWnd);
@@ -416,7 +420,7 @@ public static class Program
         // honkai moment
         if (handle == IntPtr.Zero)
         {
-            for (int j = 0; j < 25; j++)
+            for (int j = 0; j < 40; j++)
             {
                 Process? childProcess = Process.GetProcessesByName(process.ProcessName).FirstOrDefault(p => p.StartTime > process.StartTime && p.MainWindowHandle != IntPtr.Zero);
 
@@ -438,21 +442,21 @@ public static class Program
         return handle;
     }
 
-    private static void RemoveWindowTitlebar(IntPtr hWnd)
+    private static void RemoveWindowTitlebar(HWND hWnd)
     {
-        long style = WinApi.GetWindowLong(hWnd, WinApi.GWL_STYLE)
-                   & ~WinApi.WS_CAPTION
-                   & ~WinApi.WS_THICKFRAME;
+        nint style = PInvoke.GetWindowLongPtr(hWnd, WINDOW_LONG_PTR_INDEX.GWL_STYLE)
+                   & ~(nint)WINDOW_STYLE.WS_CAPTION
+                   & ~(nint)WINDOW_STYLE.WS_THICKFRAME;
 
-        WinApi.SetWindowLong(hWnd, WinApi.GWL_STYLE, style);
+        PInvoke.SetWindowLongPtr(hWnd, WINDOW_LONG_PTR_INDEX.GWL_STYLE, style);
     }
 
-    private static void ResizeWindowToFillScreen(IntPtr hWnd)
+    private static void ResizeWindowToFillScreen(HWND hWnd)
     {
-        IntPtr    hMonitor = WinApi.MonitorFromWindow(hWnd, WinApi.MONITOR_DEFAULTTONEAREST);
-        Rectangle bounds   = WinApi.GetMonitorInfo(hMonitor).rcMonitor;
+        HMONITOR hMonitor = PInvoke.MonitorFromWindow(hWnd, MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
+        RECT     rect     = PInvoke.GetMonitorRect(hMonitor);
 
-        WinApi.SetWindowPos(hWnd, IntPtr.Zero, bounds.X, bounds.Y, bounds.Width, bounds.Height, WinApi.SWP_FRAMECHANGED);
+        PInvoke.SetWindowPos(hWnd, HWND.Zero, rect.left, rect.top, rect.right, rect.bottom, SET_WINDOW_POS_FLAGS.SWP_FRAMECHANGED);
     }
 
     private static MiHoYoGameName MiHoYoGameNameFromAppInfo(string path)
@@ -560,13 +564,31 @@ public static class Program
         {
             Launch().HandleAsyncExceptions();
         }
+        //TODO: the following functions need to update the game's config.ini
         else if (Ui.MainWindow.Components.HasFlag(Components.ButtonDownload))
         {
-            throw new NotImplementedException();
+            //TODO: support honkai
+            MiHoYoGameName gameName = Ui.MainWindow.RadioButtonGlobalVersionChecked ? MiHoYoGameName.Genshin : MiHoYoGameName.YuanShen;
+
+            InstallPackage(_gameRoot!,
+                           async cancellationToken =>
+                           {
+                               DataJsonResource resource = await GetCachedResourceJson(gameName, cancellationToken);
+                               return resource.Game.Latest;
+                           })
+               .HandleAsyncExceptions();
         }
         else if (Ui.MainWindow.Components.HasFlag(Components.ButtonUpdate))
         {
-            throw new NotImplementedException();
+            InstallPackage(_gameRoot!,
+                           async cancellationToken =>
+                           {
+                               DataJsonResource resource = await GetCachedResourceJson(_gameName!, cancellationToken);
+
+                               return resource.Game.Diffs.FirstOrDefault(package => Version.Parse(package.Version) == _gameVersion)
+                                   ?? resource.Game.Latest;
+                           })
+               .HandleAsyncExceptions();
         }
     }
 

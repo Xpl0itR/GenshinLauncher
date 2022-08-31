@@ -1,0 +1,7 @@
+﻿GetMonitorInfo
+GetSystemMetrics
+GetWindowLongPtr
+MonitorFromWindow
+SetWindowLongPtr
+SetWindowPos
+WINDOW_STYLE

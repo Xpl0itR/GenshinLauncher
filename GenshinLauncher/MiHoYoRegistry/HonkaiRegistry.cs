@@ -15,7 +15,8 @@ public class HonkaiRegistry : MiHoYoRegistry
 {
     private const string KeyNameGraphicsSetting = "GENERAL_DATA_V2_PersonalGraphicsSetting_h906361411";
     private const string KeyNameScreenSetting   = "GENERAL_DATA_V2_ScreenSettingData_h1916288658";
-    private const string KeyNameGameVersion     = "GENERAL_DATA_V2_ResourceDownloadVersion_h1528433916";
+    private const string KeyNameGameVersion     = "GENERAL_DATA_V2_ResourceDownloadVersion_h1528433916"; //todo: rename
+    private const string KeyNameLocalVersion    = "USD_V2_204633596_LocalVersion_h2733793009";
 
     public HonkaiRegistry(MiHoYoGameName miHoYoGameName, bool writable) : base(miHoYoGameName, writable) { }
 

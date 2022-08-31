@@ -20,7 +20,11 @@ public abstract class MiHoYoRegistry : IDisposable
 
     protected MiHoYoRegistry(MiHoYoGameName miHoYoGameName, bool writable)
     {
-        string keyName = $"Software\\miHoYo\\{miHoYoGameName}";
+        string publisherName = miHoYoGameName == MiHoYoGameName.StarRail 
+            ? "Cognosphere"
+            : "miHoYo";
+
+        string keyName = $"Software\\{publisherName}\\{miHoYoGameName}";
         RegistryKey = Registry.CurrentUser.OpenSubKey(keyName, writable)
                    ?? Registry.CurrentUser.CreateSubKey(keyName, writable);
     }
@@ -37,6 +41,11 @@ public abstract class MiHoYoRegistry : IDisposable
         if (miHoYoGameName == MiHoYoGameName.BengHuai || miHoYoGameName == MiHoYoGameName.HonkaiKr || miHoYoGameName == MiHoYoGameName.HonkaiNaEu || miHoYoGameName == MiHoYoGameName.HonkaiSea || miHoYoGameName == MiHoYoGameName.HonkaiTwHkMo)
         {
             return new HonkaiRegistry(miHoYoGameName, writable);
+        }
+
+        if (miHoYoGameName == MiHoYoGameName.StarRail)
+        {
+            return new StarRailRegistry(miHoYoGameName, writable);
         }
 
         throw new ArgumentOutOfRangeException(miHoYoGameName);

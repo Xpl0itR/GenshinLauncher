@@ -8,6 +8,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,21 +19,25 @@ public class MiHoYoCdnClient : IDisposable
     private const int LauncherIdBengHuai     = 4;
     private const int LauncherIdHonkaiTwHkMo = 3;
     private const int LauncherIdHonkaiSea    = 4;
-    private const int LauncherIdHonkaiNaEu   = 5;
+    private const int LauncherIdHonkaiNaEu   = 10;
     private const int LauncherIdHonkaiKr     = 6;
     private const int LauncherIdGenshin      = 10;
     private const int LauncherIdYuanShen     = 18;
+    private const int LauncherIdStarRail     = 24;
     private const int SubChannelIdGenshin    = 0;
     private const int SubChannelIdYuanShen   = 1;
     private const int SubChannelIdBengHuai   = 1;
+    private const int SubChannelIdStarRail   = 1;
     private const int ChannelId              = 1;
 
     private const string UrlApiOverseas      = "https://sdk-os-static.mihoyo.com";
     private const string UrlApiChina         = "https://sdk-static.mihoyo.com";
+    private const string UrlApiStarRail      = "https://hkrpg-launcher-static.hoyoverse.com";
     private const string Honkai              = "/bh3_global";
     private const string BengHuai            = "/bh3_cn";
     private const string Genshin             = "/hk4e_global";
     private const string YuanShen            = "/hk4e_cn";
+    private const string StarRail            = "/hkrpg_global";
     private const string EndpointLauncherApi = "/mdk/launcher/api";
     private const string EndpointChangelog   = "/changelog";
     private const string EndpointContent     = "/content";
@@ -43,10 +48,12 @@ public class MiHoYoCdnClient : IDisposable
     private const string UrlContentBengHuai  = UrlApiChina    + BengHuai + EndpointLauncherApi + EndpointContent;
     private const string UrlContentGenshin   = UrlApiOverseas + Genshin  + EndpointLauncherApi + EndpointContent;
     private const string UrlContentYuanShen  = UrlApiChina    + YuanShen + EndpointLauncherApi + EndpointContent;
+    private const string UrlContentStarRail  = UrlApiStarRail + StarRail + EndpointLauncherApi + EndpointContent;
     private const string UrlResourceHonkai   = UrlApiOverseas + Honkai   + EndpointLauncherApi + EndpointResource;
     private const string UrlResourceBengHuai = UrlApiChina    + BengHuai + EndpointLauncherApi + EndpointResource;
     private const string UrlResourceGenshin  = UrlApiOverseas + Genshin  + EndpointLauncherApi + EndpointResource;
     private const string UrlResourceYuanShen = UrlApiChina    + YuanShen + EndpointLauncherApi + EndpointResource;
+    private const string UrlResourceStarRail = UrlApiStarRail + StarRail + EndpointLauncherApi + EndpointResource;
 
 #region ApiKeys
     // TODO: Inject at compile time and obfuscate
@@ -57,6 +64,7 @@ public class MiHoYoCdnClient : IDisposable
     private const string ApiKeyBengHuai     = "";
     private const string ApiKeyGenshin      = "";
     private const string ApiKeyYuanShen     = "";
+    private const string ApiKeyStarRail     = "";
 #endregion
 
     private readonly HttpClient            _httpClient;
@@ -65,7 +73,12 @@ public class MiHoYoCdnClient : IDisposable
     public MiHoYoCdnClient(HttpClient httpClient)
     {
         _httpClient            = httpClient;
-        _jsonSerializerOptions = new JsonSerializerOptions { AllowTrailingCommas = true, IgnoreNullValues = true, ReadCommentHandling = JsonCommentHandling.Skip };
+        _jsonSerializerOptions = new JsonSerializerOptions
+        {
+            AllowTrailingCommas    = true,
+            ReadCommentHandling    = JsonCommentHandling.Skip,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        };
     }
 
     public void Dispose() { _httpClient.Dispose(); }
@@ -110,6 +123,17 @@ public class MiHoYoCdnClient : IDisposable
         {
             url = UrlContentHonkai;
             obj = new { launcher_id = LauncherIdHonkaiTwHkMo, language = language.ToString(), filter_adv = "false" };
+        }
+        else if (gameName == MiHoYoGameName.StarRail)
+        {
+            url = UrlContentStarRail;
+            obj = new
+            {
+                key         = ApiKeyStarRail,
+                launcher_id = LauncherIdStarRail,
+                language    = language.ToString(),
+                filter_adv  = "false"
+            };
         }
         else if (gameName == MiHoYoGameName.YuanShen)
         {
@@ -176,6 +200,17 @@ public class MiHoYoCdnClient : IDisposable
         {
             url = UrlResourceHonkai;
             obj = new { key = ApiKeyHonkaiTwHkMo, launcher_id = LauncherIdHonkaiTwHkMo };
+        }
+        else if (gameName == MiHoYoGameName.StarRail)
+        {
+            url = UrlResourceStarRail;
+            obj = new
+            {
+                key            = ApiKeyStarRail,
+                launcher_id    = LauncherIdStarRail,
+                channel_id     = ChannelId,
+                sub_channel_id = SubChannelIdStarRail
+            };
         }
         else if (gameName == MiHoYoGameName.YuanShen)
         {

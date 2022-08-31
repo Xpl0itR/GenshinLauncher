@@ -14,7 +14,7 @@ public record DataJsonResource
     [property: JsonPropertyName("game")]                Game             Game,
     [property: JsonPropertyName("plugin")]              Plugin           Plugin,
     [property: JsonPropertyName("web_url")]             string           WebUrl,
-    [property: JsonPropertyName("force_update")]        bool?            ForceUpdate,
+    [property: JsonPropertyName("force_update")]        ForceUpdate?     ForceUpdate,
     [property: JsonPropertyName("pre_download_game")]   PreDownloadGame? PreDownloadGame,
     [property: JsonPropertyName("deprecated_packages")] Package[]        DeprecatedPackages,
     [property: JsonPropertyName("sdk")]                 object           Sdk
@@ -49,6 +49,11 @@ public record Plugin
 (
     [property: JsonPropertyName("plugins")] Package[] Plugins,
     [property: JsonPropertyName("version")] string    Version
+);
+
+public record ForceUpdate(
+    [property: JsonPropertyName("min_version")] string MinVersion,
+    [property: JsonPropertyName("url")]         string Url
 );
 
 public record PreDownloadGame

@@ -9,10 +9,10 @@
     <OutputType Condition="'$(Configuration)' == 'Debug'">Exe</OutputType>
     <OutputType Condition="'$(Configuration)' == 'Release'">WinExe</OutputType>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
-    <PublishSingleFile>true</PublishSingleFile>
+    <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
     <RepositoryUrl>https://github.com/Xpl0itR/GenshinLauncher</RepositoryUrl>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <Version>0.1.0</Version>
     <NeutralLanguage>en</NeutralLanguage>
@@ -21,6 +21,9 @@
   <ItemGroup>
     <PackageReference Include="DarkUI" Version="2.0.2" />
     <PackageReference Include="ini-parser" Version="2.5.2" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.10-beta">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
